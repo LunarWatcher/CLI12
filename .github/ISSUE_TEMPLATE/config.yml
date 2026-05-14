@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Issue tracker
+    url: https://codeberg.org/LunarWatcher/CLI11/issues
+    about: This repo (with the exception of pipeline resources) is primarily hosted on Codeberg.
