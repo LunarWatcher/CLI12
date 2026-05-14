@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## v3.0.0
+
+This is the first release in an AI slop-free fork of CLI11. Aside removing meson support, Microslop Azure pipelines, and removing a fair few things that purely amount to unnecessary maintenance overhead, this version does not change anything internally.
 
 ## Version 2.6.2
 

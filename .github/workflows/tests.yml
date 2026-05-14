@@ -179,38 +179,6 @@ jobs:
         run: ctest --output-on-failure
         working-directory: build
 
-  meson-build:
-    name: Meson build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Prepare commands
-        run: |
-          pipx install meson
-          pipx install ninja
-
-      - name: Configure
-        run: meson setup build-meson . -Dtests=enabled
-
-      - name: Build
-        run: meson compile -C build-meson
-
-      - name: Test
-        run: meson test -C build-meson
-
-  bazel-build:
-    name: Bazel build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Build
-        run: bazel build //...
-
-      - name: Test
-        run: bazel test --test_output=errors //...
-
   install:
     name: install tests
     runs-on: ubuntu-latest
@@ -328,7 +296,7 @@ jobs:
           cmake-version: "4.2"
       - uses: seanmiddleditch/gha-setup-ninja@master
       - name: Configure
-        run: cmake -S . -B build -G Ninja -DCLI11_INSTALL_PACKAGE_TESTS=ON -DCLI11_MODULE_TESTS=ON -DCMAKE_CXX_STANDARD=23 -DCMAKE_INSTALL_PREFIX=/home/runner/work/install 
+        run: cmake -S . -B build -G Ninja -DCLI11_INSTALL_PACKAGE_TESTS=ON -DCLI11_MODULE_TESTS=ON -DCMAKE_CXX_STANDARD=23 -DCMAKE_INSTALL_PREFIX=/home/runner/work/install
       - name: Build
         run: cmake --build build  -j2
       - name: install

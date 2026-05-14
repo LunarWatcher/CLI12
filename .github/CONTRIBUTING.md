@@ -60,31 +60,6 @@ name, pre-commit):
 pre-commit install
 ```
 
-## For maintainers: remember to add contributions
+### Use of generative AI is banned
 
-In a commit to a PR, just add
-"`@all-contributors please add <username> for <contributions>`" or similar (see
-<https://allcontributors.org>). Use `code` for code, `bug` if an issue was
-submitted, `platform` for packaging stuff, and `doc` for documentation updates.
-
-To run locally, do:
-
-```bash
-yarn add --dev all-contributors-cli
-yarn all-contributors add username code,bug
-```
-
-## For maintainers: Making a release
-
-Remember to replace the emoji in the readme, being careful not to replace the
-ones in all-contributors if any overlap.
-
-Steps:
-
-- Update changelog if needed
-- Update the version in `include/CLI/Version.hpp`.
-- Find and replace in README (new minor/major release only):
-  - Replace " 🆕" and "🆕 " with "" (ignores the description line)
-  - Check for `\/\/$` (vi syntax) to catch leftover `// 🆕`
-  - Replace "🚧" with "🆕" (manually ignore the description line)
-- Make a release in the GitHub UI, use a name such as "Version X.Y(.Z): Title"
+Generative AI uses training data [based on plagiarism and piracy](https://web.archive.org/web/20250000000000*/https://www.theatlantic.com/technology/archive/2025/03/libgen-meta-openai/682093/), has [significant environmental costs associated with it](https://doi.org/10.21428/e4baedd9.9070dfe7), and [generates fundamentally insecure code](https://doi.org/10.1007/s10664-024-10590-1). GenAI is not ethically built, ethical to use, nor safe to use for programming applications. When caught, you will be permanently banned from contributing to the project, and any prior contributions will be checked and potentially reverted. Any and all contributions you've made cannot be trusted if AI slop machines were involved.
