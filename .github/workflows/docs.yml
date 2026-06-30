@@ -40,7 +40,7 @@ jobs:
     if: >
       success()
       && github.ref == 'refs/heads/main'
-      && github.repository == 'LunarWatcher/CLI11'
+      && github.repository == 'LunarWatcher/CLI12'
     steps:
       - uses: actions/configure-pages@v5
         id: pages

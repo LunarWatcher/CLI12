@@ -41,17 +41,17 @@ jobs:
         run: |
           cmake -S . -B build \
             -DCMAKE_CXX_STANDARD=${{matrix.std}} \
-            -DCLI11_SINGLE_FILE_TESTS=OFF \
-            -DCLI11_BUILD_EXAMPLES=OFF \
-            -DCLI11_PRECOMPILED=${{matrix.precompile}} \
+            -DCLI12_SINGLE_FILE_TESTS=OFF \
+            -DCLI12_BUILD_EXAMPLES=OFF \
+            -DCLI12_PRECOMPILED=${{matrix.precompile}} \
             -DCMAKE_BUILD_TYPE=Coverage \
-            -DCLI11_ENABLE_EXTRA_VALIDATORS=ON
+            -DCLI12_ENABLE_EXTRA_VALIDATORS=ON
 
       - name: Build
         run: cmake --build build -j4
 
       - name: Test
-        run: cmake --build build --target CLI11_coverage
+        run: cmake --build build --target CLI12_coverage
 
       - name: Prepare coverage
         run: |
@@ -87,9 +87,9 @@ jobs:
         run: |
           cmake -S . -B build \
             -DCMAKE_CXX_STANDARD=14 \
-            -DCLI11_SINGLE_FILE_TESTS=OFF \
-            -DCLI11_BUILD_EXAMPLES=OFF \
-            -DCLI11_PRECOMPILED=ON
+            -DCLI12_SINGLE_FILE_TESTS=OFF \
+            -DCLI12_BUILD_EXAMPLES=OFF \
+            -DCLI12_PRECOMPILED=ON
 
       - name: Build
         run: cmake --build build -j4
@@ -125,7 +125,7 @@ jobs:
         with:
           submodules: true
       - name: Configure
-        run: cmake -S . -B build -DCLI11_CUDA_TESTS=ON
+        run: cmake -S . -B build -DCLI12_CUDA_TESTS=ON
       - name: Build
         run: cmake --build build -j2
 
@@ -140,7 +140,7 @@ jobs:
         with:
           submodules: true
       - name: Configure
-        run: cmake -S . -B build -DCLI11_CUDA_TESTS=ON
+        run: cmake -S . -B build -DCLI12_CUDA_TESTS=ON
       - name: Build
         run: cmake --build build -j2
 
@@ -156,7 +156,7 @@ jobs:
       # NOTE: If a boost version matching all requirements cannot be found,
       # this build step will fail
       - name: Configure
-        run: cmake -S . -B build -DCLI11_BOOST=ON
+        run: cmake -S . -B build -DCLI12_BOOST=ON
       - name: Build
         run: cmake --build build -j2
       - name: Run tests
@@ -172,7 +172,7 @@ jobs:
           submodules: true
       # this build step will fail
       - name: Configure
-        run: cmake -S . -B build -DCLI11_SANITIZERS=ON
+        run: cmake -S . -B build -DCLI12_SANITIZERS=ON
       - name: Build
         run: cmake --build build -j2
       - name: Run tests
@@ -187,7 +187,7 @@ jobs:
         with:
           submodules: true
       - name: Configure
-        run: cmake -S . -B build -DCLI11_INSTALL_PACKAGE_TESTS=ON -DCMAKE_INSTALL_PREFIX=/home/runner/work/install
+        run: cmake -S . -B build -DCLI12_INSTALL_PACKAGE_TESTS=ON -DCMAKE_INSTALL_PREFIX=/home/runner/work/install
       - name: Build
         run: cmake --build build  -j2
       - name: install
@@ -204,7 +204,7 @@ jobs:
         with:
           submodules: true
       - name: Configure
-        run: cmake -S . -B build -DCLI11_INSTALL_PACKAGE_TESTS=ON -DCLI11_ENABLE_EXTRA_VALIDATORS=ON -DCMAKE_INSTALL_PREFIX=/home/runner/work/install -DCLI11_PRECOMPILED=ON -DCLI11_DISABLE_IMPL_HEADERS_INSTALL=ON
+        run: cmake -S . -B build -DCLI12_INSTALL_PACKAGE_TESTS=ON -DCLI12_ENABLE_EXTRA_VALIDATORS=ON -DCMAKE_INSTALL_PREFIX=/home/runner/work/install -DCLI12_PRECOMPILED=ON -DCLI12_DISABLE_IMPL_HEADERS_INSTALL=ON
       - name: Build
         run: cmake --build build  -j2
       - name: install
@@ -221,13 +221,13 @@ jobs:
         with:
           submodules: true
       - name: Configure
-        run: cmake -S . -B build -DCLI11_INSTALL_PACKAGE_TESTS=ON -DCLI11_ENABLE_EXTRA_VALIDATORS=ON -DCMAKE_INSTALL_PREFIX=/home/runner/work/install -DCLI11_PRECOMPILED=ON
+        run: cmake -S . -B build -DCLI12_INSTALL_PACKAGE_TESTS=ON -DCLI12_ENABLE_EXTRA_VALIDATORS=ON -DCMAKE_INSTALL_PREFIX=/home/runner/work/install -DCLI12_PRECOMPILED=ON
       - name: Build
         run: cmake --build build  -j2
       - name: install
         run: cmake --install build
       - name: Configure2
-        run: cmake -S . -B build -DCLI11_INSTALL_PACKAGE_TESTS=ON -DCMAKE_INSTALL_PREFIX=/home/runner/work/install
+        run: cmake -S . -B build -DCLI12_INSTALL_PACKAGE_TESTS=ON -DCMAKE_INSTALL_PREFIX=/home/runner/work/install
       - name: Run tests
         run: ctest --output-on-failure -L Packaging
         working-directory: build
@@ -240,7 +240,7 @@ jobs:
         with:
           submodules: true
       - name: Configure
-        run: cmake -S . -B build -DCLI11_INSTALL_PACKAGE_TESTS=ON -DCLI11_ENABLE_EXTRA_VALIDATORS=ON -DCMAKE_INSTALL_PREFIX=/Users/runner/work/install -DCLI11_PRECOMPILED=ON -DCMAKE_CXX_STANDARD=20
+        run: cmake -S . -B build -DCLI12_INSTALL_PACKAGE_TESTS=ON -DCLI12_ENABLE_EXTRA_VALIDATORS=ON -DCMAKE_INSTALL_PREFIX=/Users/runner/work/install -DCLI12_PRECOMPILED=ON -DCMAKE_CXX_STANDARD=20
       - name: Build
         run: cmake --build build  -j2
       - name: install
@@ -257,7 +257,7 @@ jobs:
         with:
           submodules: true
       - name: Configure
-        run: cmake -S . -B build -DCLI11_INSTALL_PACKAGE_TESTS=ON -DCLI11_ENABLE_EXTRA_VALIDATORS=OFF -DCMAKE_INSTALL_PREFIX=/Users/runner/work/install -DCLI11_PRECOMPILED=ON
+        run: cmake -S . -B build -DCLI12_INSTALL_PACKAGE_TESTS=ON -DCLI12_ENABLE_EXTRA_VALIDATORS=OFF -DCMAKE_INSTALL_PREFIX=/Users/runner/work/install -DCLI12_PRECOMPILED=ON
       - name: Build
         run: cmake --build build  -j2
       - name: install
@@ -274,7 +274,7 @@ jobs:
         with:
           submodules: true
       - name: Configure
-        run: cmake -S . -B build -DCLI11_INSTALL_PACKAGE_TESTS=ON -DCLI11_ENABLE_EXTRA_VALIDATORS=ON -DCMAKE_INSTALL_PREFIX=/home/runner/work/install -DCLI11_SINGLE_FILE=ON
+        run: cmake -S . -B build -DCLI12_INSTALL_PACKAGE_TESTS=ON -DCLI12_ENABLE_EXTRA_VALIDATORS=ON -DCMAKE_INSTALL_PREFIX=/home/runner/work/install -DCLI12_SINGLE_FILE=ON
       - name: Build
         run: cmake --build build  -j2
       - name: install
@@ -296,7 +296,7 @@ jobs:
           cmake-version: "4.2"
       - uses: seanmiddleditch/gha-setup-ninja@master
       - name: Configure
-        run: cmake -S . -B build -G Ninja -DCLI11_INSTALL_PACKAGE_TESTS=ON -DCLI11_MODULE_TESTS=ON -DCMAKE_CXX_STANDARD=23 -DCMAKE_INSTALL_PREFIX=/home/runner/work/install
+        run: cmake -S . -B build -G Ninja -DCLI12_INSTALL_PACKAGE_TESTS=ON -DCLI12_MODULE_TESTS=ON -DCMAKE_CXX_STANDARD=23 -DCMAKE_INSTALL_PREFIX=/home/runner/work/install
       - name: Build
         run: cmake --build build  -j2
       - name: install
@@ -326,7 +326,7 @@ jobs:
           cmake-version: "4.2"
       - uses: seanmiddleditch/gha-setup-ninja@master
       - name: Configure
-        run: cmake -S . -B build -G Ninja -DCLI11_INSTALL_PACKAGE_TESTS=ON -DCLI11_MODULE_TESTS=ON -DCLI11_FORCE_LIBCXX=ON -DCLI11_MODULES=ON -DCMAKE_CXX_STANDARD=23 -DCMAKE_INSTALL_PREFIX=/home/runner/work/install -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_LINKER_TYPE=LLD -DCMAKE_CXX_FLAGS=-stdlib=libc++
+        run: cmake -S . -B build -G Ninja -DCLI12_INSTALL_PACKAGE_TESTS=ON -DCLI12_MODULE_TESTS=ON -DCLI12_FORCE_LIBCXX=ON -DCLI12_MODULES=ON -DCMAKE_CXX_STANDARD=23 -DCMAKE_INSTALL_PREFIX=/home/runner/work/install -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_LINKER_TYPE=LLD -DCMAKE_CXX_FLAGS=-stdlib=libc++
       - name: Build
         run: cmake --build build  -j2
       - name: install
@@ -345,7 +345,7 @@ jobs:
         uses: ./.github/actions/quick_cmake
         with:
           cmake-version: "3.14"
-          args: -DCLI11_SANITIZERS=ON -DCLI11_BUILD_EXAMPLES_JSON=ON
+          args: -DCLI12_SANITIZERS=ON -DCLI12_BUILD_EXAMPLES_JSON=ON
 
       - name: Check CMake 3.15
         uses: ./.github/actions/quick_cmake
@@ -422,7 +422,7 @@ jobs:
         uses: ./.github/actions/quick_cmake
         with:
           cmake-version: "3.26"
-          args: -DCLI11_SANITIZERS=ON -DCLI11_BUILD_EXAMPLES_JSON=ON
+          args: -DCLI12_SANITIZERS=ON -DCLI12_BUILD_EXAMPLES_JSON=ON
         if: success() || failure()
 
       - name: Check CMake 3.27
@@ -435,7 +435,7 @@ jobs:
         uses: ./.github/actions/quick_cmake
         with:
           cmake-version: "3.28.X"
-          args: -DCLI11_SANITIZERS=ON -DCLI11_BUILD_EXAMPLES_JSON=ON
+          args: -DCLI12_SANITIZERS=ON -DCLI12_BUILD_EXAMPLES_JSON=ON
         if: success() || failure()
 
       - name: Check CMake 3.29
@@ -454,14 +454,14 @@ jobs:
         uses: ./.github/actions/quick_cmake
         with:
           cmake-version: "3.31"
-          args: -DCLI11_SANITIZERS=ON -DCLI11_BUILD_EXAMPLES_JSON=ON
+          args: -DCLI12_SANITIZERS=ON -DCLI12_BUILD_EXAMPLES_JSON=ON
         if: success() || failure()
 
       - name: Check CMake 4.0
         uses: ./.github/actions/quick_cmake
         with:
           cmake-version: "4.0"
-          args: -DCLI11_BUILD_EXAMPLES_JSON=ON
+          args: -DCLI12_BUILD_EXAMPLES_JSON=ON
         if: success() || failure()
 
       - name: Check CMake 4.1

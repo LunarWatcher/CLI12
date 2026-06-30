@@ -24,33 +24,33 @@ jobs:
           python-version: "3.x"
 
       - name: Prepare CMake config
-        run: cmake -S . -B build -DCLI11_SINGLE_FILE=ON
+        run: cmake -S . -B build -DCLI12_SINGLE_FILE=ON
 
       - name: Make package
         run: cmake --build build --target package_source
 
       - name: Copy source packages
         run: |
-          mkdir -p CLI11-Source
-          cp build/CLI11-*-Source.* CLI11-Source
-          cp build/CLI11-*-Source.* .
+          mkdir -p CLI12-Source
+          cp build/CLI12-*-Source.* CLI12-Source
+          cp build/CLI12-*-Source.* .
 
       - name: Make header
-        run: cmake --build build --target CLI11-generate-single-file
+        run: cmake --build build --target CLI12-generate-single-file
 
       - uses: actions/upload-artifact@v4
         with:
-          name: CLI11.hpp
-          path: build/single-include/CLI11.hpp
+          name: CLI12.hpp
+          path: build/single-include/CLI12.hpp
 
       - uses: actions/upload-artifact@v4
         with:
-          name: CLI11-Source
-          path: CLI11-Source
+          name: CLI12-Source
+          path: CLI12-Source
 
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            build/single-include/CLI11.hpp
+            build/single-include/CLI12.hpp

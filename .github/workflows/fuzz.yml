@@ -26,11 +26,11 @@ jobs:
         run: |
           cmake -S . -B build \
             -DCMAKE_CXX_STANDARD=20 \
-            -DCLI11_SINGLE_FILE_TESTS=OFF \
-            -DCLI11_BUILD_EXAMPLES=OFF \
-            -DCLI11_FUZZ_TARGET=ON \
-            -DCLI11_BUILD_TESTS=OFF \
-            -DCLI11_BUILD_DOCS=OFF \
+            -DCLI12_SINGLE_FILE_TESTS=OFF \
+            -DCLI12_BUILD_EXAMPLES=OFF \
+            -DCLI12_FUZZ_TARGET=ON \
+            -DCLI12_BUILD_TESTS=OFF \
+            -DCLI12_BUILD_DOCS=OFF \
             -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_COMPILER_FORCED=ON \
             -DCMAKE_CXX_FLAGS="-g -O1 -fsanitize=fuzzer,undefined,address"
 
@@ -40,12 +40,12 @@ jobs:
       - name: Test_app
         run: |
           cd build
-          make QUICK_CLI11_APP_FUZZ
+          make QUICK_CLI12_APP_FUZZ
 
       - name: Test_file
         run: |
           cd build
-          make QUICK_CLI11_FILE_FUZZ
+          make QUICK_CLI12_FILE_FUZZ
 
 
       - name: artifacts

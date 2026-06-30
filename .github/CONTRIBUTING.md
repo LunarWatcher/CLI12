@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for considering to write a Pull Request (PR) for CLI11! Here are a few
+Thanks for considering to write a Pull Request (PR) for CLI12! Here are a few
 guidelines to get you started:
 
 Make sure you are comfortable with the license; all contributions are licensed
@@ -16,7 +16,7 @@ Make sure any new functions you add are are:
 - Completely covered by tests
 
 In general, make sure the addition is well thought out and does not increase the
-complexity of CLI11 needlessly.
+complexity of CLI12 needlessly.
 
 ## Things you should know
 
