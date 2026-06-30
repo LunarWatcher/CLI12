@@ -21,10 +21,12 @@ Use FetchContent:
 ```cmake
 FetchContent_Declare(cli12
     GIT_REPOSITORY https://codeberg.org/LunarWatcher/CLI12
-    GIT_TAG v3.0.0
+    GIT_TAG v3.1.0
     EXCLUDE_FROM_ALL
 )
 ```
+
+Link to `CLI12::CLI12`
 
 ## Usage
 
