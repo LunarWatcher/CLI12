@@ -8,18 +8,18 @@
 
 // IWYU pragma: private, include "CLI/CLI.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <functional>
 #include <map>
 #include <string>
 #include <utility>
 #include <vector>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
 #include "StringTools.hpp"
 
 namespace CLI {
-// [CLI11:formatter_fwd_hpp:verbatim]
+// [CLI12:formatter_fwd_hpp:verbatim]
 
 class Option;
 class App;
@@ -129,42 +129,42 @@ class FormatterBase {
     ///@{
 
     /// Get the current value of a name (REQUIRED, etc.)
-    CLI11_NODISCARD std::string get_label(std::string key) const {
+    CLI12_NODISCARD std::string get_label(std::string key) const {
         if(labels_.find(key) == labels_.end())
             return key;
         return labels_.at(key);
     }
 
     /// Get the current left column width (options/flags/subcommands)
-    CLI11_NODISCARD std::size_t get_column_width() const { return column_width_; }
+    CLI12_NODISCARD std::size_t get_column_width() const { return column_width_; }
 
     /// Get the current right column width (description of options/flags/subcommands)
-    CLI11_NODISCARD std::size_t get_right_column_width() const { return right_column_width_; }
+    CLI12_NODISCARD std::size_t get_right_column_width() const { return right_column_width_; }
 
     /// Get the current description paragraph width at the top of help
-    CLI11_NODISCARD std::size_t get_description_paragraph_width() const { return description_paragraph_width_; }
+    CLI12_NODISCARD std::size_t get_description_paragraph_width() const { return description_paragraph_width_; }
 
     /// Get the current footer paragraph width
-    CLI11_NODISCARD std::size_t get_footer_paragraph_width() const { return footer_paragraph_width_; }
+    CLI12_NODISCARD std::size_t get_footer_paragraph_width() const { return footer_paragraph_width_; }
 
     /// @brief Get the current alignment ratio for long options within the left column
     /// @return
-    CLI11_NODISCARD float get_long_option_alignment_ratio() const { return long_option_alignment_ratio_; }
+    CLI12_NODISCARD float get_long_option_alignment_ratio() const { return long_option_alignment_ratio_; }
 
     /// Get the current status of description paragraph formatting
-    CLI11_NODISCARD bool is_description_paragraph_formatting_enabled() const { return enable_description_formatting_; }
+    CLI12_NODISCARD bool is_description_paragraph_formatting_enabled() const { return enable_description_formatting_; }
 
     /// Get the current status of whether footer paragraph formatting is enabled
-    CLI11_NODISCARD bool is_footer_paragraph_formatting_enabled() const { return enable_footer_formatting_; }
+    CLI12_NODISCARD bool is_footer_paragraph_formatting_enabled() const { return enable_footer_formatting_; }
 
     /// Get the current status of whether option defaults are printed
-    CLI11_NODISCARD bool is_option_defaults_enabled() const { return enable_option_defaults_; }
+    CLI12_NODISCARD bool is_option_defaults_enabled() const { return enable_option_defaults_; }
 
     /// Get the current status of whether option type names are printed
-    CLI11_NODISCARD bool is_option_type_names_enabled() const { return enable_option_type_names_; }
+    CLI12_NODISCARD bool is_option_type_names_enabled() const { return enable_option_type_names_; }
 
     /// Get the current status of whether default flag values are printed
-    CLI11_NODISCARD bool is_default_flag_values_enabled() const { return enable_default_flag_values_; }
+    CLI12_NODISCARD bool is_default_flag_values_enabled() const { return enable_default_flag_values_; }
 
     ///@}
 };
@@ -189,7 +189,7 @@ class FormatterLambda final : public FormatterBase {
     }
 };
 
-/// This is the default Formatter for CLI11. It pretty prints help output, and is broken into quite a few
+/// This is the default Formatter for CLI12. It pretty prints help output, and is broken into quite a few
 /// overridable methods, to be highly customizable with minimal effort.
 class Formatter : public FormatterBase {
   public:
@@ -204,7 +204,7 @@ class Formatter : public FormatterBase {
 
     /// This prints out a group of options with title
     ///
-    CLI11_NODISCARD virtual std::string
+    CLI12_NODISCARD virtual std::string
     make_group(std::string group, bool is_positional, std::vector<const Option *> opts) const;
 
     /// This prints out just the positionals "group"
@@ -256,5 +256,5 @@ class Formatter : public FormatterBase {
     ///@}
 };
 
-// [CLI11:formatter_fwd_hpp:end]
+// [CLI12:formatter_fwd_hpp:end]
 }  // namespace CLI

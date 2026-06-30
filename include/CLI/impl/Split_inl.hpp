@@ -11,22 +11,22 @@
 // This include is only needed for IDEs to discover symbols
 #include "../Split.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <string>
 #include <tuple>
 #include <utility>
 #include <vector>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
 #include "../Error.hpp"
 #include "../StringTools.hpp"
 
 namespace CLI {
-// [CLI11:split_inl_hpp:verbatim]
+// [CLI12:split_inl_hpp:verbatim]
 
 namespace detail {
 
-CLI11_INLINE bool split_short(const std::string &current, std::string &name, std::string &rest) {
+CLI12_INLINE bool split_short(const std::string &current, std::string &name, std::string &rest) {
     if(current.size() > 1 && current[0] == '-' && valid_first_char(current[1])) {
         name = current.substr(1, 1);
         rest = current.substr(2);
@@ -35,7 +35,7 @@ CLI11_INLINE bool split_short(const std::string &current, std::string &name, std
     return false;
 }
 
-CLI11_INLINE bool split_long(const std::string &current, std::string &name, std::string &value) {
+CLI12_INLINE bool split_long(const std::string &current, std::string &name, std::string &value) {
     if(current.size() > 2 && current.compare(0, 2, "--") == 0 && valid_first_char(current[2])) {
         auto loc = current.find_first_of('=');
         if(loc != std::string::npos) {
@@ -50,7 +50,7 @@ CLI11_INLINE bool split_long(const std::string &current, std::string &name, std:
     return false;
 }
 
-CLI11_INLINE bool split_windows_style(const std::string &current, std::string &name, std::string &value) {
+CLI12_INLINE bool split_windows_style(const std::string &current, std::string &name, std::string &value) {
     if(current.size() > 1 && current[0] == '/' && valid_first_char(current[1])) {
         auto loc = current.find_first_of(':');
         if(loc != std::string::npos) {
@@ -65,7 +65,7 @@ CLI11_INLINE bool split_windows_style(const std::string &current, std::string &n
     return false;
 }
 
-CLI11_INLINE std::vector<std::string> split_names(std::string current) {
+CLI12_INLINE std::vector<std::string> split_names(std::string current) {
     std::vector<std::string> output;
     std::size_t val = 0;
     while((val = current.find(',')) != std::string::npos) {
@@ -76,7 +76,7 @@ CLI11_INLINE std::vector<std::string> split_names(std::string current) {
     return output;
 }
 
-CLI11_INLINE std::vector<std::pair<std::string, std::string>> get_default_flag_values(const std::string &str) {
+CLI12_INLINE std::vector<std::pair<std::string, std::string>> get_default_flag_values(const std::string &str) {
     std::vector<std::string> flags = split_names(str);
     flags.erase(std::remove_if(flags.begin(),
                                flags.end(),
@@ -102,7 +102,7 @@ CLI11_INLINE std::vector<std::pair<std::string, std::string>> get_default_flag_v
     return output;
 }
 
-CLI11_INLINE std::tuple<std::vector<std::string>, std::vector<std::string>, std::string>
+CLI12_INLINE std::tuple<std::vector<std::string>, std::vector<std::string>, std::string>
 get_names(const std::vector<std::string> &input, bool allow_non_standard) {
 
     std::vector<std::string> short_names;
@@ -153,5 +153,5 @@ get_names(const std::vector<std::string> &input, bool allow_non_standard) {
 }
 
 }  // namespace detail
-// [CLI11:split_inl_hpp:end]
+// [CLI12:split_inl_hpp:end]
 }  // namespace CLI

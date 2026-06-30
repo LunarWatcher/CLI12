@@ -11,16 +11,16 @@
 // This include is only needed for IDEs to discover symbols
 #include "../Option.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
 namespace CLI {
-// [CLI11:option_inl_hpp:verbatim]
+// [CLI12:option_inl_hpp:verbatim]
 
 template <typename CRTP> template <typename T> void OptionBase<CRTP>::copy_to(T *other) const {
     other->group(group_);
@@ -35,7 +35,7 @@ template <typename CRTP> template <typename T> void OptionBase<CRTP>::copy_to(T 
     other->callback_priority(callback_priority_);
 }
 
-CLI11_INLINE Option *Option::expected(int value) {
+CLI12_INLINE Option *Option::expected(int value) {
     if(value < 0) {
         expected_min_ = -value;
         if(expected_max_ < expected_min_) {
@@ -56,7 +56,7 @@ CLI11_INLINE Option *Option::expected(int value) {
     return this;
 }
 
-CLI11_INLINE Option *Option::expected(int value_min, int value_max) {
+CLI12_INLINE Option *Option::expected(int value_min, int value_max) {
     if(value_min < 0) {
         value_min = -value_min;
     }
@@ -75,14 +75,14 @@ CLI11_INLINE Option *Option::expected(int value_min, int value_max) {
     return this;
 }
 
-CLI11_INLINE Option *Option::check(Validator_p validator) {
+CLI12_INLINE Option *Option::check(Validator_p validator) {
     validator->non_modifying();
     validators_.push_back(std::move(validator));
 
     return this;
 }
 
-CLI11_INLINE Option *Option::check(Validator validator, const std::string &validator_name) {
+CLI12_INLINE Option *Option::check(Validator validator, const std::string &validator_name) {
     validator.non_modifying();
     auto vp = std::make_shared<Validator>(std::move(validator));
     if(!validator_name.empty()) {
@@ -93,7 +93,7 @@ CLI11_INLINE Option *Option::check(Validator validator, const std::string &valid
     return this;
 }
 
-CLI11_INLINE Option *Option::check(std::function<std::string(const std::string &)> validator_func,
+CLI12_INLINE Option *Option::check(std::function<std::string(const std::string &)> validator_func,
                                    std::string validator_description,
                                    std::string validator_name) {
 
@@ -104,13 +104,13 @@ CLI11_INLINE Option *Option::check(std::function<std::string(const std::string &
     return this;
 }
 
-CLI11_INLINE Option *Option::transform(Validator_p validator) {
+CLI12_INLINE Option *Option::transform(Validator_p validator) {
     validators_.insert(validators_.begin(), std::move(validator));
 
     return this;
 }
 
-CLI11_INLINE Option *Option::transform(Validator validator, const std::string &transform_name) {
+CLI12_INLINE Option *Option::transform(Validator validator, const std::string &transform_name) {
     auto vp = std::make_shared<Validator>(std::move(validator));
     if(!transform_name.empty()) {
         vp->name(transform_name);
@@ -119,7 +119,7 @@ CLI11_INLINE Option *Option::transform(Validator validator, const std::string &t
     return this;
 }
 
-CLI11_INLINE Option *Option::transform(const std::function<std::string(std::string)> &transform_func,
+CLI12_INLINE Option *Option::transform(const std::function<std::string(std::string)> &transform_func,
                                        std::string transform_description,
                                        std::string transform_name) {
     auto vp = std::make_shared<Validator>(
@@ -134,7 +134,7 @@ CLI11_INLINE Option *Option::transform(const std::function<std::string(std::stri
     return this;
 }
 
-CLI11_INLINE Option *Option::each(const std::function<void(std::string)> &func) {
+CLI12_INLINE Option *Option::each(const std::function<void(std::string)> &func) {
     auto vp = std::make_shared<Validator>(
         [func](std::string &inout) {
             func(inout);
@@ -145,7 +145,7 @@ CLI11_INLINE Option *Option::each(const std::function<void(std::string)> &func) 
     return this;
 }
 
-CLI11_INLINE Validator *Option::get_validator(const std::string &validator_name) {
+CLI12_INLINE Validator *Option::get_validator(const std::string &validator_name) {
     for(auto &validator : validators_) {
         if(validator_name == validator->get_name()) {
             return validator.get();
@@ -157,7 +157,7 @@ CLI11_INLINE Validator *Option::get_validator(const std::string &validator_name)
     throw OptionNotFound(std::string{"Validator "} + validator_name + " Not Found");
 }
 
-CLI11_INLINE Validator *Option::get_validator(int index) {
+CLI12_INLINE Validator *Option::get_validator(int index) {
     // This is a signed int so that it is not equivalent to a pointer.
     if(index >= 0 && index < static_cast<int>(validators_.size())) {
         return validators_[static_cast<decltype(validators_)::size_type>(index)].get();
@@ -165,7 +165,7 @@ CLI11_INLINE Validator *Option::get_validator(int index) {
     throw OptionNotFound("Validator index is not valid");
 }
 
-CLI11_INLINE bool Option::remove_needs(Option *opt) {
+CLI12_INLINE bool Option::remove_needs(Option *opt) {
     auto iterator = std::find(std::begin(needs_), std::end(needs_), opt);
 
     if(iterator == std::end(needs_)) {
@@ -175,7 +175,7 @@ CLI11_INLINE bool Option::remove_needs(Option *opt) {
     return true;
 }
 
-CLI11_INLINE Option *Option::excludes(Option *opt) {
+CLI12_INLINE Option *Option::excludes(Option *opt) {
     if(opt == this) {
         throw(IncorrectConstruction("and option cannot exclude itself"));
     }
@@ -190,7 +190,7 @@ CLI11_INLINE Option *Option::excludes(Option *opt) {
     return this;
 }
 
-CLI11_INLINE bool Option::remove_excludes(Option *opt) {
+CLI12_INLINE bool Option::remove_excludes(Option *opt) {
     auto iterator = std::find(std::begin(excludes_), std::end(excludes_), opt);
 
     if(iterator == std::end(excludes_)) {
@@ -241,7 +241,7 @@ template <typename T> Option *Option::ignore_underscore(bool value) {
     return this;
 }
 
-CLI11_INLINE Option *Option::multi_option_policy(MultiOptionPolicy value) {
+CLI12_INLINE Option *Option::multi_option_policy(MultiOptionPolicy value) {
     if(value != multi_option_policy_) {
         if(multi_option_policy_ == MultiOptionPolicy::Throw && expected_max_ == detail::expected_max_vector_size &&
            expected_min_ > 1) {  // this bizarre condition is to maintain backwards compatibility
@@ -254,7 +254,7 @@ CLI11_INLINE Option *Option::multi_option_policy(MultiOptionPolicy value) {
     return this;
 }
 
-CLI11_NODISCARD CLI11_INLINE std::string
+CLI12_NODISCARD CLI12_INLINE std::string
 Option::get_name(bool positional, bool all_options, bool disable_default_flag_values) const {
     if(get_group().empty())
         return {};  // Hidden
@@ -308,7 +308,7 @@ Option::get_name(bool positional, bool all_options, bool disable_default_flag_va
     return pname_;
 }
 
-CLI11_INLINE void Option::run_callback() {
+CLI12_INLINE void Option::run_callback() {
     bool used_default_str = false;
     if(force_callback_ && results_.empty()) {
         used_default_str = true;
@@ -341,7 +341,7 @@ CLI11_INLINE void Option::run_callback() {
     }
 }
 
-CLI11_NODISCARD CLI11_INLINE const std::string &Option::matching_name(const Option &other) const {
+CLI12_NODISCARD CLI12_INLINE const std::string &Option::matching_name(const Option &other) const {
     static const std::string estring;
     bool bothConfigurable = configurable_ && other.configurable_;
     for(const std::string &sname : snames_) {
@@ -379,7 +379,7 @@ CLI11_NODISCARD CLI11_INLINE const std::string &Option::matching_name(const Opti
     return estring;
 }
 
-CLI11_NODISCARD CLI11_INLINE bool Option::check_name(const std::string &name) const {
+CLI12_NODISCARD CLI12_INLINE bool Option::check_name(const std::string &name) const {
 
     if(name.length() > 2 && name[0] == '-' && name[1] == '-')
         return check_lname(name.substr(2));
@@ -408,7 +408,7 @@ CLI11_NODISCARD CLI11_INLINE bool Option::check_name(const std::string &name) co
     return false;
 }
 
-CLI11_NODISCARD CLI11_INLINE std::string Option::get_flag_value(const std::string &name,
+CLI12_NODISCARD CLI12_INLINE std::string Option::get_flag_value(const std::string &name,
                                                                 std::string input_value) const {
     static const std::string trueString{"true"};
     static const std::string falseString{"false"};
@@ -454,19 +454,19 @@ CLI11_NODISCARD CLI11_INLINE std::string Option::get_flag_value(const std::strin
     return input_value;
 }
 
-CLI11_INLINE Option *Option::add_result(std::string s) {
+CLI12_INLINE Option *Option::add_result(std::string s) {
     _add_result(std::move(s), results_);
     current_option_state_ = option_state::parsing;
     return this;
 }
 
-CLI11_INLINE Option *Option::add_result(std::string s, int &results_added) {
+CLI12_INLINE Option *Option::add_result(std::string s, int &results_added) {
     results_added = _add_result(std::move(s), results_);
     current_option_state_ = option_state::parsing;
     return this;
 }
 
-CLI11_INLINE Option *Option::add_result(std::vector<std::string> s) {
+CLI12_INLINE Option *Option::add_result(std::vector<std::string> s) {
     current_option_state_ = option_state::parsing;
     for(auto &str : s) {
         _add_result(std::move(str), results_);
@@ -474,7 +474,7 @@ CLI11_INLINE Option *Option::add_result(std::vector<std::string> s) {
     return this;
 }
 
-CLI11_NODISCARD CLI11_INLINE results_t Option::reduced_results() const {
+CLI12_NODISCARD CLI12_INLINE results_t Option::reduced_results() const {
     results_t res = proc_results_.empty() ? results_ : proc_results_;
     if(current_option_state_ < option_state::reduced) {
         if(current_option_state_ == option_state::parsing) {
@@ -492,7 +492,7 @@ CLI11_NODISCARD CLI11_INLINE results_t Option::reduced_results() const {
     return res;
 }
 
-CLI11_INLINE Option *Option::type_size(int option_type_size) {
+CLI12_INLINE Option *Option::type_size(int option_type_size) {
     if(option_type_size < 0) {
         // this section is included for backwards compatibility
         type_size_max_ = -option_type_size;
@@ -511,7 +511,7 @@ CLI11_INLINE Option *Option::type_size(int option_type_size) {
     return this;
 }
 
-CLI11_INLINE Option *Option::type_size(int option_type_size_min, int option_type_size_max) {
+CLI12_INLINE Option *Option::type_size(int option_type_size_min, int option_type_size_max) {
     if(option_type_size_min < 0 || option_type_size_max < 0) {
         // this section is included for backwards compatibility
         expected_max_ = detail::expected_max_vector_size;
@@ -535,7 +535,7 @@ CLI11_INLINE Option *Option::type_size(int option_type_size_min, int option_type
     return this;
 }
 
-CLI11_NODISCARD CLI11_INLINE std::string Option::get_type_name() const {
+CLI12_NODISCARD CLI12_INLINE std::string Option::get_type_name() const {
     std::string full_type_name = type_name_();
     if(!validators_.empty()) {
         for(const auto &validator : validators_) {
@@ -548,7 +548,7 @@ CLI11_NODISCARD CLI11_INLINE std::string Option::get_type_name() const {
     return full_type_name;
 }
 
-CLI11_INLINE void Option::_validate_results(results_t &res) const {
+CLI12_INLINE void Option::_validate_results(results_t &res) const {
     // Run the Validators (can change the string)
     if(!validators_.empty()) {
         if(type_size_max_ > 1) {  // in this context index refers to the index in the type
@@ -588,7 +588,7 @@ CLI11_INLINE void Option::_validate_results(results_t &res) const {
     }
 }
 
-CLI11_INLINE void Option::_reduce_results(results_t &out, const results_t &original) const {
+CLI12_INLINE void Option::_reduce_results(results_t &out, const results_t &original) const {
 
     // max num items expected or length of vector, always at least 1
     // Only valid for a trimming policy
@@ -667,7 +667,7 @@ CLI11_INLINE void Option::_reduce_results(results_t &out, const results_t &origi
     }
 }
 
-CLI11_INLINE std::string Option::_validate(std::string &result, int index) const {
+CLI12_INLINE std::string Option::_validate(std::string &result, int index) const {
     std::string err_msg;
     if(result.empty() && expected_min_ == 0) {
         // an empty with nothing expected is allowed
@@ -689,7 +689,7 @@ CLI11_INLINE std::string Option::_validate(std::string &result, int index) const
     return err_msg;
 }
 
-CLI11_INLINE int Option::_add_result(std::string &&result, std::vector<std::string> &res) const {
+CLI12_INLINE int Option::_add_result(std::string &&result, std::vector<std::string> &res) const {
     int result_count = 0;
 
     // Handle the vector escape possibility all characters duplicated and starting with [[ ending with ]]
@@ -749,5 +749,5 @@ CLI11_INLINE int Option::_add_result(std::string &&result, std::vector<std::stri
     }
     return result_count;
 }
-// [CLI11:option_inl_hpp:end]
+// [CLI12:option_inl_hpp:end]
 }  // namespace CLI

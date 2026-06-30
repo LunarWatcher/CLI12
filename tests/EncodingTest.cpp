@@ -9,9 +9,9 @@
 #include <array>
 #include <string>
 
-#if defined CLI11_HAS_FILESYSTEM && CLI11_HAS_FILESYSTEM > 0
+#if defined CLI12_HAS_FILESYSTEM && CLI12_HAS_FILESYSTEM > 0
 #include <filesystem>
-#endif  // CLI11_HAS_FILESYSTEM
+#endif  // CLI12_HAS_FILESYSTEM
 
 // "abcd"
 static const std::string abcd_str = "abcd";     // NOLINT(runtime/string)
@@ -66,9 +66,9 @@ TEST_CASE("Encoding: Widen", "[unicode]") {
     CHECK(hello_wstr == widen(hello_str.c_str()));
     CHECK(hello_wstr == widen(hello_str.c_str(), hello_str.size()));
 
-#ifdef CLI11_CPP17
+#ifdef CLI12_CPP17
     CHECK(hello_wstr == widen(std::string_view{hello_str}));
-#endif  // CLI11_CPP17
+#endif  // CLI12_CPP17
 }
 
 // #14
@@ -82,12 +82,12 @@ TEST_CASE("Encoding: Narrow", "[unicode]") {
     CHECK(hello_str == narrow(hello_wstr.c_str()));
     CHECK(hello_str == narrow(hello_wstr.c_str(), hello_wstr.size()));
 
-#ifdef CLI11_CPP17
+#ifdef CLI12_CPP17
     CHECK(hello_str == narrow(std::wstring_view{hello_wstr}));
-#endif  // CLI11_CPP17
+#endif  // CLI12_CPP17
 }
 
-#if defined CLI11_HAS_FILESYSTEM && CLI11_HAS_FILESYSTEM > 0
+#if defined CLI12_HAS_FILESYSTEM && CLI12_HAS_FILESYSTEM > 0
 // #14
 TEST_CASE("Encoding: to_path roundtrip", "[unicode]") {
     using std::filesystem::path;
@@ -101,4 +101,4 @@ TEST_CASE("Encoding: to_path roundtrip", "[unicode]") {
     CHECK(CLI::to_path(hello_str).native() == native_str);
 }
 
-#endif  // CLI11_HAS_FILESYSTEM
+#endif  // CLI12_HAS_FILESYSTEM

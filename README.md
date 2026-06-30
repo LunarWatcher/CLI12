@@ -1,6 +1,6 @@
-# CLI11: Command line parser for C++11
+# CLI12: Command line parser for C++11
 
-CLI11 is a command line parser for C++11 and beyond that provides a rich feature
+CLI12 is a command line parser for C++11 and beyond that provides a rich feature
 set with a simple and intuitive interface.
 
 This is a fork of CLI11 2.6.2 due to AI slop in later versions:
@@ -8,6 +8,8 @@ This is a fork of CLI11 2.6.2 due to AI slop in later versions:
 * https://github.com/CLIUtils/CLI11/discussions/1317
 * https://github.com/CLIUtils/CLI11/pull/1316
 * https://github.com/CLIUtils/CLI11/pull/1337
+
+And was extremely creatively (/s) renamed to CLI12 in v3.1.0.
 
 This fork is considered feature-complete for now, though a fair bit of code has been removed to make it easier to maintain.
 
@@ -17,8 +19,8 @@ The fork starts at v3.0.0, though aside removing a lot of stuff, nothing interna
 
 Use FetchContent:
 ```cmake
-FetchContent_Declare(cli11
-    GIT_REPOSITORY https://codeberg.org/LunarWatcher/CLI11
+FetchContent_Declare(cli12
+    GIT_REPOSITORY https://codeberg.org/LunarWatcher/CLI12
     GIT_TAG v3.0.0
     EXCLUDE_FROM_ALL
 )
@@ -39,7 +41,7 @@ int main(int argc, char** argv) {
     std::string filename = "default";
     app.add_option("-f,--file", filename, "A help string");
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
     return 0;
 }
 ```
@@ -167,8 +169,8 @@ template to directly specify the conversion type.
 
 Types such as (std or boost) `optional<int>`, `optional<double>`, and
 `optional<string>` and any other wrapper types are supported directly. For
-purposes of CLI11 wrapper types are those which `value_type` definition. See
-[CLI11 Advanced Topics/Custom Converters][] for information on how you can add
+purposes of CLI12 wrapper types are those which `value_type` definition. See
+[CLI12 Advanced Topics/Custom Converters][] for information on how you can add
 your own converters for additional types.
 
 Vector types can also be used in the two parameter template overload
@@ -430,12 +432,12 @@ are added through the `check` or `transform` functions. The differences between
 the two function are that checks do not modify the input whereas transforms can
 and are executed before any Validators added through `check`.
 
-CLI11 has several Validators included that perform some common checks. By
+CLI12 has several Validators included that perform some common checks. By
 default the most commonly used ones are available. 🆕 If some are not needed
 they can be disabled by using
 
 ```c++
-#define CLI11_DISABLE_EXTRA_VALIDATORS 1
+#define CLI12_DISABLE_EXTRA_VALIDATORS 1
 ```
 
 #### Default Validators
@@ -459,10 +461,10 @@ of flags.
 
 #### Validators that may be disabled 🆕
 
-Validators that may be disabled by setting `CLI11_DISABLE_EXTRA_VALIDATORS` to 1
-or enabled by setting `CLI11_ENABLE_EXTRA_VALIDATORS` to 1. By default they are
+Validators that may be disabled by setting `CLI12_DISABLE_EXTRA_VALIDATORS` to 1
+or enabled by setting `CLI12_ENABLE_EXTRA_VALIDATORS` to 1. By default they are
 enabled. In version 3.0 these will likely move to be disabled by default and be
-controlled solely by the `CLI11_ENABLE_EXTRA_VALIDATORS` option. These
+controlled solely by the `CLI12_ENABLE_EXTRA_VALIDATORS` option. These
 validators are less commonly used or are template heavy and require additional
 computation time that may not be valuable for some use cases.
 
@@ -495,7 +497,7 @@ computation time that may not be valuable for some use cases.
 #### Extra Validators 🆕
 
 New validators will go into code sections that must be explicitly enabled by
-setting `CLI11_ENABLE_EXTRA_VALIDATORS` to 1
+setting `CLI12_ENABLE_EXTRA_VALIDATORS` to 1
 
 - `CLI::ReadPermission`: Requires that the file or folder given exist and have
   read permission. Requires C++17.
@@ -615,7 +617,7 @@ filters on the key values is performed.
   [TOML strings](https://toml.io/en/v1.0.0#string). With 2 notable exceptions.
   \` can also be used as a literal string notation, and it also allows binary
   string notation see
-  [binary strings](https://cliutils.github.io/CLI11/book/chapters/config.html).
+  binary strings [TODO: redo docs].
   The escaped string processing will remove outer quotes if present, `"` will
   indicate a string with potential escape sequences, `'` and \` will indicate a
   literal string and the quotes removed but no escape sequences will be
@@ -673,7 +675,7 @@ CLI::Validator(validator_description);
 It is also possible to create a subclass of `CLI::Validator`, in which case it
 can also set a custom description function, and operation function. One example
 of this is in the
-[custom validator example](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/custom_validator.cpp).
+[custom validator example](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/custom_validator.cpp).
 example. The `check` and `transform` operations can also take a shared_ptr 🆕 to
 a validator if you wish to reuse the validator in multiple locations or it is
 mutating and the check is dependent on other operations or is variable. Note
@@ -732,7 +734,7 @@ not used in performance critical code:
   non-vector to get the result according to the MultiOptionPolicy in place. If
   it is expected that the results will be needed as a vector, it is suggested
   that `->expected(CLI::details::expected_max_vector_size)` or
-  `allow_extra_args()` be used on the option to inform CLI11 that vector args
+  `allow_extra_args()` be used on the option to inform CLI12 that vector args
   are expected and allowed.
 
 ### Subcommands
@@ -740,7 +742,7 @@ not used in performance critical code:
 Subcommands are keywords that invoke a new set of options and features. For
 example, the `git` command has a long series of subcommands, like `add` and
 `commit`. Each can have its own options and implementations. Subcommands are
-supported in CLI11, and can be nested infinitely. To add a subcommand, call the
+supported in CLI12, and can be nested infinitely. To add a subcommand, call the
 `add_subcommand` method with a name and an optional description. This gives a
 pointer to an `App` that behaves just like the main app, and can take options or
 further subcommands. Add `->ignore_case()` to a subcommand to allow any
@@ -1098,7 +1100,7 @@ Will create an option group, and return a pointer to it. The argument for
 a collection of options, similar to the groups function on options, but with
 additional controls and requirements. They allow specific sets of options to be
 composed and controlled as a collective. For an example see
-[range example](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/ranges.cpp).
+[range example](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/ranges.cpp).
 Option groups are a specialization of an App so all
 [functions](#subcommand-options) that work with an App or subcommand also work
 on option groups. Options can be created as part of an option group using the
@@ -1209,7 +1211,7 @@ file will be read if it exists, and does not throw an error unless `required` is
 default reader can also accept files in INI format as well. The config reader
 can read most aspects of TOML files including strings both literal and with
 potential escape sequences, digit separators, and multi-line strings, and run
-them through the CLI11 parser. Other formats can be added by an adept user, some
+them through the CLI12 parser. Other formats can be added by an adept user, some
 variations are available through customization points in the default formatter.
 An example of a TOML file:
 
@@ -1264,7 +1266,7 @@ To print a configuration file from the passed arguments, use
 `.config_to_str(default_also=false, write_description=false)`, where
 `default_also` will also show any defaulted arguments, and `write_description`
 will include the app and option descriptions. See
-[Config files](https://cliutils.github.io/CLI11/book/chapters/config.html) for
+Config files [TODO: redo docs] for
 some additional details and customization points.
 
 If it is desired that multiple configuration be allowed. Use
@@ -1322,7 +1324,7 @@ The default settings for options are inherited to subcommands, as well.
 
 The job of formatting help printouts is delegated to a formatter object. You are
 free to replace the formatter with a custom one by calling `formatter(fmt)` on
-an `App`. CLI11 comes with a default App formatter, `Formatter`. You can
+an `App`. CLI12 comes with a default App formatter, `Formatter`. You can
 retrieve the formatter via `.get_formatter()` this will return a pointer to the
 current `Formatter`. It is customizable; you can set `label(key, value)` to
 replace the default labels like `REQUIRED`, and `OPTIONS`. You can also set
@@ -1390,7 +1392,7 @@ app.add_option("--fancy-count", [](std::vector<std::string> val){
 
 ### Unicode support
 
-CLI11 supports Unicode and wide strings as defined in the
+CLI12 supports Unicode and wide strings as defined in the
 [UTF-8 Everywhere](http://utf8everywhere.org/) manifesto. In particular:
 
 - The library can parse a wide version of command-line arguments on Windows,
@@ -1418,7 +1420,7 @@ int main(int argc, char** argv) {
     CLI::App app;
     argv = app.ensure_utf8(argv);  // new argv memory is held by app
     // ...
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 }
 ```
 
@@ -1436,7 +1438,7 @@ convert wide strings to UTF-8 without losing information.
 int wmain(int argc, wchar_t *argv[]) {
     CLI::App app;
     // ...
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 }
 ```
 
@@ -1467,7 +1469,7 @@ namespace CLI {
 #### Note on using Unicode paths
 
 When creating a `filesystem::path` from a UTF-8 path on Windows, you need to
-convert it to a wide string first. CLI11 provides a platform-independent
+convert it to a wide string first. CLI12 provides a platform-independent
 `to_path` function, which will convert a UTF-8 string to path, the right way:
 
 ```cpp
@@ -1481,7 +1483,7 @@ std::ifstream stream(CLI::to_path(utf8_name));
 ### Utilities
 
 There are a few other utilities that are often useful in CLI programming. These
-are in separate headers, and do not appear in `CLI11.hpp`, but are completely
+are in separate headers, and do not appear in `CLI12.hpp`, but are completely
 independent and can be used as needed. The `Timer`/`AutoTimer` class allows you
 to easily time a block of code, with custom print output.
 
@@ -1503,7 +1505,7 @@ formatted string for printing.
 ### Other libraries
 
 If you use the Rang library to add color to your terminal in a
-safe, multi-platform way, you can combine it with CLI11 nicely:
+safe, multi-platform way, you can combine it with CLI12 nicely:
 
 ```cpp
 std::atexit([](){std::cout << rang::style::reset;});
@@ -1546,72 +1548,72 @@ And, in your main function:
 Several short examples of different features are included in the repository. A
 brief description of each is included here
 
-- [arg_capture](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/arg_capture.cpp):
+- [arg_capture](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/arg_capture.cpp):
   Example of capturing all remaining arguments after a specific option, using
   subcommand and prefix_command() with an alias.
-- [callback_passthrough](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/callback_passthrough.cpp):
+- [callback_passthrough](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/callback_passthrough.cpp):
   Example of directly passing remaining arguments through to a callback function
-  which generates a CLI11 application based on existing arguments.
-- [custom_parse](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/custom_parse.cpp):
-  Based on [Issue #566](https://codeberg.org/LunarWatcher/CLI11/issues/566), example
+  which generates a CLI12 application based on existing arguments.
+- [custom_parse](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/custom_parse.cpp):
+  Based on [Issue #566](https://codeberg.org/LunarWatcher/CLI12/issues/566), example
   of custom parser
-- [digit_args](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/digit_args.cpp):
-  Based on [Issue #123](https://codeberg.org/LunarWatcher/CLI11/issues/123), uses
+- [digit_args](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/digit_args.cpp):
+  Based on [Issue #123](https://codeberg.org/LunarWatcher/CLI12/issues/123), uses
   digit flags to pass a value
-- [enum](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/enum.cpp): Using
+- [enum](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/enum.cpp): Using
   enumerations in an option, and the use of
   [CheckedTransformer](#transforming-validators)
-- [enum_ostream](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/enum_ostream.cpp):
+- [enum_ostream](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/enum_ostream.cpp):
   In addition to the contents of example enum.cpp, this example shows how a
-  custom ostream operator overrides CLI11's enum streaming.
-- [formatter](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/formatter.cpp):
+  custom ostream operator overrides CLI12's enum streaming.
+- [formatter](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/formatter.cpp):
   Illustrating usage of a custom formatter
-- [groups](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/groups.cpp):
+- [groups](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/groups.cpp):
   Example using groups of options for help grouping and a timer helper class
-- [inter_argument_order](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/inter_argument_order.cpp):
+- [inter_argument_order](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/inter_argument_order.cpp):
   An app to practice mixing unlimited arguments, but still recover the original
   order.
-- [json](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/json.cpp): Using
+- [json](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/json.cpp): Using
   JSON as a config file parser
-- [modhelp](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/modhelp.cpp):
+- [modhelp](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/modhelp.cpp):
   How to modify the help flag to do something other than default
-- [nested](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/nested.cpp):
+- [nested](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/nested.cpp):
   Nested subcommands
-- [option_groups](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/option_groups.cpp):
+- [option_groups](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/option_groups.cpp):
   Illustrating the use of option groups and a required number of options. Based
-  on [Issue #88](https://codeberg.org/LunarWatcher/CLI11/issues/88) to set interacting
+  on [Issue #88](https://codeberg.org/LunarWatcher/CLI12/issues/88) to set interacting
   groups of options
-- [positional_arity](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/positional_arity.cpp):
+- [positional_arity](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/positional_arity.cpp):
   Illustrating use of `preparse_callback` to handle situations where the number
   of arguments can determine which should get parsed, Based on
-  [Issue #166](https://codeberg.org/LunarWatcher/CLI11/issues/166)
-- [positional_validation](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/positional_validation.cpp):
+  [Issue #166](https://codeberg.org/LunarWatcher/CLI12/issues/166)
+- [positional_validation](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/positional_validation.cpp):
   Example of how positional arguments are validated using the
   `validate_positional` flag, also based on
-  [Issue #166](https://codeberg.org/LunarWatcher/CLI11/issues/166)
-- [prefix_command](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/prefix_command.cpp):
+  [Issue #166](https://codeberg.org/LunarWatcher/CLI12/issues/166)
+- [prefix_command](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/prefix_command.cpp):
   Illustrating use of the `prefix_command` flag.
-- [ranges](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/ranges.cpp): App
+- [ranges](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/ranges.cpp): App
   to demonstrate exclusionary option groups based on
-  [Issue #88](https://codeberg.org/LunarWatcher/CLI11/issues/88)
-- [shapes](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/shapes.cpp):
+  [Issue #88](https://codeberg.org/LunarWatcher/CLI12/issues/88)
+- [shapes](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/shapes.cpp):
   Illustrating how to set up repeated subcommands Based on
-  [gitter discussion](https://gitter.im/CLI11gitter/Lobby?at=5c7af6b965ffa019ea788cd5)
-- [simple](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/simple.cpp): A
-  simple example of how to set up a CLI11 Application with different flags and
+  [gitter discussion](https://gitter.im/CLI12gitter/Lobby?at=5c7af6b965ffa019ea788cd5)
+- [simple](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/simple.cpp): A
+  simple example of how to set up a CLI12 Application with different flags and
   options
-- [subcom_help](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/subcom_help.cpp):
+- [subcom_help](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/subcom_help.cpp):
   Configuring help for subcommands
-- [subcom_partitioned](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/subcom_partitioned.cpp):
+- [subcom_partitioned](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/subcom_partitioned.cpp):
   Example with a timer and subcommands generated separately and added to the
   main app later.
-- [subcommands](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/subcommands.cpp):
+- [subcommands](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/subcommands.cpp):
   Short example of subcommands
-- [validators](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/validators.cpp):
+- [validators](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/validators.cpp):
   Example illustrating use of validators
-- [custom validators](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/custom_validator.cpp):
+- [custom validators](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/custom_validator.cpp):
   Example illustrating use of validators
-- [date validators](https://codeberg.org/LunarWatcher/CLI11/blob/main/examples/date_validator.cpp):
+- [date validators](https://codeberg.org/LunarWatcher/CLI12/blob/main/examples/date_validator.cpp):
   Example illustrating use of validators
 
 ## License
@@ -1619,8 +1621,8 @@ brief description of each is included here
 As of version 1.0, this library is available under a 3-Clause BSD license. See
 the [LICENSE](./LICENSE) file for details.
 
-[github releases]: https://codeberg.org/LunarWatcher/CLI11/releases
-[github issues]: https://codeberg.org/LunarWatcher/CLI11/issues
-[github pull requests]: https://codeberg.org/LunarWatcher/CLI11/pulls
+[github releases]: https://codeberg.org/LunarWatcher/CLI12/releases
+[github issues]: https://codeberg.org/LunarWatcher/CLI12/issues
+[github pull requests]: https://codeberg.org/LunarWatcher/CLI12/pulls
 [standard readme style]: https://github.com/RichardLitt/standard-readme
 [argparse]: https://github.com/p-ranav/argparse

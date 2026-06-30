@@ -8,7 +8,7 @@
 
 // IWYU pragma: private, include "CLI/CLI.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
@@ -19,13 +19,13 @@
 #include <type_traits>
 #include <utility>
 #include <vector>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
 #include "Encoding.hpp"
 #include "StringTools.hpp"
 
 namespace CLI {
-// [CLI11:type_tools_hpp:verbatim]
+// [CLI12:type_tools_hpp:verbatim]
 
 // Type tools
 
@@ -36,7 +36,7 @@ namespace detail {
 enum class enabler : std::uint8_t {};
 
 /// An instance to use in EnableIf
-CLI11_MODULE_INLINE constexpr enabler dummy = {};
+CLI12_MODULE_INLINE constexpr enabler dummy = {};
 }  // namespace detail
 
 /// A copy of enable_if_t from C++14, compatible with C++11.
@@ -1865,5 +1865,5 @@ inline std::string sum_string_vector(const std::vector<std::string> &values) {
 }
 
 }  // namespace detail
-// [CLI11:type_tools_hpp:end]
+// [CLI12:type_tools_hpp:end]
 }  // namespace CLI

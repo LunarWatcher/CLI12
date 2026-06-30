@@ -8,11 +8,11 @@
 
 // IWYU pragma: private, include "CLI/CLI.hpp"
 
-// [CLI11:version_hpp:verbatim]
+// [CLI12:version_hpp:verbatim]
 
-#define CLI11_VERSION_MAJOR 2
-#define CLI11_VERSION_MINOR 6
-#define CLI11_VERSION_PATCH 2
-#define CLI11_VERSION "2.6.2"
+#define CLI12_VERSION_MAJOR 2
+#define CLI12_VERSION_MINOR 6
+#define CLI12_VERSION_PATCH 2
+#define CLI12_VERSION "2.6.2"
 
-// [CLI11:version_hpp:end]
+// [CLI12:version_hpp:end]

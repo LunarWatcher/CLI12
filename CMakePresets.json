@@ -13,7 +13,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_EXPORT_COMPILE_COMMANDS": true,
-        "CLI11_WARNINGS_AS_ERRORS": true,
+        "CLI12_WARNINGS_AS_ERRORS": true,
         "CMAKE_COLOR_DIAGNOSTICS": true
       }
     },

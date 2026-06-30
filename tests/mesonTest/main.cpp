@@ -13,6 +13,6 @@ int main(int argc, char **argv) {
     std::string filename = "default";
     app.add_option("-f,--file", filename, "A help string");
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
     return 0;
 }

@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
-#ifdef CLI11_SINGLE_FILE
-#include "CLI11.hpp"
+#ifdef CLI12_SINGLE_FILE
+#include "CLI12.hpp"
 #else
 #include "CLI/CLI.hpp"
 #endif

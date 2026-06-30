@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
 
     app.require_option(1);
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     if(!range.empty()) {
         if(range.size() == 2) {

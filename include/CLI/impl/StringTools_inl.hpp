@@ -11,18 +11,18 @@
 // This include is only needed for IDEs to discover symbols
 #include "../StringTools.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <cstdint>
 #include <string>
 #include <utility>
 #include <vector>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
 namespace CLI {
-// [CLI11:string_tools_inl_hpp:verbatim]
+// [CLI12:string_tools_inl_hpp:verbatim]
 
 namespace detail {
-CLI11_INLINE std::vector<std::string> split(const std::string &s, char delim) {
+CLI12_INLINE std::vector<std::string> split(const std::string &s, char delim) {
     std::vector<std::string> elems;
     // Check to see if empty string, give consistent result
     if(s.empty()) {
@@ -38,32 +38,32 @@ CLI11_INLINE std::vector<std::string> split(const std::string &s, char delim) {
     return elems;
 }
 
-CLI11_INLINE std::string &ltrim(std::string &str) {
+CLI12_INLINE std::string &ltrim(std::string &str) {
     auto it = std::find_if(str.begin(), str.end(), [](char ch) { return !std::isspace<char>(ch, std::locale()); });
     str.erase(str.begin(), it);
     return str;
 }
 
-CLI11_INLINE std::string &ltrim(std::string &str, const std::string &filter) {
+CLI12_INLINE std::string &ltrim(std::string &str, const std::string &filter) {
     auto it = std::find_if(str.begin(), str.end(), [&filter](char ch) { return filter.find(ch) == std::string::npos; });
     str.erase(str.begin(), it);
     return str;
 }
 
-CLI11_INLINE std::string &rtrim(std::string &str) {
+CLI12_INLINE std::string &rtrim(std::string &str) {
     auto it = std::find_if(str.rbegin(), str.rend(), [](char ch) { return !std::isspace<char>(ch, std::locale()); });
     str.erase(it.base(), str.end());
     return str;
 }
 
-CLI11_INLINE std::string &rtrim(std::string &str, const std::string &filter) {
+CLI12_INLINE std::string &rtrim(std::string &str, const std::string &filter) {
     auto it =
         std::find_if(str.rbegin(), str.rend(), [&filter](char ch) { return filter.find(ch) == std::string::npos; });
     str.erase(it.base(), str.end());
     return str;
 }
 
-CLI11_INLINE std::string &remove_quotes(std::string &str) {
+CLI12_INLINE std::string &remove_quotes(std::string &str) {
     if(str.length() > 1 && (str.front() == '"' || str.front() == '\'' || str.front() == '`')) {
         if(str.front() == str.back()) {
             str.pop_back();
@@ -73,7 +73,7 @@ CLI11_INLINE std::string &remove_quotes(std::string &str) {
     return str;
 }
 
-CLI11_INLINE std::string &remove_outer(std::string &str, char key) {
+CLI12_INLINE std::string &remove_outer(std::string &str, char key) {
     if(str.length() > 1 && (str.front() == key)) {
         if(str.front() == str.back()) {
             str.pop_back();
@@ -83,7 +83,7 @@ CLI11_INLINE std::string &remove_outer(std::string &str, char key) {
     return str;
 }
 
-CLI11_INLINE std::string fix_newlines(const std::string &leader, std::string input) {
+CLI12_INLINE std::string fix_newlines(const std::string &leader, std::string input) {
     std::string::size_type n = 0;
     while(n != std::string::npos && n < input.size()) {
         n = input.find_first_of("\r\n", n);
@@ -95,7 +95,7 @@ CLI11_INLINE std::string fix_newlines(const std::string &leader, std::string inp
     return input;
 }
 
-CLI11_INLINE std::ostream &format_aliases(std::ostream &out, const std::vector<std::string> &aliases, std::size_t wid) {
+CLI12_INLINE std::ostream &format_aliases(std::ostream &out, const std::vector<std::string> &aliases, std::size_t wid) {
     if(!aliases.empty()) {
         out << std::setw(static_cast<int>(wid)) << "     aliases: ";
         bool front = true;
@@ -112,7 +112,7 @@ CLI11_INLINE std::ostream &format_aliases(std::ostream &out, const std::vector<s
     return out;
 }
 
-CLI11_INLINE bool valid_name_string(const std::string &str) {
+CLI12_INLINE bool valid_name_string(const std::string &str) {
     if(str.empty() || !valid_first_char(str[0])) {
         return false;
     }
@@ -123,16 +123,16 @@ CLI11_INLINE bool valid_name_string(const std::string &str) {
     return true;
 }
 
-CLI11_INLINE std::string get_group_separators() {
+CLI12_INLINE std::string get_group_separators() {
     std::string separators{"_'"};
-#if CLI11_HAS_RTTI != 0
+#if CLI12_HAS_RTTI != 0
     char group_separator = std::use_facet<std::numpunct<char>>(std::locale()).thousands_sep();
     separators.push_back(group_separator);
 #endif
     return separators;
 }
 
-CLI11_INLINE std::string find_and_replace(std::string str, std::string from, std::string to) {
+CLI12_INLINE std::string find_and_replace(std::string str, std::string from, std::string to) {
 
     std::size_t start_pos = 0;
 
@@ -144,7 +144,7 @@ CLI11_INLINE std::string find_and_replace(std::string str, std::string from, std
     return str;
 }
 
-CLI11_INLINE void remove_default_flag_values(std::string &flags) {
+CLI12_INLINE void remove_default_flag_values(std::string &flags) {
     auto loc = flags.find_first_of('{', 2);
     while(loc != std::string::npos) {
         auto finish = flags.find_first_of("},", loc + 1);
@@ -157,7 +157,7 @@ CLI11_INLINE void remove_default_flag_values(std::string &flags) {
     flags.erase(std::remove(flags.begin(), flags.end(), '!'), flags.end());
 }
 
-CLI11_INLINE std::ptrdiff_t
+CLI12_INLINE std::ptrdiff_t
 find_member(std::string name, const std::vector<std::string> names, bool ignore_case, bool ignore_underscore) {
     auto it = std::end(names);
     if(ignore_case) {
@@ -185,16 +185,16 @@ find_member(std::string name, const std::vector<std::string> names, bool ignore_
     return (it != std::end(names)) ? (it - std::begin(names)) : (-1);
 }
 
-CLI11_MODULE_INLINE const std::string &escapedChars("\b\t\n\f\r\"\\");
-CLI11_MODULE_INLINE const std::string &escapedCharsCode("btnfr\"\\");
-CLI11_MODULE_INLINE const std::string &bracketChars("\"'`[(<{");
-CLI11_MODULE_INLINE const std::string &matchBracketChars("\"'`])>}");
+CLI12_MODULE_INLINE const std::string &escapedChars("\b\t\n\f\r\"\\");
+CLI12_MODULE_INLINE const std::string &escapedCharsCode("btnfr\"\\");
+CLI12_MODULE_INLINE const std::string &bracketChars("\"'`[(<{");
+CLI12_MODULE_INLINE const std::string &matchBracketChars("\"'`])>}");
 
-CLI11_INLINE bool has_escapable_character(const std::string &str) {
+CLI12_INLINE bool has_escapable_character(const std::string &str) {
     return (str.find_first_of(escapedChars) != std::string::npos);
 }
 
-CLI11_INLINE std::string add_escaped_characters(const std::string &str) {
+CLI12_INLINE std::string add_escaped_characters(const std::string &str) {
     std::string out;
     out.reserve(str.size() + 4);
     for(char s : str) {
@@ -209,7 +209,7 @@ CLI11_INLINE std::string add_escaped_characters(const std::string &str) {
     return out;
 }
 
-CLI11_INLINE std::uint32_t hexConvert(char hc) {
+CLI12_INLINE std::uint32_t hexConvert(char hc) {
     int hcode{0};
     if(hc >= '0' && hc <= '9') {
         hcode = (hc - '0');
@@ -223,9 +223,9 @@ CLI11_INLINE std::uint32_t hexConvert(char hc) {
     return static_cast<uint32_t>(hcode);
 }
 
-CLI11_INLINE char make_char(std::uint32_t code) { return static_cast<char>(static_cast<unsigned char>(code)); }
+CLI12_INLINE char make_char(std::uint32_t code) { return static_cast<char>(static_cast<unsigned char>(code)); }
 
-CLI11_INLINE void append_codepoint(std::string &str, std::uint32_t code) {
+CLI12_INLINE void append_codepoint(std::string &str, std::uint32_t code) {
     if(code < 0x80) {  // ascii code equivalent
         str.push_back(static_cast<char>(code));
     } else if(code < 0x800) {  // \u0080 to \u07FF
@@ -249,7 +249,7 @@ CLI11_INLINE void append_codepoint(std::string &str, std::uint32_t code) {
     }
 }
 
-CLI11_INLINE std::string remove_escaped_characters(const std::string &str) {
+CLI12_INLINE std::string remove_escaped_characters(const std::string &str) {
 
     std::string out;
     out.reserve(str.size());
@@ -309,7 +309,7 @@ CLI11_INLINE std::string remove_escaped_characters(const std::string &str) {
     return out;
 }
 
-CLI11_INLINE std::size_t close_string_quote(const std::string &str, std::size_t start, char closure_char) {
+CLI12_INLINE std::size_t close_string_quote(const std::string &str, std::size_t start, char closure_char) {
     std::size_t loc{0};
     for(loc = start + 1; loc < str.size(); ++loc) {
         if(str[loc] == closure_char) {
@@ -323,12 +323,12 @@ CLI11_INLINE std::size_t close_string_quote(const std::string &str, std::size_t 
     return loc;
 }
 
-CLI11_INLINE std::size_t close_literal_quote(const std::string &str, std::size_t start, char closure_char) {
+CLI12_INLINE std::size_t close_literal_quote(const std::string &str, std::size_t start, char closure_char) {
     auto loc = str.find_first_of(closure_char, start + 1);
     return (loc != std::string::npos ? loc : str.size());
 }
 
-CLI11_INLINE std::size_t close_sequence(const std::string &str, std::size_t start, char closure_char) {
+CLI12_INLINE std::size_t close_sequence(const std::string &str, std::size_t start, char closure_char) {
 
     auto bracket_loc = matchBracketChars.find(closure_char);
     switch(bracket_loc) {
@@ -379,7 +379,7 @@ CLI11_INLINE std::size_t close_sequence(const std::string &str, std::size_t star
     return loc;
 }
 
-CLI11_INLINE std::vector<std::string> split_up(std::string str, char delimiter) {
+CLI12_INLINE std::vector<std::string> split_up(std::string str, char delimiter) {
 
     auto find_ws = [delimiter](char ch) {
         return (delimiter == '\0') ? std::isspace<char>(ch, std::locale()) : (ch == delimiter);
@@ -419,7 +419,7 @@ CLI11_INLINE std::vector<std::string> split_up(std::string str, char delimiter) 
     return output;
 }
 
-CLI11_INLINE std::size_t escape_detect(std::string &str, std::size_t offset) {
+CLI12_INLINE std::size_t escape_detect(std::string &str, std::size_t offset) {
     auto next = str[offset + 1];
     if((next == '\"') || (next == '\'') || (next == '`')) {
         auto astart = str.find_last_of("-/ \"\'`", offset - 1);
@@ -431,7 +431,7 @@ CLI11_INLINE std::size_t escape_detect(std::string &str, std::size_t offset) {
     return offset + 1;
 }
 
-CLI11_INLINE std::string binary_escape_string(const std::string &string_to_escape, bool force) {
+CLI12_INLINE std::string binary_escape_string(const std::string &string_to_escape, bool force) {
     // s is our escaped output string
     std::string escaped_string{};
     // loop through all characters
@@ -473,7 +473,7 @@ CLI11_INLINE std::string binary_escape_string(const std::string &string_to_escap
     return escaped_string;
 }
 
-CLI11_INLINE bool is_binary_escaped_string(const std::string &escaped_string) {
+CLI12_INLINE bool is_binary_escaped_string(const std::string &escaped_string) {
     size_t ssize = escaped_string.size();
     if(escaped_string.compare(0, 3, "B\"(") == 0 && escaped_string.compare(ssize - 2, 2, ")\"") == 0) {
         return true;
@@ -481,7 +481,7 @@ CLI11_INLINE bool is_binary_escaped_string(const std::string &escaped_string) {
     return (escaped_string.compare(0, 4, "'B\"(") == 0 && escaped_string.compare(ssize - 3, 3, ")\"'") == 0);
 }
 
-CLI11_INLINE std::string extract_binary_string(const std::string &escaped_string) {
+CLI12_INLINE std::string extract_binary_string(const std::string &escaped_string) {
     std::size_t start{0};
     std::size_t tail{0};
     size_t ssize = escaped_string.size();
@@ -520,7 +520,7 @@ CLI11_INLINE std::string extract_binary_string(const std::string &escaped_string
     return outstring;
 }
 
-CLI11_INLINE void remove_quotes(std::vector<std::string> &args) {
+CLI12_INLINE void remove_quotes(std::vector<std::string> &args) {
     for(auto &arg : args) {
         if(arg.front() == '\"' && arg.back() == '\"') {
             remove_quotes(arg);
@@ -532,7 +532,7 @@ CLI11_INLINE void remove_quotes(std::vector<std::string> &args) {
     }
 }
 
-CLI11_INLINE void handle_secondary_array(std::string &str) {
+CLI12_INLINE void handle_secondary_array(std::string &str) {
     if(str.size() >= 2 && str.front() == '[' && str.back() == ']') {
         // handle some special array processing for arguments if it might be interpreted as a secondary array
         std::string tstr{"[["};
@@ -544,7 +544,7 @@ CLI11_INLINE void handle_secondary_array(std::string &str) {
     }
 }
 
-CLI11_INLINE bool
+CLI12_INLINE bool
 process_quoted_string(std::string &str, char string_char, char literal_char, bool disable_secondary_array_processing) {
     if(str.size() <= 1) {
         return false;
@@ -597,7 +597,7 @@ std::string get_environment_value(const std::string &env_name) {
     return ename_string;
 }
 
-CLI11_INLINE std::ostream &streamOutAsParagraph(std::ostream &out,
+CLI12_INLINE std::ostream &streamOutAsParagraph(std::ostream &out,
                                                 const std::string &text,
                                                 std::size_t paragraphWidth,
                                                 const std::string &linePrefix,
@@ -633,5 +633,5 @@ CLI11_INLINE std::ostream &streamOutAsParagraph(std::ostream &out,
 }
 
 }  // namespace detail
-// [CLI11:string_tools_inl_hpp:end]
+// [CLI12:string_tools_inl_hpp:end]
 }  // namespace CLI

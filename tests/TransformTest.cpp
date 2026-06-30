@@ -18,17 +18,17 @@
 #include <utility>
 #include <vector>
 
-#if defined(CLI11_CPP17)
+#if defined(CLI12_CPP17)
 #if defined(__has_include)
 #if __has_include(<string_view>)
 #include <string_view>
-#define CLI11_HAS_STRING_VIEW
+#define CLI12_HAS_STRING_VIEW
 #endif
 #endif
 #endif
 
-#if (defined(CLI11_ENABLE_EXTRA_VALIDATORS) && CLI11_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
-    (!defined(CLI11_DISABLE_EXTRA_VALIDATORS) || CLI11_DISABLE_EXTRA_VALIDATORS == 0)
+#if (defined(CLI12_ENABLE_EXTRA_VALIDATORS) && CLI12_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
+    (!defined(CLI12_DISABLE_EXTRA_VALIDATORS) || CLI12_DISABLE_EXTRA_VALIDATORS == 0)
 
 TEST_CASE_METHOD(TApp, "SimpleTransform", "[transform]") {
     int value{0};
@@ -207,7 +207,7 @@ TEST_CASE_METHOD(TApp, "streamTransformCheck", "[transform]") {
     CHECK_NOTHROW(app.parse(""));  // Should use default
 }
 
-#if defined(CLI11_HAS_STRING_VIEW)
+#if defined(CLI12_HAS_STRING_VIEW)
 TEST_CASE_METHOD(TApp, "StringViewTransformFn", "[transform]") {
     std::string value;
     std::map<std::string_view, std::string_view> map = {// key length > std::string().capacity() [SSO length]
@@ -257,7 +257,7 @@ TEST_CASE_METHOD(TApp, "SimpleNumericalTransformFnArray", "[transform]") {
     CHECK(1 == value);
 }
 
-#ifdef CLI11_CPP14
+#ifdef CLI12_CPP14
 // zero copy constexpr array operation with transformer example and test
 TEST_CASE_METHOD(TApp, "SimpleNumericalTransformFnconstexprArray", "[transform]") {
     constexpr std::pair<const char *, int> p1{"one", 1};

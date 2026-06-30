@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
     auto *sub2 = app.add_subcommand("two", "Description Two");
     sub2->add_flag("--twoflag", "Some other flag");
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     std::cout << "This app was meant to show off the formatter, run with -h" << '\n';
 

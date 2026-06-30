@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     // deprecate an existing option and specify the recommended replacement
     CLI::deprecate_option(opt2, "--not_deprecated");
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     if(!x.empty()) {
         std::cout << "Retired option example: got --not_deprecated values:";

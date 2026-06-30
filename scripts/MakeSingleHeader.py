@@ -137,12 +137,12 @@ if __name__ == "__main__":
     parser.add_argument("--output", default=None, help="Single header file output")
     parser.add_argument(
         "--main",
-        default="single-include/CLI11.hpp.in",
+        default="single-include/CLI12.hpp.in",
         help="The main include file that defines the other files",
     )
     parser.add_argument("files", nargs="+", help="The header files")
     parser.add_argument("--namespace", default="CLI", help="Set the namespace")
-    parser.add_argument("--tag", default="CLI11", help="Tag to look up")
+    parser.add_argument("--tag", default="CLI12", help="Tag to look up")
     parser.add_argument(
         "--macro", nargs=2, help="Replaces OLD_PREFIX_ with NEW_PREFIX_"
     )

@@ -5,8 +5,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 #pragma once
-#if (defined(CLI11_ENABLE_EXTRA_VALIDATORS) && CLI11_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
-    (!defined(CLI11_DISABLE_EXTRA_VALIDATORS) || CLI11_DISABLE_EXTRA_VALIDATORS == 0)
+#if (defined(CLI12_ENABLE_EXTRA_VALIDATORS) && CLI12_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
+    (!defined(CLI12_DISABLE_EXTRA_VALIDATORS) || CLI12_DISABLE_EXTRA_VALIDATORS == 0)
 // IWYU pragma: private, include "CLI/CLI.hpp"
 
 #include "Error.hpp"
@@ -14,7 +14,7 @@
 #include "StringTools.hpp"
 #include "Validators.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <cmath>
 #include <cstdint>
 #include <functional>
@@ -25,10 +25,10 @@
 #include <string>
 #include <utility>
 #include <vector>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
 namespace CLI {
-// [CLI11:extra_validators_hpp:verbatim]
+// [CLI12:extra_validators_hpp:verbatim]
 // The implementation of the extra validators is using the Validator class;
 // the user is only expected to use the const (static) versions (since there's no setup).
 // Therefore, this is in detail.
@@ -95,7 +95,7 @@ class Bound : public Validator {
 // Static is not needed here, because global const implies static.
 
 /// Check for an IP4 address
-CLI11_MODULE_INLINE const detail::IPV4Validator ValidIPV4;
+CLI12_MODULE_INLINE const detail::IPV4Validator ValidIPV4;
 
 namespace detail {
 template <typename T,
@@ -591,9 +591,9 @@ class AsSizeValue : public AsNumberWithUnit {
     static std::map<std::string, result_t> get_mapping(bool kb_is_1000);
 };
 
-#if defined(CLI11_ENABLE_EXTRA_VALIDATORS) && CLI11_ENABLE_EXTRA_VALIDATORS != 0
+#if defined(CLI12_ENABLE_EXTRA_VALIDATORS) && CLI12_ENABLE_EXTRA_VALIDATORS != 0
 // new extra validators
-#if CLI11_HAS_FILESYSTEM
+#if CLI12_HAS_FILESYSTEM
 namespace detail {
 enum class Permission : std::uint8_t { none = 0, read = 1, write = 2, exec = 4 };
 class PermissionValidator : public Validator {
@@ -613,10 +613,10 @@ const detail::PermissionValidator ExecPermissions(detail::Permission::exec);
 #endif
 
 #endif
-// [CLI11:extra_validators_hpp:end]
+// [CLI12:extra_validators_hpp:end]
 }  // namespace CLI
 
-#ifndef CLI11_COMPILE
+#ifndef CLI12_COMPILE
 #include "impl/ExtraValidators_inl.hpp"  // IWYU pragma: export
 #endif
 

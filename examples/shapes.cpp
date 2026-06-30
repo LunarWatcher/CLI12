@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
 
     tri->add_option("sides", sides, "the side lengths of the triangle");
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     return 0;
 }

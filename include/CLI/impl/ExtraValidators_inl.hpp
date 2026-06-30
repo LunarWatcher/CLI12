@@ -9,28 +9,28 @@
 // IWYU pragma: private, include "CLI/CLI.hpp"
 #include "../ExtraValidators.hpp"
 
-#if (defined(CLI11_ENABLE_EXTRA_VALIDATORS) && CLI11_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
-    (!defined(CLI11_DISABLE_EXTRA_VALIDATORS) || CLI11_DISABLE_EXTRA_VALIDATORS == 0)
+#if (defined(CLI12_ENABLE_EXTRA_VALIDATORS) && CLI12_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
+    (!defined(CLI12_DISABLE_EXTRA_VALIDATORS) || CLI12_DISABLE_EXTRA_VALIDATORS == 0)
 
 #include "../Encoding.hpp"
 #include "../Macros.hpp"
 #include "../StringTools.hpp"
 #include "../TypeTools.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <algorithm>
 #include <fstream>
 #include <map>
 #include <string>
 #include <utility>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
 namespace CLI {
-// [CLI11:extra_validators_inl_hpp:verbatim]
+// [CLI12:extra_validators_inl_hpp:verbatim]
 
 namespace detail {
 
-CLI11_INLINE IPV4Validator::IPV4Validator() : Validator("IPV4") {
+CLI12_INLINE IPV4Validator::IPV4Validator() : Validator("IPV4") {
     func_ = [](std::string &ip_addr) {
         auto cdot = std::count(ip_addr.begin(), ip_addr.end(), '.');
         if(cdot != 3u) {
@@ -57,7 +57,7 @@ CLI11_INLINE IPV4Validator::IPV4Validator() : Validator("IPV4") {
 
 }  // namespace detail
 
-CLI11_INLINE AsSizeValue::AsSizeValue(bool kb_is_1000) : AsNumberWithUnit(get_mapping(kb_is_1000)) {
+CLI12_INLINE AsSizeValue::AsSizeValue(bool kb_is_1000) : AsNumberWithUnit(get_mapping(kb_is_1000)) {
     if(kb_is_1000) {
         description("SIZE [b, kb(=1000b), kib(=1024b), ...]");
     } else {
@@ -65,7 +65,7 @@ CLI11_INLINE AsSizeValue::AsSizeValue(bool kb_is_1000) : AsNumberWithUnit(get_ma
     }
 }
 
-CLI11_INLINE std::map<std::string, AsSizeValue::result_t> AsSizeValue::init_mapping(bool kb_is_1000) {
+CLI12_INLINE std::map<std::string, AsSizeValue::result_t> AsSizeValue::init_mapping(bool kb_is_1000) {
     std::map<std::string, result_t> m;
     result_t k_factor = kb_is_1000 ? 1000 : 1024;
     result_t ki_factor = 1024;
@@ -83,7 +83,7 @@ CLI11_INLINE std::map<std::string, AsSizeValue::result_t> AsSizeValue::init_mapp
     return m;
 }
 
-CLI11_INLINE std::map<std::string, AsSizeValue::result_t> AsSizeValue::get_mapping(bool kb_is_1000) {
+CLI12_INLINE std::map<std::string, AsSizeValue::result_t> AsSizeValue::get_mapping(bool kb_is_1000) {
     if(kb_is_1000) {
         static auto m = init_mapping(true);
         return m;
@@ -95,12 +95,12 @@ CLI11_INLINE std::map<std::string, AsSizeValue::result_t> AsSizeValue::get_mappi
 namespace detail {}  // namespace detail
 /// @}
 
-#if defined(CLI11_ENABLE_EXTRA_VALIDATORS) && CLI11_ENABLE_EXTRA_VALIDATORS != 0
+#if defined(CLI12_ENABLE_EXTRA_VALIDATORS) && CLI12_ENABLE_EXTRA_VALIDATORS != 0
 // new extra validators
 namespace detail {
 
-#if defined CLI11_HAS_FILESYSTEM && CLI11_HAS_FILESYSTEM > 0
-CLI11_INLINE PermissionValidator::PermissionValidator(Permission permission) {
+#if defined CLI12_HAS_FILESYSTEM && CLI12_HAS_FILESYSTEM > 0
+CLI12_INLINE PermissionValidator::PermissionValidator(Permission permission) {
     std::filesystem::perms permission_code = std::filesystem::perms::none;
     std::string permission_name;
     switch(permission) {
@@ -151,7 +151,7 @@ CLI11_INLINE PermissionValidator::PermissionValidator(Permission permission) {
 
 }  // namespace detail
 #endif
-   // [CLI11:extra_validators_inl_hpp:end]
+   // [CLI12:extra_validators_inl_hpp:end]
 }  // namespace CLI
 
 #endif

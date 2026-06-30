@@ -1,9 +1,11 @@
 prefix=@CMAKE_INSTALL_PREFIX@
 exec_prefix=${prefix}
 includedir=${prefix}/include
+libdir=${exec_prefix}/lib
 
-Name: CLI11
+Name: CLI12
 Description: C++ command line parser
 Version: @PROJECT_VERSION@
 
-Cflags: -I${includedir}
+Cflags: -I${includedir} -DCLI12_COMPILE
+Libs: -L${libdir} -lCLI12

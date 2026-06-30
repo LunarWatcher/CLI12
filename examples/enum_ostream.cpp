@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
-#define CLI11_ENABLE_EXTRA_VALIDATORS 1
+#define CLI12_ENABLE_EXTRA_VALIDATORS 1
 #include <CLI/CLI.hpp>
 #include <iostream>
 #include <map>
@@ -12,7 +12,7 @@
 
 enum class Level : int { High, Medium, Low };
 
-// Defining operator<<() for your enum class (in this case for 'Level') overrides CLI11's enum streaming
+// Defining operator<<() for your enum class (in this case for 'Level') overrides CLI12's enum streaming
 inline std::ostream &operator<<(std::ostream &os, const Level &level) {
     switch(level) {
     case Level::High:
@@ -41,9 +41,9 @@ int main(int argc, char **argv) {
         ->required()
         ->transform(CLI::CheckedTransformer(map, CLI::ignore_case));
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
-    // CLI11's built in enum streaming can be used outside CLI11 like this:
+    // CLI12's built in enum streaming can be used outside CLI12 like this:
     using CLI::enums::operator<<;
     std::cout << "Enum received: " << level << '\n';
 

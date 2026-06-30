@@ -7,7 +7,7 @@
 #include "app_helper.hpp"
 #include <Windows.h>
 
-// This test verifies that CLI11 still works if
+// This test verifies that CLI12 still works if
 // Windows.h is included. #145
 
 TEST_CASE_METHOD(TApp, "WindowsTestSimple", "[windows]") {

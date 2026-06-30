@@ -26,11 +26,11 @@ template <typename T> class DeltaRange : public CLI::Validator {
               "RANGE"),
           center_point(center), delta(range) {}
 
-    CLI11_NODISCARD bool check(const T &test) const {
+    CLI12_NODISCARD bool check(const T &test) const {
         return (test >= (center_point - delta)) && (test <= (center_point + delta));
     }
-    CLI11_NODISCARD T center() const { return center_point; }
-    CLI11_NODISCARD T range() const { return delta; }
+    CLI12_NODISCARD T center() const { return center_point; }
+    CLI12_NODISCARD T range() const { return delta; }
     void center(const T &value) { center_point = value; }
     void range(const T &value) { delta = value; }
 };
@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
     app.add_option_function<int>("--center", [&dr](int new_center) { dr->center(new_center); })->trigger_on_parse();
     app.add_option_function<int>("--range", [&dr](int new_range) { dr->range(new_range); })->trigger_on_parse();
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     std::cout << "number " << value << " in range = " << dr->center() << " +/- " << dr->range() << '\n';
 

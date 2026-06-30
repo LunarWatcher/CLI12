@@ -8,20 +8,20 @@
 
 // IWYU pragma: private, include "CLI/CLI.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 #include "Encoding.hpp"
 #include "Error.hpp"
 #include "StringTools.hpp"
 
 namespace CLI {
-// [CLI11:config_fwd_hpp:verbatim]
+// [CLI12:config_fwd_hpp:verbatim]
 
 class App;
 
@@ -37,7 +37,7 @@ struct ConfigItem {
     /// @brief indicator if a multiline vector separator was inserted
     bool multiline{false};
     /// The list of parents and name joined by "."
-    CLI11_NODISCARD std::string fullname() const {
+    CLI12_NODISCARD std::string fullname() const {
         std::vector<std::string> tmp = parents;
         tmp.emplace_back(name);
         return detail::join(tmp, ".");
@@ -58,7 +58,7 @@ class Config {
     virtual std::vector<ConfigItem> from_config(std::istream &) const = 0;
 
     /// Get a flag value
-    CLI11_NODISCARD virtual std::string to_flag(const ConfigItem &item) const {
+    CLI12_NODISCARD virtual std::string to_flag(const ConfigItem &item) const {
         if(item.inputs.size() == 1) {
             return item.inputs.at(0);
         }
@@ -69,8 +69,8 @@ class Config {
     }
 
     /// Parse a config file, throw an error (ParseError:ConfigParseError or FileError) on failure
-    CLI11_NODISCARD std::vector<ConfigItem> from_file(const std::string &name) const {
-#if defined CLI11_HAS_FILESYSTEM && CLI11_HAS_FILESYSTEM > 0
+    CLI12_NODISCARD std::vector<ConfigItem> from_file(const std::string &name) const {
+#if defined CLI12_HAS_FILESYSTEM && CLI12_HAS_FILESYSTEM > 0
         std::ifstream input{to_path(name)};
 #else
         std::ifstream input{name};
@@ -166,7 +166,7 @@ class ConfigBase : public Config {
     /// get a reference to the configuration section
     std::string &sectionRef() { return configSection; }
     /// get the section
-    CLI11_NODISCARD const std::string &section() const { return configSection; }
+    CLI12_NODISCARD const std::string &section() const { return configSection; }
     /// specify a particular section of the configuration file to use
     ConfigBase *section(const std::string &sectionName) {
         configSection = sectionName;
@@ -176,7 +176,7 @@ class ConfigBase : public Config {
     /// get a reference to the configuration index
     int16_t &indexRef() { return configIndex; }
     /// get the section index
-    CLI11_NODISCARD int16_t index() const { return configIndex; }
+    CLI12_NODISCARD int16_t index() const { return configIndex; }
     /// specify a particular index in the section to use (-1) for all sections to use
     ConfigBase *index(int16_t sectionIndex) {
         configIndex = sectionIndex;
@@ -204,5 +204,5 @@ class ConfigINI : public ConfigTOML {
         valueDelimiter = '=';
     }
 };
-// [CLI11:config_fwd_hpp:end]
+// [CLI12:config_fwd_hpp:end]
 }  // namespace CLI

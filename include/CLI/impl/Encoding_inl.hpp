@@ -12,7 +12,7 @@
 #include "../Encoding.hpp"
 #include "../Macros.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <array>
 #include <clocale>
 #include <cstdlib>
@@ -23,16 +23,16 @@
 #include <string>
 #include <type_traits>
 #include <utility>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
 namespace CLI {
-// [CLI11:encoding_inl_hpp:verbatim]
+// [CLI12:encoding_inl_hpp:verbatim]
 
 namespace detail {
 
-#if !CLI11_HAS_CODECVT
+#if !CLI12_HAS_CODECVT
 /// Attempt to set one of the acceptable unicode locales for conversion
-CLI11_INLINE void set_unicode_locale() {
+CLI12_INLINE void set_unicode_locale() {
     static const std::array<const char *, 3> unicode_locales{{"C.UTF-8", "en_US.UTF-8", ".UTF-8"}};
 
     for(const auto &locale_name : unicode_locales) {
@@ -50,17 +50,17 @@ template <typename F> struct scope_guard_t {
     ~scope_guard_t() { closure(); }
 };
 
-template <typename F> CLI11_NODISCARD CLI11_INLINE scope_guard_t<F> scope_guard(F &&closure) {
+template <typename F> CLI12_NODISCARD CLI12_INLINE scope_guard_t<F> scope_guard(F &&closure) {
     return scope_guard_t<F>{std::forward<F>(closure)};
 }
 
-#endif  // !CLI11_HAS_CODECVT
+#endif  // !CLI12_HAS_CODECVT
 
-CLI11_DIAGNOSTIC_PUSH
-CLI11_DIAGNOSTIC_IGNORE_DEPRECATED
+CLI12_DIAGNOSTIC_PUSH
+CLI12_DIAGNOSTIC_IGNORE_DEPRECATED
 
-CLI11_INLINE std::string narrow_impl(const wchar_t *str, std::size_t str_size) {
-#if CLI11_HAS_CODECVT
+CLI12_INLINE std::string narrow_impl(const wchar_t *str, std::size_t str_size) {
+#if CLI12_HAS_CODECVT
 #ifdef _WIN32
     return std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>().to_bytes(str, str + str_size);
 
@@ -68,7 +68,7 @@ CLI11_INLINE std::string narrow_impl(const wchar_t *str, std::size_t str_size) {
     return std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(str, str + str_size);
 
 #endif  // _WIN32
-#else   // CLI11_HAS_CODECVT
+#else   // CLI12_HAS_CODECVT
     (void)str_size;
     std::mbstate_t state = std::mbstate_t();
     const wchar_t *it = str;
@@ -87,11 +87,11 @@ CLI11_INLINE std::string narrow_impl(const wchar_t *str, std::size_t str_size) {
 
     return result;
 
-#endif  // CLI11_HAS_CODECVT
+#endif  // CLI12_HAS_CODECVT
 }
 
-CLI11_INLINE std::wstring widen_impl(const char *str, std::size_t str_size) {
-#if CLI11_HAS_CODECVT
+CLI12_INLINE std::wstring widen_impl(const char *str, std::size_t str_size) {
+#if CLI12_HAS_CODECVT
 #ifdef _WIN32
     return std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>().from_bytes(str, str + str_size);
 
@@ -99,7 +99,7 @@ CLI11_INLINE std::wstring widen_impl(const char *str, std::size_t str_size) {
     return std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(str, str + str_size);
 
 #endif  // _WIN32
-#else   // CLI11_HAS_CODECVT
+#else   // CLI12_HAS_CODECVT
     (void)str_size;
     std::mbstate_t state = std::mbstate_t();
     const char *it = str;
@@ -118,30 +118,30 @@ CLI11_INLINE std::wstring widen_impl(const char *str, std::size_t str_size) {
 
     return result;
 
-#endif  // CLI11_HAS_CODECVT
+#endif  // CLI12_HAS_CODECVT
 }
 
-CLI11_DIAGNOSTIC_POP
+CLI12_DIAGNOSTIC_POP
 
 }  // namespace detail
 
-CLI11_INLINE std::string narrow(const wchar_t *str, std::size_t str_size) { return detail::narrow_impl(str, str_size); }
-CLI11_INLINE std::string narrow(const std::wstring &str) { return detail::narrow_impl(str.data(), str.size()); }
+CLI12_INLINE std::string narrow(const wchar_t *str, std::size_t str_size) { return detail::narrow_impl(str, str_size); }
+CLI12_INLINE std::string narrow(const std::wstring &str) { return detail::narrow_impl(str.data(), str.size()); }
 // Flawfinder: ignore
-CLI11_INLINE std::string narrow(const wchar_t *str) { return detail::narrow_impl(str, std::wcslen(str)); }
+CLI12_INLINE std::string narrow(const wchar_t *str) { return detail::narrow_impl(str, std::wcslen(str)); }
 
-CLI11_INLINE std::wstring widen(const char *str, std::size_t str_size) { return detail::widen_impl(str, str_size); }
-CLI11_INLINE std::wstring widen(const std::string &str) { return detail::widen_impl(str.data(), str.size()); }
+CLI12_INLINE std::wstring widen(const char *str, std::size_t str_size) { return detail::widen_impl(str, str_size); }
+CLI12_INLINE std::wstring widen(const std::string &str) { return detail::widen_impl(str.data(), str.size()); }
 // Flawfinder: ignore
-CLI11_INLINE std::wstring widen(const char *str) { return detail::widen_impl(str, std::strlen(str)); }
+CLI12_INLINE std::wstring widen(const char *str) { return detail::widen_impl(str, std::strlen(str)); }
 
-#ifdef CLI11_CPP17
-CLI11_INLINE std::string narrow(std::wstring_view str) { return detail::narrow_impl(str.data(), str.size()); }
-CLI11_INLINE std::wstring widen(std::string_view str) { return detail::widen_impl(str.data(), str.size()); }
-#endif  // CLI11_CPP17
+#ifdef CLI12_CPP17
+CLI12_INLINE std::string narrow(std::wstring_view str) { return detail::narrow_impl(str.data(), str.size()); }
+CLI12_INLINE std::wstring widen(std::string_view str) { return detail::widen_impl(str.data(), str.size()); }
+#endif  // CLI12_CPP17
 
-#if defined CLI11_HAS_FILESYSTEM && CLI11_HAS_FILESYSTEM > 0
-CLI11_INLINE std::filesystem::path to_path(std::string_view str) {
+#if defined CLI12_HAS_FILESYSTEM && CLI12_HAS_FILESYSTEM > 0
+CLI12_INLINE std::filesystem::path to_path(std::string_view str) {
     return std::filesystem::path{
 #ifdef _WIN32
         widen(str)
@@ -150,7 +150,7 @@ CLI11_INLINE std::filesystem::path to_path(std::string_view str) {
 #endif  // _WIN32
     };
 }
-#endif  // CLI11_HAS_FILESYSTEM
+#endif  // CLI12_HAS_FILESYSTEM
 
-// [CLI11:encoding_inl_hpp:end]
+// [CLI12:encoding_inl_hpp:end]
 }  // namespace CLI

@@ -11,28 +11,28 @@
 // This include is only needed for IDEs to discover symbols
 #include "../Config.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <algorithm>
 #include <string>
 #include <utility>
 #include <vector>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
 namespace CLI {
-// [CLI11:config_inl_hpp:verbatim]
+// [CLI12:config_inl_hpp:verbatim]
 
 static constexpr auto multiline_literal_quote = R"(''')";
 static constexpr auto multiline_string_quote = R"(""")";
 
 namespace detail {
 
-CLI11_INLINE bool is_printable(const std::string &test_string) {
+CLI12_INLINE bool is_printable(const std::string &test_string) {
     return std::all_of(test_string.begin(), test_string.end(), [](char x) {
         return (isprint(static_cast<unsigned char>(x)) != 0 || x == '\n' || x == '\t');
     });
 }
 
-CLI11_INLINE std::string
+CLI12_INLINE std::string
 convert_arg_for_ini(const std::string &arg, char stringQuote, char literalQuote, bool disable_multi_line) {
     if(arg.empty()) {
         return std::string(2, stringQuote);
@@ -104,7 +104,7 @@ convert_arg_for_ini(const std::string &arg, char stringQuote, char literalQuote,
     return std::string(1, stringQuote) + arg + stringQuote;
 }
 
-CLI11_INLINE std::string ini_join(const std::vector<std::string> &args,
+CLI12_INLINE std::string ini_join(const std::vector<std::string> &args,
                                   char sepChar,
                                   char arrayStart,
                                   char arrayEnd,
@@ -132,7 +132,7 @@ CLI11_INLINE std::string ini_join(const std::vector<std::string> &args,
     return joined;
 }
 
-CLI11_INLINE std::vector<std::string>
+CLI12_INLINE std::vector<std::string>
 generate_parents(const std::string &section, std::string &name, char parentSeparator) {
     std::vector<std::string> parents;
     if(detail::to_lower(section) != "default") {
@@ -157,7 +157,7 @@ generate_parents(const std::string &section, std::string &name, char parentSepar
     return parents;
 }
 
-CLI11_INLINE void
+CLI12_INLINE void
 checkParentSegments(std::vector<ConfigItem> &output, const std::string &currentSection, char parentSeparator) {
 
     std::string estring;
@@ -207,7 +207,7 @@ checkParentSegments(std::vector<ConfigItem> &output, const std::string &currentS
 }
 
 /// @brief  checks if a string represents a multiline comment
-CLI11_INLINE bool hasMLString(std::string const &fullString, char check) {
+CLI12_INLINE bool hasMLString(std::string const &fullString, char check) {
     if(fullString.length() < 3) {
         return false;
     }
@@ -492,7 +492,7 @@ inline std::vector<ConfigItem> ConfigBase::from_config(std::istream &input) cons
     return output;
 }
 
-CLI11_INLINE std::string &clean_name_string(std::string &name, const std::string &keyChars) {
+CLI12_INLINE std::string &clean_name_string(std::string &name, const std::string &keyChars) {
     if(name.find_first_of(keyChars) != std::string::npos || (name.front() == '[' && name.back() == ']') ||
        (name.find_first_of("'`\"\\") != std::string::npos)) {
         if(name.find_first_of('\'') == std::string::npos) {
@@ -509,7 +509,7 @@ CLI11_INLINE std::string &clean_name_string(std::string &name, const std::string
     return name;
 }
 
-CLI11_INLINE std::string
+CLI12_INLINE std::string
 ConfigBase::to_config(const App *app, bool default_also, bool write_description, std::string prefix) const {
     std::stringstream out;
     std::string commentLead;
@@ -715,5 +715,5 @@ ConfigBase::to_config(const App *app, bool default_also, bool write_description,
     }
     return out.str();
 }
-// [CLI11:config_inl_hpp:end]
+// [CLI12:config_inl_hpp:end]
 }  // namespace CLI

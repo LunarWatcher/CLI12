@@ -35,6 +35,6 @@ int main(int argc, char **argv) {
     CLI::App app;
 
     argparse(app.add_option_group("param"));
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
     return 0;
 }

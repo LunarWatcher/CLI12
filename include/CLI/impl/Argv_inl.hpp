@@ -13,15 +13,15 @@
 
 #include "../Encoding.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <algorithm>
 #include <memory>
 #include <stdexcept>
 #include <string>
 #include <vector>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
-// [CLI11:argv_inl_includes:verbatim]
+// [CLI12:argv_inl_includes:verbatim]
 #if defined(_WIN32)
 #if !(defined(_AMD64_) || defined(_X86_) || defined(_ARM_))
 #if defined(__amd64__) || defined(__amd64) || defined(__x86_64__) || defined(__x86_64) || defined(_M_X64) ||           \
@@ -54,15 +54,15 @@
 #include <processthreadsapi.h>
 #include <shellapi.h>
 #endif
-// [CLI11:argv_inl_includes:end]
+// [CLI12:argv_inl_includes:end]
 
 namespace CLI {
-// [CLI11:argv_inl_hpp:verbatim]
+// [CLI12:argv_inl_hpp:verbatim]
 
 namespace detail {
 
 #ifdef _WIN32
-CLI11_INLINE std::vector<std::string> compute_win32_argv() {
+CLI12_INLINE std::vector<std::string> compute_win32_argv() {
     std::vector<std::string> result;
     int argc = 0;
 
@@ -86,5 +86,5 @@ CLI11_INLINE std::vector<std::string> compute_win32_argv() {
 
 }  // namespace detail
 
-// [CLI11:argv_inl_hpp:end]
+// [CLI12:argv_inl_hpp:end]
 }  // namespace CLI

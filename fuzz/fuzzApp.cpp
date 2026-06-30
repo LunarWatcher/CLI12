@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
-#define CLI11_ENABLE_EXTRA_VALIDATORS 1
+#define CLI12_ENABLE_EXTRA_VALIDATORS 1
 
 #include "fuzzApp.hpp"
 #include <algorithm>

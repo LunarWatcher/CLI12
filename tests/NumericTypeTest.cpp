@@ -96,8 +96,8 @@ TEST_CASE_METHOD(TApp, "doubleVectorFunctionRunCallbackOnDefault", "[optiontype]
     CHECK(5.0 == vec[0]);
     CHECK(7.0 == vec[2]);
 
-#if (defined(CLI11_ENABLE_EXTRA_VALIDATORS) && CLI11_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
-    (!defined(CLI11_DISABLE_EXTRA_VALIDATORS) || CLI11_DISABLE_EXTRA_VALIDATORS == 0)
+#if (defined(CLI12_ENABLE_EXTRA_VALIDATORS) && CLI12_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
+    (!defined(CLI12_DISABLE_EXTRA_VALIDATORS) || CLI12_DISABLE_EXTRA_VALIDATORS == 0)
     opt->check(CLI::Number);
     opt->run_callback_for_default(false);
     CHECK_THROWS_AS(opt->default_val("this is a string"), CLI::ValidationError);

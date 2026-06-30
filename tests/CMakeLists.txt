@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-if(CLI11_SANITIZERS AND ${CMAKE_VERSION} VERSION_GREATER "3.15")
+if(CLI12_SANITIZERS AND ${CMAKE_VERSION} VERSION_GREATER "3.15")
   message(STATUS "Using arsenm/sanitizers-cmake")
   FetchContent_Declare(
     sanitizers
@@ -27,13 +27,13 @@ else()
 endif()
 
 # Add boost to test boost::optional (currently explicitly requested)"
-option(CLI11_BOOST "Turn on boost test (currently may fail with Boost 1.70)" OFF)
-if(CLI11_BOOST)
+option(CLI12_BOOST "Turn on boost test (currently may fail with Boost 1.70)" OFF)
+if(CLI12_BOOST)
   find_package(Boost 1.61 REQUIRED)
 endif()
-set(boost-optional-def $<$<BOOL:${Boost_FOUND}>:CLI11_BOOST_OPTIONAL>)
+set(boost-optional-def $<$<BOOL:${Boost_FOUND}>:CLI12_BOOST_OPTIONAL>)
 
-set(CLI11_TESTS
+set(CLI12_TESTS
     HelpersTest
     ConfigFileTest
     OptionTypeTest
@@ -58,18 +58,18 @@ set(CLI11_TESTS
     EncodingTest)
 
 if(WIN32)
-  list(APPEND CLI11_TESTS WindowsTest)
+  list(APPEND CLI12_TESTS WindowsTest)
 endif()
 
 if(CMAKE_CXX_STANDARD GREATER 16)
-  list(APPEND CLI11_TESTS FuzzFailTest)
+  list(APPEND CLI12_TESTS FuzzFailTest)
 endif()
 
 if(Boost_FOUND)
-  list(APPEND CLI11_TESTS BoostOptionTypeTest)
+  list(APPEND CLI12_TESTS BoostOptionTypeTest)
 endif()
 
-set(CLI11_MULTIONLY_TESTS TimerTest)
+set(CLI12_MULTIONLY_TESTS TimerTest)
 
 find_package(Catch2 CONFIG)
 
@@ -85,7 +85,7 @@ if(Catch2_FOUND)
     target_link_libraries(catch_main PUBLIC Catch2::Catch2)
   else()
     add_library(catch_main ALIAS Catch2::Catch2WithMain)
-    target_compile_definitions(Catch2::Catch2WithMain INTERFACE -DCLI11_CATCH3)
+    target_compile_definitions(Catch2::Catch2WithMain INTERFACE -DCLI12_CATCH3)
   endif()
 else()
   message(STATUS "Downloading Catch2")
@@ -125,25 +125,25 @@ add_custom_target(cli11_test_data DEPENDS ${DATA_FILES})
 set_target_properties(cli11_test_data PROPERTIES FOLDER "Tests/Apps")
 
 # Make a shim if we are building single file tests
-if(CLI11_SINGLE_FILE AND CLI11_INSTALL_PACKAGE_TESTS)
-  file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/test_single/CLI/CLI.hpp" "#include <CLI11.hpp>")
+if(CLI12_SINGLE_FILE AND CLI12_INSTALL_PACKAGE_TESTS)
+  file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/test_single/CLI/CLI.hpp" "#include <CLI12.hpp>")
   install(FILES "${CMAKE_CURRENT_BINARY_DIR}/test_single/CLI/CLI.hpp" DESTINATION include/CLI)
 endif()
 
 # Build dependent applications which are launched from test code
-set(CLI11_DEPENDENT_APPLICATIONS ensure_utf8 ensure_utf8_twice)
+set(CLI12_DEPENDENT_APPLICATIONS ensure_utf8 ensure_utf8_twice)
 
-foreach(APP IN LISTS CLI11_DEPENDENT_APPLICATIONS)
+foreach(APP IN LISTS CLI12_DEPENDENT_APPLICATIONS)
   add_executable(${APP} applications/${APP}.cpp)
   target_include_directories(${APP} PRIVATE ${CMAKE_SOURCE_DIR}/include)
   set_target_properties(${APP} PROPERTIES FOLDER "Tests/Apps")
 endforeach()
 
 function(add_dependent_application_definitions TARGET)
-  foreach(APP IN LISTS CLI11_DEPENDENT_APPLICATIONS)
+  foreach(APP IN LISTS CLI12_DEPENDENT_APPLICATIONS)
     string(TOUPPER ${APP} APP_UPPERCASE)
     target_compile_definitions(${TARGET}
-                               PRIVATE CLI11_${APP_UPPERCASE}_EXE="$<TARGET_FILE:${APP}>")
+                               PRIVATE CLI12_${APP_UPPERCASE}_EXE="$<TARGET_FILE:${APP}>")
 
     if(WIN32)
       target_link_libraries(${APP} PRIVATE Shell32)
@@ -158,7 +158,7 @@ macro(add_catch_test TESTNAME)
 
   add_test(${TESTNAME} ${TESTNAME})
   set_target_properties(${TESTNAME} PROPERTIES FOLDER "Tests")
-  if(CLI11_FORCE_LIBCXX)
+  if(CLI12_FORCE_LIBCXX)
     set_property(
       TARGET ${TESTNAME}
       APPEND_STRING
@@ -167,34 +167,34 @@ macro(add_catch_test TESTNAME)
   endif()
 endmacro()
 
-foreach(T IN LISTS CLI11_TESTS)
-  if(CLI11_CUDA_TESTS)
+foreach(T IN LISTS CLI12_TESTS)
+  if(CLI12_CUDA_TESTS)
     set_property(SOURCE ${T}.cpp PROPERTY LANGUAGE CUDA)
   endif()
   add_executable(${T} ${T}.cpp)
 
   add_dependent_application_definitions(${T})
   add_sanitizers(${T})
-  if(NOT CLI11_CUDA_TESTS)
-    target_link_libraries(${T} PRIVATE CLI11_warnings)
+  if(NOT CLI12_CUDA_TESTS)
+    target_link_libraries(${T} PRIVATE CLI12_warnings)
   endif()
-  target_link_libraries(${T} PRIVATE CLI11)
+  target_link_libraries(${T} PRIVATE CLI12)
   add_catch_test(${T})
 
-  if(CLI11_SINGLE_FILE AND CLI11_SINGLE_FILE_TESTS)
+  if(CLI12_SINGLE_FILE AND CLI12_SINGLE_FILE_TESTS)
     add_executable(${T}_Single ${T}.cpp)
     add_dependent_application_definitions(${T}_Single)
-    target_link_libraries(${T}_Single PRIVATE CLI11_SINGLE)
+    target_link_libraries(${T}_Single PRIVATE CLI12_SINGLE)
     add_catch_test(${T}_Single)
     set_property(TARGET ${T}_Single PROPERTY FOLDER "Tests Single File")
   endif()
 endforeach()
 
-foreach(T IN LISTS CLI11_MULTIONLY_TESTS)
+foreach(T IN LISTS CLI12_MULTIONLY_TESTS)
   add_executable(${T} ${T}.cpp)
   add_dependent_application_definitions(${T})
   add_sanitizers(${T})
-  target_link_libraries(${T} PUBLIC CLI11)
+  target_link_libraries(${T} PUBLIC CLI12)
   add_catch_test(${T})
 endforeach()
 
@@ -202,7 +202,7 @@ if(CMAKE_CXX_STANDARD GREATER 16)
   set(TEST_FILE_FOLDER ${CMAKE_CURRENT_SOURCE_DIR})
   target_compile_definitions(FuzzFailTest PUBLIC -DTEST_FILE_FOLDER="${TEST_FILE_FOLDER}")
   target_sources(FuzzFailTest PUBLIC ${PROJECT_SOURCE_DIR}/fuzz/fuzzApp.cpp)
-  if(CLI11_SINGLE_FILE AND CLI11_SINGLE_FILE_TESTS)
+  if(CLI12_SINGLE_FILE AND CLI12_SINGLE_FILE_TESTS)
     target_compile_definitions(FuzzFailTest_Single PUBLIC -DTEST_FILE_FOLDER="${TEST_FILE_FOLDER}")
     target_sources(FuzzFailTest_Single PUBLIC ${PROJECT_SOURCE_DIR}/fuzz/fuzzApp.cpp)
   endif()
@@ -213,7 +213,7 @@ if(CMAKE_CXX_STANDARD GREATER 16)
   try_compile(ATOMIC_BUILD_SUCCEEDED "${CMAKE_BINARY_DIR}" "${CMAKE_BINARY_DIR}/test_atomic.cpp")
   if(NOT ATOMIC_BUILD_SUCCEEDED)
     target_link_libraries(FuzzFailTest PRIVATE atomic)
-    if(CLI11_SINGLE_FILE AND CLI11_SINGLE_FILE_TESTS)
+    if(CLI12_SINGLE_FILE AND CLI12_SINGLE_FILE_TESTS)
       target_link_libraries(FuzzFailTestSingle PRIVATE atomic)
     endif()
   endif()
@@ -234,12 +234,12 @@ endif()
 
 # Link test (build error if inlines missing)
 add_library(link_test_1 link_test_1.cpp)
-target_link_libraries(link_test_1 PUBLIC CLI11)
+target_link_libraries(link_test_1 PUBLIC CLI12)
 set_target_properties(link_test_1 PROPERTIES FOLDER "Tests")
 add_executable(link_test_2 link_test_2.cpp)
-target_link_libraries(link_test_2 PUBLIC CLI11 link_test_1)
+target_link_libraries(link_test_2 PUBLIC CLI12 link_test_1)
 add_catch_test(link_test_2)
-if(CLI11_FORCE_LIBCXX)
+if(CLI12_FORCE_LIBCXX)
   set_property(
     TARGET link_test_1
     APPEND_STRING
@@ -249,8 +249,8 @@ endif()
 
 # Add informational printout
 add_executable(informational informational.cpp)
-target_link_libraries(informational PUBLIC CLI11)
-if(CLI11_FORCE_LIBCXX)
+target_link_libraries(informational PUBLIC CLI12)
+if(CLI12_FORCE_LIBCXX)
   set_property(
     TARGET informational
     APPEND_STRING
@@ -280,7 +280,7 @@ if(TARGET Boost::boost)
   target_link_libraries(informational PRIVATE Boost::boost)
   target_link_libraries(OptionalTest PRIVATE Boost::boost)
   target_link_libraries(BoostOptionTypeTest PRIVATE Boost::boost)
-  if(CLI11_SINGLE_FILE AND CLI11_SINGLE_FILE_TESTS)
+  if(CLI12_SINGLE_FILE AND CLI12_SINGLE_FILE_TESTS)
     target_link_libraries(OptionalTest_Single PRIVATE Boost::boost)
     target_link_libraries(BoostOptionTypeTest_Single PRIVATE Boost::boost)
   endif()
@@ -290,7 +290,7 @@ elseif(BOOST_FOUND)
   target_include_directories(informational PRIVATE ${Boost_INCLUDE_DIRS})
   target_include_directories(OptionalTest PRIVATE ${Boost_INCLUDE_DIRS})
   target_include_directories(BoostOptionTypeTest PRIVATE ${Boost_INCLUDE_DIRS})
-  if(CLI11_SINGLE_FILE AND CLI11_SINGLE_FILE_TESTS)
+  if(CLI12_SINGLE_FILE AND CLI12_SINGLE_FILE_TESTS)
     target_include_directories(OptionalTest_Single PRIVATE ${Boost_INCLUDE_DIRS})
     target_include_directories(BoostOptionTypeTest_Single PRIVATE ${Boost_INCLUDE_DIRS})
   endif()
@@ -303,18 +303,18 @@ if(CMAKE_BUILD_TYPE STREQUAL Coverage)
   include(CodeCoverage)
   setup_target_for_coverage_lcov(
     NAME
-    CLI11_coverage
+    CLI12_coverage
     EXECUTABLE
     ctest
     DEPENDENCIES
-    ${CLI11_TESTS}
-    ${CLI11_MULTIONLY_TESTS})
+    ${CLI12_TESTS}
+    ${CLI12_MULTIONLY_TESTS})
 endif()
 
-set(CLI11_PACKAGE_SEARCH_LOC "")
+set(CLI12_PACKAGE_SEARCH_LOC "")
 
 # tests of the cmake package and pkg-config package
-if(CLI11_INSTALL_PACKAGE_TESTS)
+if(CLI12_INSTALL_PACKAGE_TESTS)
   if(NOT MSVC)
     set(package_test_command --test-command "${CMAKE_CTEST_COMMAND}")
   else() # don't try to run the tests on MSVC since that would require copying the dll's and doing
@@ -323,20 +323,20 @@ if(CLI11_INSTALL_PACKAGE_TESTS)
   endif()
 
   if(CMAKE_BUILD_TYPE)
-    set(CLI11_PACKAGE_TEST_BUILD_TYPE ${CMAKE_BUILD_TYPE})
+    set(CLI12_PACKAGE_TEST_BUILD_TYPE ${CMAKE_BUILD_TYPE})
   else()
-    set(CLI11_PACKAGE_TEST_BUILD_TYPE Release)
+    set(CLI12_PACKAGE_TEST_BUILD_TYPE Release)
   endif()
 
   file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/find_package_tests")
 
   if(MSVC)
-    # Tests for other CMake projects including and using CLI11 using find_package
+    # Tests for other CMake projects including and using CLI12 using find_package
     add_test(
       NAME find-package-testsA
       COMMAND
         ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" -A "${CMAKE_GENERATOR_PLATFORM}"
-        "-DCLI11_DIR=${CMAKE_INSTALL_PREFIX}" "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
+        "-DCLI12_DIR=${CMAKE_INSTALL_PREFIX}" "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
         "-DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}"
         "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
         "${CMAKE_CURRENT_SOURCE_DIR}/find_package_tests"
@@ -345,7 +345,7 @@ if(CLI11_INSTALL_PACKAGE_TESTS)
     add_test(
       NAME find-package-testsA
       COMMAND
-        ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" "-DCLI11_DIR=${CMAKE_INSTALL_PREFIX}"
+        ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" "-DCLI12_DIR=${CMAKE_INSTALL_PREFIX}"
         "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}" "-DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}"
         "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
         "${CMAKE_CURRENT_SOURCE_DIR}/find_package_tests"
@@ -354,11 +354,11 @@ if(CLI11_INSTALL_PACKAGE_TESTS)
 
   add_test(NAME find-package-testsB
            COMMAND ${CMAKE_COMMAND} --build "${CMAKE_CURRENT_BINARY_DIR}/find_package_tests"
-                   --config ${CLI11_PACKAGE_TEST_BUILD_TYPE})
+                   --config ${CLI12_PACKAGE_TEST_BUILD_TYPE})
 
   add_test(
     NAME find-package-testsC
-    COMMAND ${CMAKE_CTEST_COMMAND} -C ${CLI11_PACKAGE_TEST_BUILD_TYPE}
+    COMMAND ${CMAKE_CTEST_COMMAND} -C ${CLI12_PACKAGE_TEST_BUILD_TYPE}
     WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/find_package_tests")
   set_property(TEST find-package-testsA PROPERTY LABELS Packaging)
   set_property(TEST find-package-testsB PROPERTY LABELS Packaging)
@@ -366,7 +366,7 @@ if(CLI11_INSTALL_PACKAGE_TESTS)
   set_property(TEST find-package-testsC PROPERTY LABELS Packaging)
   set_property(TEST find-package-testsC PROPERTY DEPENDS find-package-testsB)
 
-  if(CLI11_MODULE_TESTS)
+  if(CLI12_MODULE_TESTS)
     add_test(
       find-package-module
       ${CMAKE_CTEST_COMMAND}
@@ -378,9 +378,9 @@ if(CLI11_INSTALL_PACKAGE_TESTS)
       --build-options
       "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
       "-DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}"
-      "-DCLI11_DIR=${CMAKE_INSTALL_PREFIX}"
-      "-DCLI11_MODULES=${CLI11_MODULES}"
-      "-DCLI11_FORCE_LIBCXX=${CLI11_FORCE_LIBCXX}"
+      "-DCLI12_DIR=${CMAKE_INSTALL_PREFIX}"
+      "-DCLI12_MODULES=${CLI12_MODULES}"
+      "-DCLI12_FORCE_LIBCXX=${CLI12_FORCE_LIBCXX}"
       "-DCMAKE_LINKER_TYPE=${CMAKE_LINKER_TYPE}"
       "-DCMAKE_EXE_LINKER_FLAGS=${CMAKE_EXE_LINKER_FLAGS}"
       "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}"
@@ -404,7 +404,7 @@ if(CLI11_INSTALL_PACKAGE_TESTS)
       --build-options
       "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
       "-DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}"
-      "-DCLI11_DIR=${CMAKE_INSTALL_PREFIX}"
+      "-DCLI12_DIR=${CMAKE_INSTALL_PREFIX}"
       ${package_test_command})
     set_property(TEST package-config-tests PROPERTY LABELS Packaging)
   endif()

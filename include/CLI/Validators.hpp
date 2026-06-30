@@ -13,7 +13,7 @@
 #include "StringTools.hpp"
 #include "TypeTools.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <cmath>
 #include <cstdint>
 #include <functional>
@@ -23,21 +23,21 @@
 #include <string>
 #include <utility>
 #include <vector>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
-// [CLI11:validators_hpp_filesystem:verbatim]
+// [CLI12:validators_hpp_filesystem:verbatim]
 
-#if defined CLI11_HAS_FILESYSTEM && CLI11_HAS_FILESYSTEM > 0
+#if defined CLI12_HAS_FILESYSTEM && CLI12_HAS_FILESYSTEM > 0
 #include <filesystem>  // NOLINT(build/include)
 #else
 #include <sys/stat.h>
 #include <sys/types.h>
 #endif
 
-// [CLI11:validators_hpp_filesystem:end]
+// [CLI12:validators_hpp_filesystem:end]
 
 namespace CLI {
-// [CLI11:validators_hpp:verbatim]
+// [CLI12:validators_hpp:verbatim]
 
 class Option;
 
@@ -85,11 +85,11 @@ class Validator {
         return *this;
     }
     /// This is the required operator for a Validator - provided to help
-    /// users (CLI11 uses the member `func` directly)
+    /// users (CLI12 uses the member `func` directly)
     std::string operator()(std::string &str) const;
 
     /// This is the required operator for a Validator - provided to help
-    /// users (CLI11 uses the member `func` directly)
+    /// users (CLI12 uses the member `func` directly)
     std::string operator()(const std::string &str) const {
         std::string value = str;
         return (active_) ? func_(value) : std::string{};
@@ -101,10 +101,10 @@ class Validator {
         return *this;
     }
     /// Specify the type string
-    CLI11_NODISCARD Validator description(std::string validator_desc) const;
+    CLI12_NODISCARD Validator description(std::string validator_desc) const;
 
     /// Generate type description information for the Validator
-    CLI11_NODISCARD std::string get_description() const {
+    CLI12_NODISCARD std::string get_description() const {
         if(active_) {
             return desc_function_();
         }
@@ -116,20 +116,20 @@ class Validator {
         return *this;
     }
     /// Specify the type string
-    CLI11_NODISCARD Validator name(std::string validator_name) const {
+    CLI12_NODISCARD Validator name(std::string validator_name) const {
         Validator newval(*this);
         newval.name_ = std::move(validator_name);
         return newval;
     }
     /// Get the name of the Validator
-    CLI11_NODISCARD const std::string &get_name() const { return name_; }
+    CLI12_NODISCARD const std::string &get_name() const { return name_; }
     /// Specify whether the Validator is active or not
     Validator &active(bool active_val = true) {
         active_ = active_val;
         return *this;
     }
     /// Specify whether the Validator is active or not
-    CLI11_NODISCARD Validator active(bool active_val = true) const {
+    CLI12_NODISCARD Validator active(bool active_val = true) const {
         Validator newval(*this);
         newval.active_ = active_val;
         return newval;
@@ -146,18 +146,18 @@ class Validator {
         return *this;
     }
     /// Specify the application index of a validator
-    CLI11_NODISCARD Validator application_index(int app_index) const {
+    CLI12_NODISCARD Validator application_index(int app_index) const {
         Validator newval(*this);
         newval.application_index_ = app_index;
         return newval;
     }
     /// Get the current value of the application index
-    CLI11_NODISCARD int get_application_index() const { return application_index_; }
+    CLI12_NODISCARD int get_application_index() const { return application_index_; }
     /// Get a boolean if the validator is active
-    CLI11_NODISCARD bool get_active() const { return active_; }
+    CLI12_NODISCARD bool get_active() const { return active_; }
 
     /// Get a boolean if the validator is allowed to modify the input returns true if it can modify the input
-    CLI11_NODISCARD bool get_modifying() const { return !non_modifying_; }
+    CLI12_NODISCARD bool get_modifying() const { return !non_modifying_; }
 
     /// Combining validators is a new validator. Type comes from left validator if function, otherwise only set if the
     /// same.
@@ -186,7 +186,7 @@ namespace detail {
 enum class path_type : std::uint8_t { nonexistent, file, directory };
 
 /// get the type of the path from a file name
-CLI11_INLINE path_type check_path(const char *file) noexcept;
+CLI12_INLINE path_type check_path(const char *file) noexcept;
 
 // Static is not needed here, because global const implies static.
 
@@ -222,19 +222,19 @@ class EscapedStringTransformer : public Validator {
 }  // namespace detail
 
 /// Check for existing file (returns error message if check fails)
-CLI11_MODULE_INLINE const detail::ExistingFileValidator ExistingFile;
+CLI12_MODULE_INLINE const detail::ExistingFileValidator ExistingFile;
 
 /// Check for an existing directory (returns error message if check fails)
-CLI11_MODULE_INLINE const detail::ExistingDirectoryValidator ExistingDirectory;
+CLI12_MODULE_INLINE const detail::ExistingDirectoryValidator ExistingDirectory;
 
 /// Check for an existing path
-CLI11_MODULE_INLINE const detail::ExistingPathValidator ExistingPath;
+CLI12_MODULE_INLINE const detail::ExistingPathValidator ExistingPath;
 
 /// Check for an non-existing path
-CLI11_MODULE_INLINE const detail::NonexistentPathValidator NonexistentPath;
+CLI12_MODULE_INLINE const detail::NonexistentPathValidator NonexistentPath;
 
 /// convert escaped characters into their associated values
-CLI11_MODULE_INLINE const detail::EscapedStringTransformer EscapedString;
+CLI12_MODULE_INLINE const detail::EscapedStringTransformer EscapedString;
 
 /// Modify a path if the file is a particular default location, can be used as Check or transform
 /// with the error return optionally disabled
@@ -279,10 +279,10 @@ class Range : public Validator {
 };
 
 /// Check for a non negative number
-CLI11_MODULE_INLINE const Range NonNegativeNumber((std::numeric_limits<double>::max)(), "NONNEGATIVE");
+CLI12_MODULE_INLINE const Range NonNegativeNumber((std::numeric_limits<double>::max)(), "NONNEGATIVE");
 
 /// Check for a positive valued number (val>0.0), <double>::min  here is the smallest positive number
-CLI11_MODULE_INLINE const
+CLI12_MODULE_INLINE const
     Range PositiveNumber((std::numeric_limits<double>::min)(), (std::numeric_limits<double>::max)(), "POSITIVE");
 
 namespace detail {
@@ -333,14 +333,14 @@ typename std::enable_if<std::is_floating_point<T>::value, bool>::type checked_mu
 /// the string is assumed to contain a file name followed by other arguments
 /// the return value contains is a pair with the first argument containing the program name and the second
 /// everything else.
-CLI11_INLINE std::pair<std::string, std::string> split_program_name(std::string commandline);
+CLI12_INLINE std::pair<std::string, std::string> split_program_name(std::string commandline);
 
 }  // namespace detail
 /// @}
 
-// [CLI11:validators_hpp:end]
+// [CLI12:validators_hpp:end]
 }  // namespace CLI
 
-#ifndef CLI11_COMPILE
+#ifndef CLI12_COMPILE
 #include "impl/Validators_inl.hpp"  // IWYU pragma: export
 #endif

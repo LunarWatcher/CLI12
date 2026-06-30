@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
     std::string value;
     app.add_option("--time", value, "enter a date in iso8601 format")->check(ISO8601)->required();
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     std::cout << "date given = " << value << '\n';
 

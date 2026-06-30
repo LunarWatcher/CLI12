@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 
     // Call the setup functions for the subcommands.
     // They are kept alive by a shared pointer in the
-    // lambda function held by CLI11
+    // lambda function held by CLI12
     setup_subcommand_a(app);
 
     // Make sure we get at least one subcommand
@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
 
     // More setup if needed, i.e., other subcommands etc.
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     return 0;
 }

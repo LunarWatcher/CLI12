@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
-#define CLI11_ENABLE_EXTRA_VALIDATORS 1
+#define CLI12_ENABLE_EXTRA_VALIDATORS 1
 #include <CLI/CLI.hpp>
 #include <string>
 
@@ -27,5 +27,5 @@ int main(int argc, char **argv) {
     CLI::App *mockcameraApp = cameraApp->add_subcommand("mock", "Mock Camera Configuration");
     mockcameraApp->add_option("-p,--path", mock_camera_path, "Path")->required()->check(CLI::ExistingPath);
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 }

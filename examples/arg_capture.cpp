@@ -23,7 +23,7 @@ int main(int argc, const char *argv[]) {
 
     auto *subcom = app.add_subcommand("sub", "")->prefix_command();
     subcom->alias("--sub");
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     std::cout << "value=" << value << '\n';
     std::cout << "after Args:";

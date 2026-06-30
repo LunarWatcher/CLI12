@@ -11,7 +11,7 @@ if catch2_dep.version().version_compare('< 3')
 else
     testdep = declare_dependency(
         dependencies: [cli11_dep, dependency('catch2-with-main')],
-        compile_args: '-DCLI11_CATCH3'
+        compile_args: '-DCLI12_CATCH3'
     )
 endif
 
@@ -32,7 +32,7 @@ boost_dep = dependency('boost', required: false, disabler: true)
 if boost_dep.found()
     boost_dep = declare_dependency(
         dependencies: boost_dep,
-        compile_args: '-DCLI11_BOOST_OPTIONAL',
+        compile_args: '-DCLI12_BOOST_OPTIONAL',
     )
     maybe_boost_dep = boost_dep
 else
@@ -81,7 +81,7 @@ foreach app: ['ensure_utf8', 'ensure_utf8_twice']
         build_by_default: false,
     )
     app_cfgdata.set_quoted(app, fs.relative_to(app_tgt.full_path(), meson.current_build_dir()))
-    app_cflags += '-DCLI11_@0@_EXE=@1@'.format(app.to_upper(), app_cfgdata.get(app))
+    app_cflags += '-DCLI12_@0@_EXE=@1@'.format(app.to_upper(), app_cfgdata.get(app))
     app_tgts += app_tgt
 endforeach
 

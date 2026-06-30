@@ -1,8 +1,8 @@
 function(add_cli_exe T)
   add_executable(${T} ${ARGN})
-  target_link_libraries(${T} PUBLIC CLI11)
+  target_link_libraries(${T} PUBLIC CLI12)
   set_property(TARGET ${T} PROPERTY FOLDER "Examples")
-  if(CLI11_FORCE_LIBCXX)
+  if(CLI12_FORCE_LIBCXX)
     set_property(
       TARGET ${T}
       APPEND_STRING
@@ -11,7 +11,7 @@ function(add_cli_exe T)
   endif()
 endfunction()
 
-if(CLI11_BUILD_EXAMPLES_JSON AND CMAKE_VERSION VERSION_GREATER "3.14.7")
+if(CLI12_BUILD_EXAMPLES_JSON AND CMAKE_VERSION VERSION_GREATER "3.14.7")
   message(STATUS "Using nlohmann/json")
   FetchContent_Declare(
     json
@@ -43,7 +43,7 @@ set_property(
            "Some value: 1.2")
 
 add_test(NAME simple_version COMMAND simple --version)
-set_property(TEST simple_version PROPERTY PASS_REGULAR_EXPRESSION "${CLI11_VERSION}")
+set_property(TEST simple_version PROPERTY PASS_REGULAR_EXPRESSION "${CLI12_VERSION}")
 
 add_cli_exe(subcommands subcommands.cpp)
 add_test(NAME subcommands_none COMMAND subcommands)

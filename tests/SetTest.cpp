@@ -47,8 +47,8 @@ TEST_CASE_METHOD(TApp, "simpleSet", "[set]") {
     CHECK(value.size() == 2u);
 }
 
-#if (defined(CLI11_ENABLE_EXTRA_VALIDATORS) && CLI11_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
-    (!defined(CLI11_DISABLE_EXTRA_VALIDATORS) || CLI11_DISABLE_EXTRA_VALIDATORS == 0)
+#if (defined(CLI12_ENABLE_EXTRA_VALIDATORS) && CLI12_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
+    (!defined(CLI12_DISABLE_EXTRA_VALIDATORS) || CLI12_DISABLE_EXTRA_VALIDATORS == 0)
 
 TEST_CASE_METHOD(TApp, "SimpleMaps", "[set]") {
     int value{0};

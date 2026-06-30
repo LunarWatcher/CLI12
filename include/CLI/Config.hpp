@@ -8,7 +8,7 @@
 
 // IWYU pragma: private, include "CLI/CLI.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <algorithm>
 #include <cctype>
 #include <fstream>
@@ -16,14 +16,14 @@
 #include <string>
 #include <utility>
 #include <vector>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
 #include "App.hpp"
 #include "ConfigFwd.hpp"
 #include "StringTools.hpp"
 
 namespace CLI {
-// [CLI11:config_hpp:verbatim]
+// [CLI12:config_hpp:verbatim]
 namespace detail {
 
 std::string convert_arg_for_ini(const std::string &arg,
@@ -47,9 +47,9 @@ std::vector<std::string> generate_parents(const std::string &section, std::strin
 void checkParentSegments(std::vector<ConfigItem> &output, const std::string &currentSection, char parentSeparator);
 }  // namespace detail
 
-// [CLI11:config_hpp:end]
+// [CLI12:config_hpp:end]
 }  // namespace CLI
 
-#ifndef CLI11_COMPILE
+#ifndef CLI12_COMPILE
 #include "impl/Config_inl.hpp"  // IWYU pragma: export
 #endif

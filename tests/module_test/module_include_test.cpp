@@ -5,7 +5,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-// modified from https://github.com/iTrooz/CppModules/blob/cli11 for use in CLI11 tests
+// modified from https://github.com/iTrooz/CppModules/blob/cli11 for use in CLI12 tests
 
 #include <cassert>
 #include <cstdio>

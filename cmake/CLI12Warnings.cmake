@@ -1,5 +1,5 @@
 # Special target that adds warnings. Is not exported.
-add_library(CLI11_warnings INTERFACE)
+add_library(CLI12_warnings INTERFACE)
 
 set(unix-warnings -Wall -Wextra -pedantic -Wshadow -Wsign-conversion -Wswitch-enum)
 
@@ -25,11 +25,11 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT CMAKE_CXX_COMPILER_VERSION VERSI
 endif()
 
 target_compile_options(
-  CLI11_warnings
-  INTERFACE $<$<BOOL:${CLI11_FORCE_LIBCXX}>:-stdlib=libc++>
+  CLI12_warnings
+  INTERFACE $<$<BOOL:${CLI12_FORCE_LIBCXX}>:-stdlib=libc++>
             $<$<CXX_COMPILER_ID:MSVC>:/W4
-            $<$<BOOL:${CLI11_WARNINGS_AS_ERRORS}>:/WX>>
+            $<$<BOOL:${CLI12_WARNINGS_AS_ERRORS}>:/WX>>
             $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:${unix-warnings}
-            $<$<BOOL:${CLI11_WARNINGS_AS_ERRORS}>:-Werror>>)
+            $<$<BOOL:${CLI12_WARNINGS_AS_ERRORS}>:-Werror>>)
 
-target_link_options(CLI11_warnings INTERFACE $<$<BOOL:${CLI11_FORCE_LIBCXX}>:-stdlib=libc++>)
+target_link_options(CLI12_warnings INTERFACE $<$<BOOL:${CLI12_FORCE_LIBCXX}>:-stdlib=libc++>)

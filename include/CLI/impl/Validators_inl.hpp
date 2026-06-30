@@ -14,16 +14,16 @@
 #include "../StringTools.hpp"
 #include "../TypeTools.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <map>
 #include <string>
 #include <utility>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
 namespace CLI {
-// [CLI11:validators_inl_hpp:verbatim]
+// [CLI12:validators_inl_hpp:verbatim]
 
-CLI11_INLINE std::string Validator::operator()(std::string &str) const {
+CLI12_INLINE std::string Validator::operator()(std::string &str) const {
     std::string retstring;
     if(active_) {
         if(non_modifying_) {
@@ -36,13 +36,13 @@ CLI11_INLINE std::string Validator::operator()(std::string &str) const {
     return retstring;
 }
 
-CLI11_NODISCARD CLI11_INLINE Validator Validator::description(std::string validator_desc) const {
+CLI12_NODISCARD CLI12_INLINE Validator Validator::description(std::string validator_desc) const {
     Validator newval(*this);
     newval.desc_function_ = [validator_desc]() { return validator_desc; };
     return newval;
 }
 
-CLI11_INLINE Validator Validator::operator&(const Validator &other) const {
+CLI12_INLINE Validator Validator::operator&(const Validator &other) const {
     Validator newval;
 
     newval._merge_description(*this, other, " AND ");
@@ -64,7 +64,7 @@ CLI11_INLINE Validator Validator::operator&(const Validator &other) const {
     return newval;
 }
 
-CLI11_INLINE Validator Validator::operator|(const Validator &other) const {
+CLI12_INLINE Validator Validator::operator|(const Validator &other) const {
     Validator newval;
 
     newval._merge_description(*this, other, " OR ");
@@ -86,7 +86,7 @@ CLI11_INLINE Validator Validator::operator|(const Validator &other) const {
     return newval;
 }
 
-CLI11_INLINE Validator Validator::operator!() const {
+CLI12_INLINE Validator Validator::operator!() const {
     Validator newval;
     const std::function<std::string()> &dfunc1 = desc_function_;
     newval.desc_function_ = [dfunc1]() {
@@ -108,7 +108,7 @@ CLI11_INLINE Validator Validator::operator!() const {
     return newval;
 }
 
-CLI11_INLINE void
+CLI12_INLINE void
 Validator::_merge_description(const Validator &val1, const Validator &val2, const std::string &merger) {
 
     const std::function<std::string()> &dfunc1 = val1.desc_function_;
@@ -126,8 +126,8 @@ Validator::_merge_description(const Validator &val1, const Validator &val2, cons
 
 namespace detail {
 
-#if defined CLI11_HAS_FILESYSTEM && CLI11_HAS_FILESYSTEM > 0
-CLI11_INLINE path_type check_path(const char *file) noexcept {
+#if defined CLI12_HAS_FILESYSTEM && CLI12_HAS_FILESYSTEM > 0
+CLI12_INLINE path_type check_path(const char *file) noexcept {
     std::error_code ec;
     auto stat = std::filesystem::status(to_path(file), ec);
     if(ec) {
@@ -151,7 +151,7 @@ CLI11_INLINE path_type check_path(const char *file) noexcept {
     }
 }
 #else
-CLI11_INLINE path_type check_path(const char *file) noexcept {
+CLI12_INLINE path_type check_path(const char *file) noexcept {
 #if defined(_MSC_VER)
     struct __stat64 buffer;
     if(_stat64(file, &buffer) == 0) {
@@ -167,7 +167,7 @@ CLI11_INLINE path_type check_path(const char *file) noexcept {
 }
 #endif
 
-CLI11_INLINE ExistingFileValidator::ExistingFileValidator() : Validator("FILE") {
+CLI12_INLINE ExistingFileValidator::ExistingFileValidator() : Validator("FILE") {
     func_ = [](std::string &filename) {
         auto path_result = check_path(filename.c_str());
         if(path_result == path_type::nonexistent) {
@@ -180,7 +180,7 @@ CLI11_INLINE ExistingFileValidator::ExistingFileValidator() : Validator("FILE") 
     };
 }
 
-CLI11_INLINE ExistingDirectoryValidator::ExistingDirectoryValidator() : Validator("DIR") {
+CLI12_INLINE ExistingDirectoryValidator::ExistingDirectoryValidator() : Validator("DIR") {
     func_ = [](std::string &filename) {
         auto path_result = check_path(filename.c_str());
         if(path_result == path_type::nonexistent) {
@@ -193,7 +193,7 @@ CLI11_INLINE ExistingDirectoryValidator::ExistingDirectoryValidator() : Validato
     };
 }
 
-CLI11_INLINE ExistingPathValidator::ExistingPathValidator() : Validator("PATH(existing)") {
+CLI12_INLINE ExistingPathValidator::ExistingPathValidator() : Validator("PATH(existing)") {
     func_ = [](std::string &filename) {
         auto path_result = check_path(filename.c_str());
         if(path_result == path_type::nonexistent) {
@@ -203,7 +203,7 @@ CLI11_INLINE ExistingPathValidator::ExistingPathValidator() : Validator("PATH(ex
     };
 }
 
-CLI11_INLINE NonexistentPathValidator::NonexistentPathValidator() : Validator("PATH(non-existing)") {
+CLI12_INLINE NonexistentPathValidator::NonexistentPathValidator() : Validator("PATH(non-existing)") {
     func_ = [](std::string &filename) {
         auto path_result = check_path(filename.c_str());
         if(path_result != path_type::nonexistent) {
@@ -213,7 +213,7 @@ CLI11_INLINE NonexistentPathValidator::NonexistentPathValidator() : Validator("P
     };
 }
 
-CLI11_INLINE EscapedStringTransformer::EscapedStringTransformer() {
+CLI12_INLINE EscapedStringTransformer::EscapedStringTransformer() {
     func_ = [](std::string &str) {
         try {
             if(str.size() > 1 && (str.front() == '\"' || str.front() == '\'' || str.front() == '`') &&
@@ -234,7 +234,7 @@ CLI11_INLINE EscapedStringTransformer::EscapedStringTransformer() {
 }
 }  // namespace detail
 
-CLI11_INLINE FileOnDefaultPath::FileOnDefaultPath(std::string default_path, bool enableErrorReturn)
+CLI12_INLINE FileOnDefaultPath::FileOnDefaultPath(std::string default_path, bool enableErrorReturn)
     : Validator("FILE") {
     func_ = [default_path, enableErrorReturn](std::string &filename) {
         auto path_result = detail::check_path(filename.c_str());
@@ -260,7 +260,7 @@ CLI11_INLINE FileOnDefaultPath::FileOnDefaultPath(std::string default_path, bool
 
 namespace detail {
 
-CLI11_INLINE std::pair<std::string, std::string> split_program_name(std::string commandline) {
+CLI12_INLINE std::pair<std::string, std::string> split_program_name(std::string commandline) {
     // try to determine the programName
     std::pair<std::string, std::string> vals;
     trim(commandline);
@@ -308,5 +308,5 @@ CLI11_INLINE std::pair<std::string, std::string> split_program_name(std::string 
 }  // namespace detail
 /// @}
 
-// [CLI11:validators_inl_hpp:end]
+// [CLI12:validators_inl_hpp:end]
 }  // namespace CLI

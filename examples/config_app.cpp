@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
 
     app.get_config_formatter_base()->quoteCharacter('"', '"');
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     if(app.get_option("--print")->as<bool>()) {  // NEW: print configuration and exit
         std::cout << app.config_to_str(true, false);

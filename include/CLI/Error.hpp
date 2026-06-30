@@ -8,24 +8,24 @@
 
 // IWYU pragma: private, include "CLI/CLI.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <exception>
 #include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
 // CLI library includes
 #include "Macros.hpp"
 #include "StringTools.hpp"
 
 namespace CLI {
-// [CLI11:error_hpp:verbatim]
+// [CLI12:error_hpp:verbatim]
 
 // Use one of these on all error classes.
 // These are temporary and are undef'd at the end of this file.
-#define CLI11_ERROR_DEF(parent, name)                                                                                  \
+#define CLI12_ERROR_DEF(parent, name)                                                                                  \
   protected:                                                                                                           \
     name(std::string ename, std::string msg, int exit_code) : parent(std::move(ename), std::move(msg), exit_code) {}   \
     name(std::string ename, std::string msg, ExitCodes exit_code)                                                      \
@@ -36,7 +36,7 @@ namespace CLI {
     name(std::string msg, int exit_code) : parent(#name, std::move(msg), exit_code) {}
 
 // This is added after the one above if a class is used directly and builds its own message
-#define CLI11_ERROR_SIMPLE(name)                                                                                       \
+#define CLI12_ERROR_SIMPLE(name)                                                                                       \
     explicit name(std::string msg) : name(#name, msg, ExitCodes::name) {}
 
 /// These codes are part of every error in CLI. They can be obtained from e using e.exit_code or as a quick shortcut,
@@ -64,7 +64,7 @@ enum class ExitCodes : int {
 // Error definitions
 
 /// @defgroup error_group Errors
-/// @brief Errors thrown by CLI11
+/// @brief Errors thrown by CLI12
 ///
 /// These are the errors that can be thrown. Some of them, like CLI::Success, are not really errors.
 /// @{
@@ -75,9 +75,9 @@ class Error : public std::runtime_error {
     std::string error_name{"Error"};
 
   public:
-    CLI11_NODISCARD int get_exit_code() const { return actual_exit_code; }
+    CLI12_NODISCARD int get_exit_code() const { return actual_exit_code; }
 
-    CLI11_NODISCARD std::string get_name() const { return error_name; }
+    CLI12_NODISCARD std::string get_name() const { return error_name; }
 
     Error(std::string name, std::string msg, int exit_code = static_cast<int>(ExitCodes::BaseClass))
         : runtime_error(msg), actual_exit_code(exit_code), error_name(std::move(name)) {}
@@ -89,13 +89,13 @@ class Error : public std::runtime_error {
 
 /// Construction errors (not in parsing)
 class ConstructionError : public Error {
-    CLI11_ERROR_DEF(Error, ConstructionError)
+    CLI12_ERROR_DEF(Error, ConstructionError)
 };
 
 /// Thrown when an option is set to conflicting values (non-vector and multi args, for example)
 class IncorrectConstruction : public ConstructionError {
-    CLI11_ERROR_DEF(ConstructionError, IncorrectConstruction)
-    CLI11_ERROR_SIMPLE(IncorrectConstruction)
+    CLI12_ERROR_DEF(ConstructionError, IncorrectConstruction)
+    CLI12_ERROR_SIMPLE(IncorrectConstruction)
     static IncorrectConstruction PositionalFlag(std::string name) {
         return IncorrectConstruction(name + ": Flags cannot be positional");
     }
@@ -122,8 +122,8 @@ class IncorrectConstruction : public ConstructionError {
 
 /// Thrown on construction of a bad name
 class BadNameString : public ConstructionError {
-    CLI11_ERROR_DEF(ConstructionError, BadNameString)
-    CLI11_ERROR_SIMPLE(BadNameString)
+    CLI12_ERROR_DEF(ConstructionError, BadNameString)
+    CLI12_ERROR_SIMPLE(BadNameString)
     static BadNameString OneCharName(std::string name) { return BadNameString("Invalid one char name: " + name); }
     static BadNameString MissingDash(std::string name) {
         return BadNameString("Long names strings require 2 dashes " + name);
@@ -142,7 +142,7 @@ class BadNameString : public ConstructionError {
 
 /// Thrown when an option already exists
 class OptionAlreadyAdded : public ConstructionError {
-    CLI11_ERROR_DEF(ConstructionError, OptionAlreadyAdded)
+    CLI12_ERROR_DEF(ConstructionError, OptionAlreadyAdded)
     explicit OptionAlreadyAdded(std::string name)
         : OptionAlreadyAdded(name + " is already added", ExitCodes::OptionAlreadyAdded) {}
     static OptionAlreadyAdded Requires(std::string name, std::string other) {
@@ -157,54 +157,54 @@ class OptionAlreadyAdded : public ConstructionError {
 
 /// Anything that can error in Parse
 class ParseError : public Error {
-    CLI11_ERROR_DEF(Error, ParseError)
+    CLI12_ERROR_DEF(Error, ParseError)
 };
 
 // Not really "errors"
 
 /// This is a successful completion on parsing, supposed to exit
 class Success : public ParseError {
-    CLI11_ERROR_DEF(ParseError, Success)
+    CLI12_ERROR_DEF(ParseError, Success)
     Success() : Success("Successfully completed, should be caught and quit", ExitCodes::Success) {}
 };
 
 /// -h or --help on command line
 class CallForHelp : public Success {
-    CLI11_ERROR_DEF(Success, CallForHelp)
+    CLI12_ERROR_DEF(Success, CallForHelp)
     CallForHelp() : CallForHelp("This should be caught in your main function, see examples", ExitCodes::Success) {}
 };
 
 /// Usually something like --help-all on command line
 class CallForAllHelp : public Success {
-    CLI11_ERROR_DEF(Success, CallForAllHelp)
+    CLI12_ERROR_DEF(Success, CallForAllHelp)
     CallForAllHelp()
         : CallForAllHelp("This should be caught in your main function, see examples", ExitCodes::Success) {}
 };
 
 /// -v or --version on command line
 class CallForVersion : public Success {
-    CLI11_ERROR_DEF(Success, CallForVersion)
+    CLI12_ERROR_DEF(Success, CallForVersion)
     CallForVersion()
         : CallForVersion("This should be caught in your main function, see examples", ExitCodes::Success) {}
 };
 
-/// Does not output a diagnostic in CLI11_PARSE, but allows main() to return with a specific error code.
+/// Does not output a diagnostic in CLI12_PARSE, but allows main() to return with a specific error code.
 class RuntimeError : public ParseError {
-    CLI11_ERROR_DEF(ParseError, RuntimeError)
+    CLI12_ERROR_DEF(ParseError, RuntimeError)
     explicit RuntimeError(int exit_code = 1) : RuntimeError("Runtime error", exit_code) {}
 };
 
 /// Thrown when parsing an INI file and it is missing
 class FileError : public ParseError {
-    CLI11_ERROR_DEF(ParseError, FileError)
-    CLI11_ERROR_SIMPLE(FileError)
+    CLI12_ERROR_DEF(ParseError, FileError)
+    CLI12_ERROR_SIMPLE(FileError)
     static FileError Missing(std::string name) { return FileError(name + " was not readable (missing?)"); }
 };
 
 /// Thrown when conversion call back fails, such as when an int fails to coerce to a string
 class ConversionError : public ParseError {
-    CLI11_ERROR_DEF(ParseError, ConversionError)
-    CLI11_ERROR_SIMPLE(ConversionError)
+    CLI12_ERROR_DEF(ParseError, ConversionError)
+    CLI12_ERROR_SIMPLE(ConversionError)
     ConversionError(std::string member, std::string name)
         : ConversionError("The value " + member + " is not an allowed value for " + name) {}
     ConversionError(std::string name, std::vector<std::string> results)
@@ -219,14 +219,14 @@ class ConversionError : public ParseError {
 
 /// Thrown when validation of results fails
 class ValidationError : public ParseError {
-    CLI11_ERROR_DEF(ParseError, ValidationError)
-    CLI11_ERROR_SIMPLE(ValidationError)
+    CLI12_ERROR_DEF(ParseError, ValidationError)
+    CLI12_ERROR_SIMPLE(ValidationError)
     explicit ValidationError(std::string name, std::string msg) : ValidationError(name + ": " + msg) {}
 };
 
 /// Thrown when a required option is missing
 class RequiredError : public ParseError {
-    CLI11_ERROR_DEF(ParseError, RequiredError)
+    CLI12_ERROR_DEF(ParseError, RequiredError)
     explicit RequiredError(std::string name) : RequiredError(name + " is required", ExitCodes::RequiredError) {}
     static RequiredError Subcommand(std::size_t min_subcom) {
         if(min_subcom == 1) {
@@ -261,8 +261,8 @@ class RequiredError : public ParseError {
 
 /// Thrown when the wrong number of arguments has been received
 class ArgumentMismatch : public ParseError {
-    CLI11_ERROR_DEF(ParseError, ArgumentMismatch)
-    CLI11_ERROR_SIMPLE(ArgumentMismatch)
+    CLI12_ERROR_DEF(ParseError, ArgumentMismatch)
+    CLI12_ERROR_SIMPLE(ArgumentMismatch)
     ArgumentMismatch(std::string name, int expected, std::size_t received)
         : ArgumentMismatch(expected > 0 ? ("Expected exactly " + std::to_string(expected) + " arguments to " + name +
                                            ", got " + std::to_string(received))
@@ -292,21 +292,21 @@ class ArgumentMismatch : public ParseError {
 
 /// Thrown when a requires option is missing
 class RequiresError : public ParseError {
-    CLI11_ERROR_DEF(ParseError, RequiresError)
+    CLI12_ERROR_DEF(ParseError, RequiresError)
     RequiresError(std::string curname, std::string subname)
         : RequiresError(curname + " requires " + subname, ExitCodes::RequiresError) {}
 };
 
 /// Thrown when an excludes option is present
 class ExcludesError : public ParseError {
-    CLI11_ERROR_DEF(ParseError, ExcludesError)
+    CLI12_ERROR_DEF(ParseError, ExcludesError)
     ExcludesError(std::string curname, std::string subname)
         : ExcludesError(curname + " excludes " + subname, ExitCodes::ExcludesError) {}
 };
 
 /// Thrown when too many positionals or options are found
 class ExtrasError : public ParseError {
-    CLI11_ERROR_DEF(ParseError, ExtrasError)
+    CLI12_ERROR_DEF(ParseError, ExtrasError)
     explicit ExtrasError(std::vector<std::string> args)
         : ExtrasError((args.size() > 1 ? "The following arguments were not expected: "
                                        : "The following argument was not expected: ") +
@@ -322,8 +322,8 @@ class ExtrasError : public ParseError {
 
 /// Thrown when extra values are found in an INI file
 class ConfigError : public ParseError {
-    CLI11_ERROR_DEF(ParseError, ConfigError)
-    CLI11_ERROR_SIMPLE(ConfigError)
+    CLI12_ERROR_DEF(ParseError, ConfigError)
+    CLI12_ERROR_SIMPLE(ConfigError)
     static ConfigError Extras(std::string item) { return ConfigError("INI was not able to parse " + item); }
     static ConfigError NotConfigurable(std::string item) {
         return ConfigError(item + ": This option is not allowed in a configuration file");
@@ -332,7 +332,7 @@ class ConfigError : public ParseError {
 
 /// Thrown when validation fails before parsing
 class InvalidError : public ParseError {
-    CLI11_ERROR_DEF(ParseError, InvalidError)
+    CLI12_ERROR_DEF(ParseError, InvalidError)
     explicit InvalidError(std::string name)
         : InvalidError(name + ": Too many positional arguments with unlimited expected args", ExitCodes::InvalidError) {
     }
@@ -341,22 +341,22 @@ class InvalidError : public ParseError {
 /// This is just a safety check to verify selection and parsing match - you should not ever see it
 /// Strings are directly added to this error, but again, it should never be seen.
 class HorribleError : public ParseError {
-    CLI11_ERROR_DEF(ParseError, HorribleError)
-    CLI11_ERROR_SIMPLE(HorribleError)
+    CLI12_ERROR_DEF(ParseError, HorribleError)
+    CLI12_ERROR_SIMPLE(HorribleError)
 };
 
 // After parsing
 
 /// Thrown when counting a nonexistent option
 class OptionNotFound : public Error {
-    CLI11_ERROR_DEF(Error, OptionNotFound)
+    CLI12_ERROR_DEF(Error, OptionNotFound)
     explicit OptionNotFound(std::string name) : OptionNotFound(name + " not found", ExitCodes::OptionNotFound) {}
 };
 
-#undef CLI11_ERROR_DEF
-#undef CLI11_ERROR_SIMPLE
+#undef CLI12_ERROR_DEF
+#undef CLI12_ERROR_SIMPLE
 
 /// @}
 
-// [CLI11:error_hpp:end]
+// [CLI12:error_hpp:end]
 }  // namespace CLI

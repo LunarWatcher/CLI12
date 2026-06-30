@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-if(CLI11_SINGLE_FILE)
+if(CLI12_SINGLE_FILE)
   # Single file test
   find_package(
     Python
@@ -13,25 +13,25 @@ if(CLI11_SINGLE_FILE)
 
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/single-include")
   add_custom_command(
-    OUTPUT "${PROJECT_BINARY_DIR}/single-include/CLI11.hpp"
+    OUTPUT "${PROJECT_BINARY_DIR}/single-include/CLI12.hpp"
     COMMAND
-      Python::Interpreter "${PROJECT_SOURCE_DIR}/scripts/MakeSingleHeader.py" ${CLI11_headers}
-      ${CLI11_impl_headers} --main "${CMAKE_CURRENT_SOURCE_DIR}/CLI11.hpp.in" --output
-      "${PROJECT_BINARY_DIR}/single-include/CLI11.hpp" --version "${CLI11_VERSION}"
-    DEPENDS "${PROJECT_SOURCE_DIR}/include/CLI/CLI.hpp" CLI11.hpp.in ${CLI11_headers}
-            ${CLI11_impl_headers})
-  add_custom_target(CLI11-generate-single-file ALL
-                    DEPENDS "${PROJECT_BINARY_DIR}/single-include/CLI11.hpp")
-  set_property(TARGET CLI11-generate-single-file PROPERTY FOLDER "Scripts")
-  if(CLI11_INSTALL OR CLI11_FULL_INSTALL)
-    install(FILES "${PROJECT_BINARY_DIR}/single-include/CLI11.hpp"
+      Python::Interpreter "${PROJECT_SOURCE_DIR}/scripts/MakeSingleHeader.py" ${CLI12_headers}
+      ${CLI12_impl_headers} --main "${CMAKE_CURRENT_SOURCE_DIR}/CLI12.hpp.in" --output
+      "${PROJECT_BINARY_DIR}/single-include/CLI12.hpp" --version "${CLI12_VERSION}"
+    DEPENDS "${PROJECT_SOURCE_DIR}/include/CLI/CLI.hpp" CLI12.hpp.in ${CLI12_headers}
+            ${CLI12_impl_headers})
+  add_custom_target(CLI12-generate-single-file ALL
+                    DEPENDS "${PROJECT_BINARY_DIR}/single-include/CLI12.hpp")
+  set_property(TARGET CLI12-generate-single-file PROPERTY FOLDER "Scripts")
+  if(CLI12_INSTALL OR CLI12_FULL_INSTALL)
+    install(FILES "${PROJECT_BINARY_DIR}/single-include/CLI12.hpp"
             DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
   endif()
-  add_library(CLI11_SINGLE INTERFACE)
-  target_link_libraries(CLI11_SINGLE INTERFACE CLI11)
-  add_dependencies(CLI11_SINGLE CLI11-generate-single-file)
-  target_compile_definitions(CLI11_SINGLE INTERFACE -DCLI11_SINGLE_FILE)
+  add_library(CLI12_SINGLE INTERFACE)
+  target_link_libraries(CLI12_SINGLE INTERFACE CLI12)
+  add_dependencies(CLI12_SINGLE CLI12-generate-single-file)
+  target_compile_definitions(CLI12_SINGLE INTERFACE -DCLI12_SINGLE_FILE)
   target_include_directories(
-    CLI11_SINGLE INTERFACE $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/single-include/>
+    CLI12_SINGLE INTERFACE $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/single-include/>
                            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 endif()

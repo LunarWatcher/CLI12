@@ -2867,12 +2867,12 @@ TEST_CASE_METHOD(TApp, "IniEnvironmental", "[config]") {
     TempFile tmpini{"TestIniTmp.ini"};
 
     int key{0};
-    app.add_option("key", key)->envname("CLI11_TEST_ENV_KEY_TMP");
+    app.add_option("key", key)->envname("CLI12_TEST_ENV_KEY_TMP");
     app.set_config("--config", tmpini);
 
     {
         std::ofstream out{tmpini};
-        out << "CLI11_TEST_ENV_KEY_TMP=3" << '\n';
+        out << "CLI12_TEST_ENV_KEY_TMP=3" << '\n';
     }
 
     REQUIRE_NOTHROW(run());
@@ -3189,18 +3189,18 @@ TEST_CASE_METHOD(TApp, "TomlOutputPositional", "[config]") {
 // try the output with environmental only arguments
 TEST_CASE_METHOD(TApp, "TomlOutputEnvironmental", "[config]") {
 
-    put_env("CLI11_TEST_ENV_TMP", "2");
+    put_env("CLI12_TEST_ENV_TMP", "2");
 
     int val{1};
-    app.add_option(std::string{}, val)->envname("CLI11_TEST_ENV_TMP");
+    app.add_option(std::string{}, val)->envname("CLI12_TEST_ENV_TMP");
 
     run();
 
     CHECK(val == 2);
     std::string str = app.config_to_str();
-    CHECK(str == "CLI11_TEST_ENV_TMP=2\n");
+    CHECK(str == "CLI12_TEST_ENV_TMP=2\n");
 
-    unset_env("CLI11_TEST_ENV_TMP");
+    unset_env("CLI12_TEST_ENV_TMP");
 }
 
 TEST_CASE_METHOD(TApp, "TomlOutputNoConfigurable", "[config]") {
@@ -3461,8 +3461,8 @@ TEST_CASE_METHOD(TApp, "TomlOutputFlag", "[config]") {
     CHECK_THAT(str, Contains("nothing"));
 }
 
-#if (defined(CLI11_ENABLE_EXTRA_VALIDATORS) && CLI11_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
-    (!defined(CLI11_DISABLE_EXTRA_VALIDATORS) || CLI11_DISABLE_EXTRA_VALIDATORS == 0)
+#if (defined(CLI12_ENABLE_EXTRA_VALIDATORS) && CLI12_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
+    (!defined(CLI12_DISABLE_EXTRA_VALIDATORS) || CLI12_DISABLE_EXTRA_VALIDATORS == 0)
 TEST_CASE_METHOD(TApp, "TomlOutputSet", "[config]") {
 
     int v{0};
@@ -3940,8 +3940,8 @@ TEST_CASE_METHOD(TApp, "IniOutputFlag", "[config]") {
     CHECK_THAT(str, Contains("nothing"));
 }
 
-#if (defined(CLI11_ENABLE_EXTRA_VALIDATORS) && CLI11_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
-    (!defined(CLI11_DISABLE_EXTRA_VALIDATORS) || CLI11_DISABLE_EXTRA_VALIDATORS == 0)
+#if (defined(CLI12_ENABLE_EXTRA_VALIDATORS) && CLI12_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
+    (!defined(CLI12_DISABLE_EXTRA_VALIDATORS) || CLI12_DISABLE_EXTRA_VALIDATORS == 0)
 TEST_CASE_METHOD(TApp, "IniOutputSet", "[config]") {
 
     int v{0};

@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
 
     CLI::Option *s = stop->add_flag("-c,--count", "Counter");
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     std::cout << "Working on --file from start: " << file << '\n';
     std::cout << "Working on --count from stop: " << s->count() << ", direct count: " << stop->count("--count") << '\n';

@@ -4,34 +4,34 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-if(CLI11_PRECOMPILED)
+if(CLI12_PRECOMPILED)
   # Create static lib
-  file(GLOB CLI11_precompile_sources "${PROJECT_SOURCE_DIR}/src/*.cpp")
-  add_library(CLI11 STATIC ${CLI11_headers} ${CLI11_library_headers} ${CLI11_impl_headers}
-                           ${CLI11_precompile_sources})
-  target_compile_definitions(CLI11 PUBLIC -DCLI11_COMPILE)
+  file(GLOB CLI12_precompile_sources "${PROJECT_SOURCE_DIR}/src/*.cpp")
+  add_library(CLI12 STATIC ${CLI12_headers} ${CLI12_library_headers} ${CLI12_impl_headers}
+                           ${CLI12_precompile_sources})
+  target_compile_definitions(CLI12 PUBLIC -DCLI12_COMPILE)
 
   set(PUBLIC_OR_INTERFACE PUBLIC)
 else()
-  add_library(CLI11 INTERFACE)
+  add_library(CLI12 INTERFACE)
   if(CMAKE_VERSION VERSION_GREATER 3.19)
     # This is only useful for visual studio and other IDE builds
-    target_sources(CLI11 PRIVATE ${CLI11_headers} ${CLI11_library_headers} ${CLI11_impl_headers})
+    target_sources(CLI12 PRIVATE ${CLI12_headers} ${CLI12_library_headers} ${CLI12_impl_headers})
 
   endif()
 
   set(PUBLIC_OR_INTERFACE INTERFACE)
 endif()
 
-if(CLI11_ENABLE_EXTRA_VALIDATORS)
-  target_compile_definitions(CLI11 ${PUBLIC_OR_INTERFACE} -DCLI11_ENABLE_EXTRA_VALIDATORS=1)
-elseif(CLI11_DISABLE_EXTRA_VALIDATORS)
-  target_compile_definitions(CLI11 ${PUBLIC_OR_INTERFACE} -DCLI11_DISABLE_EXTRA_VALIDATORS=1)
-elseif(DEFINED CLI11_ENABLE_EXTRA_VALIDATORS)
-  target_compile_definitions(CLI11 ${PUBLIC_OR_INTERFACE} -DCLI11_ENABLE_EXTRA_VALIDATORS=0)
+if(CLI12_ENABLE_EXTRA_VALIDATORS)
+  target_compile_definitions(CLI12 ${PUBLIC_OR_INTERFACE} -DCLI12_ENABLE_EXTRA_VALIDATORS=1)
+elseif(CLI12_DISABLE_EXTRA_VALIDATORS)
+  target_compile_definitions(CLI12 ${PUBLIC_OR_INTERFACE} -DCLI12_DISABLE_EXTRA_VALIDATORS=1)
+elseif(DEFINED CLI12_ENABLE_EXTRA_VALIDATORS)
+  target_compile_definitions(CLI12 ${PUBLIC_OR_INTERFACE} -DCLI12_ENABLE_EXTRA_VALIDATORS=0)
 endif()
 # Allow IDE's to group targets into folders
-add_library(CLI11::CLI11 ALIAS CLI11) # for add_subdirectory calls
+add_library(CLI12::CLI12 ALIAS CLI12) # for add_subdirectory calls
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   set(SYSTEM_INCL "")
@@ -43,26 +43,22 @@ endif()
 
 # Duplicated because CMake adds the current source dir if you don't.
 target_include_directories(
-  CLI11 ${SYSTEM_INCL} ${PUBLIC_OR_INTERFACE} $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  CLI12 ${SYSTEM_INCL} ${PUBLIC_OR_INTERFACE} $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
 if(CMAKE_CXX_STANDARD LESS 14)
-  target_compile_features(CLI11 INTERFACE cxx_std_11)
+  target_compile_features(CLI12 INTERFACE cxx_std_11)
 endif()
 
-if(CLI11_INSTALL OR CLI11_FULL_INSTALL)
+if(CLI12_INSTALL OR CLI12_FULL_INSTALL)
 
   # Make an export target
-  install(TARGETS CLI11 EXPORT CLI11Targets)
-  if((NOT CLI11_SINGLE_FILE) OR CLI11_FULL_INSTALL)
-    install(FILES ${CLI11_headers} ${CLI11_library_headers}
+  install(TARGETS CLI12 EXPORT CLI12Targets)
+  if((NOT CLI12_SINGLE_FILE) OR CLI12_FULL_INSTALL)
+    install(FILES ${CLI12_headers} ${CLI12_library_headers}
             DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/CLI")
-    if(NOT (CLI11_DISABLE_IMPL_HEADERS_INSTALL AND CLI11_PRECOMPILED))
-      install(FILES ${CLI11_impl_headers} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/CLI/impl")
+    if(NOT (CLI12_DISABLE_IMPL_HEADERS_INSTALL AND CLI12_PRECOMPILED))
+      install(FILES ${CLI12_impl_headers} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/CLI/impl")
     endif()
   endif()
-endif()
-
-if(CLI11_MODULES)
-  add_subdirectory(modules)
 endif()

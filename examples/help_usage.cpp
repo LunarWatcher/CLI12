@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
     int level{5}, subopt{0};
 
     // app caption
-    CLI::App app{"CLI11 help"};
+    CLI::App app{"CLI12 help"};
 
     app.require_subcommand(1);
     // subcommands options and flags
@@ -40,14 +40,14 @@ int main(int argc, char **argv) {
     app.set_help_flag("");
     app.set_help_all_flag("-h, --help");
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     return 0;
 }
 
 /*
 $ ./help_usage -h
-  CLI11 help
+  CLI12 help
 
 OPTIONS:
   -h,     --help

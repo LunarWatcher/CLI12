@@ -1863,8 +1863,8 @@ TEST_CASE_METHOD(TApp, "BigPositional", "[app]") {
     CHECK(vec == args);
 }
 
-#if (defined(CLI11_ENABLE_EXTRA_VALIDATORS) && CLI11_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
-    (!defined(CLI11_DISABLE_EXTRA_VALIDATORS) || CLI11_DISABLE_EXTRA_VALIDATORS == 0)
+#if (defined(CLI12_ENABLE_EXTRA_VALIDATORS) && CLI12_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
+    (!defined(CLI12_DISABLE_EXTRA_VALIDATORS) || CLI12_DISABLE_EXTRA_VALIDATORS == 0)
 TEST_CASE_METHOD(TApp, "VectorArgAndPositional", "[app]") {
     std::vector<std::string> vec;
     std::vector<int> ivec;
@@ -1981,7 +1981,7 @@ TEST_CASE_METHOD(TApp, "FileNotExists", "[app]") {
     CHECK(!CLI::ExistingFile(myfile).empty());
 }
 
-#if defined CLI11_HAS_FILESYSTEM && CLI11_HAS_FILESYSTEM > 0 && defined(_MSC_VER)
+#if defined CLI12_HAS_FILESYSTEM && CLI12_HAS_FILESYSTEM > 0 && defined(_MSC_VER)
 TEST_CASE_METHOD(TApp, "filesystemWideName", "[app]") {
     std::filesystem::path myfile{L"voil\u20ac.txt"};
 
@@ -2236,10 +2236,10 @@ TEST_CASE_METHOD(TApp, "NeedsChainedFlags", "[app]") {
 
 TEST_CASE_METHOD(TApp, "Env", "[app]") {
 
-    put_env("CLI11_TEST_ENV_TMP", "2");
+    put_env("CLI12_TEST_ENV_TMP", "2");
 
     int val{1};
-    CLI::Option *vopt = app.add_option("--tmp", val)->envname("CLI11_TEST_ENV_TMP");
+    CLI::Option *vopt = app.add_option("--tmp", val)->envname("CLI12_TEST_ENV_TMP");
 
     run();
 
@@ -2249,17 +2249,17 @@ TEST_CASE_METHOD(TApp, "Env", "[app]") {
     vopt->required();
     run();
 
-    unset_env("CLI11_TEST_ENV_TMP");
+    unset_env("CLI12_TEST_ENV_TMP");
     CHECK_THROWS_AS(run(), CLI::RequiredError);
 }
 
 // curiously check if an environmental only option works
 TEST_CASE_METHOD(TApp, "EnvOnly", "[app]") {
 
-    put_env("CLI11_TEST_ENV_TMP", "2");
+    put_env("CLI12_TEST_ENV_TMP", "2");
 
     int val{1};
-    CLI::Option *vopt = app.add_option("", val)->envname("CLI11_TEST_ENV_TMP");
+    CLI::Option *vopt = app.add_option("", val)->envname("CLI12_TEST_ENV_TMP");
 
     run();
 
@@ -2269,7 +2269,7 @@ TEST_CASE_METHOD(TApp, "EnvOnly", "[app]") {
     vopt->required();
     run();
 
-    unset_env("CLI11_TEST_ENV_TMP");
+    unset_env("CLI12_TEST_ENV_TMP");
     CHECK_THROWS_AS(run(), CLI::RequiredError);
 }
 
@@ -2277,12 +2277,12 @@ TEST_CASE_METHOD(TApp, "EnvOnly", "[app]") {
 TEST_CASE_METHOD(TApp, "groupEnvRequired", "[app]") {
     std::string str;
     auto *group1 = app.add_option_group("group1");
-    put_env("CLI11_TEST_GROUP_REQUIRED", "string_abc");
-    group1->add_option("-f", str, "f")->envname("CLI11_TEST_GROUP_REQUIRED")->required();
+    put_env("CLI12_TEST_GROUP_REQUIRED", "string_abc");
+    group1->add_option("-f", str, "f")->envname("CLI12_TEST_GROUP_REQUIRED")->required();
 
     run();
     CHECK(str == "string_abc");
-    unset_env("CLI11_TEST_GROUP_REQUIRED");
+    unset_env("CLI12_TEST_GROUP_REQUIRED");
 }
 
 TEST_CASE_METHOD(TApp, "RangeInt", "[app]") {
@@ -3086,35 +3086,35 @@ static int spawn_app_exe(const tchar *path) {
 
 // #845
 TEST_CASE("Ensure UTF-8", "[app]") {
-    auto retval = spawn_app_exe(PLATFORM_TEXT(CLI11_ENSURE_UTF8_EXE));
+    auto retval = spawn_app_exe(PLATFORM_TEXT(CLI12_ENSURE_UTF8_EXE));
 
     if(retval == -1) {
-        FAIL("Executable " CLI11_ENSURE_UTF8_EXE " reported that argv pointer changed where it should not have been");
+        FAIL("Executable " CLI12_ENSURE_UTF8_EXE " reported that argv pointer changed where it should not have been");
     }
 
     if(retval > 0) {
-        FAIL("Executable " CLI11_ENSURE_UTF8_EXE " reported different argv at index " << (retval - 1));
+        FAIL("Executable " CLI12_ENSURE_UTF8_EXE " reported different argv at index " << (retval - 1));
     }
 
     if(retval != 0) {
-        FAIL("Executable " CLI11_ENSURE_UTF8_EXE " failed with an unknown return code");
+        FAIL("Executable " CLI12_ENSURE_UTF8_EXE " failed with an unknown return code");
     }
 }
 
 // #845
 TEST_CASE("Ensure UTF-8 called twice", "[app]") {
-    auto retval = spawn_app_exe(PLATFORM_TEXT(CLI11_ENSURE_UTF8_TWICE_EXE));
+    auto retval = spawn_app_exe(PLATFORM_TEXT(CLI12_ENSURE_UTF8_TWICE_EXE));
 
     if(retval == -1) {
-        FAIL("Executable " CLI11_ENSURE_UTF8_TWICE_EXE
+        FAIL("Executable " CLI12_ENSURE_UTF8_TWICE_EXE
              " reported that argv pointer changed where it should not have been");
     }
 
     if(retval > 0) {
-        FAIL("Executable " CLI11_ENSURE_UTF8_TWICE_EXE " reported different argv at index " << (retval - 1));
+        FAIL("Executable " CLI12_ENSURE_UTF8_TWICE_EXE " reported different argv at index " << (retval - 1));
     }
 
     if(retval != 0) {
-        FAIL("Executable " CLI11_ENSURE_UTF8_TWICE_EXE " failed with an unknown return code");
+        FAIL("Executable " CLI12_ENSURE_UTF8_TWICE_EXE " failed with an unknown return code");
     }
 }

@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
-#ifdef CLI11_SINGLE_FILE
-#include "CLI11.hpp"
+#ifdef CLI12_SINGLE_FILE
+#include "CLI12.hpp"
 #else
 #include "CLI/CLI.hpp"
 #endif
@@ -13,14 +13,14 @@
 #include <iostream>
 
 int main() {
-    std::cout << "\nCLI11 information:\n";
+    std::cout << "\nCLI12 information:\n";
 
     std::cout << "  C++ standard: ";
-#if defined(CLI11_CPP20)
+#if defined(CLI12_CPP20)
     std::cout << 20;
-#elif defined(CLI11_CPP17)
+#elif defined(CLI12_CPP17)
     std::cout << 17;
-#elif defined(CLI11_CPP14)
+#elif defined(CLI12_CPP14)
     std::cout << 14;
 #else
     std::cout << 11;
@@ -34,21 +34,21 @@ int main() {
     std::cout << "no\n";
 #endif
 
-#if CLI11_OPTIONAL
+#if CLI12_OPTIONAL
     std::cout << "  [Available as CLI::optional]";
 #else
     std::cout << "  No optional library found\n";
 #endif
 
-#if CLI11_STD_OPTIONAL
+#if CLI12_STD_OPTIONAL
     std::cout << "  std::optional support active\n";
 #endif
 
-#if CLI11_EXPERIMENTAL_OPTIONAL
+#if CLI12_EXPERIMENTAL_OPTIONAL
     std::cout << "  std::experimental::optional support active\n";
 #endif
 
-#if CLI11_BOOST_OPTIONAL
+#if CLI12_BOOST_OPTIONAL
     std::cout << "  boost::optional support active\n";
 #endif
 

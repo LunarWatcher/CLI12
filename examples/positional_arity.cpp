@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
         }
     });
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     if(num1 != -1)
         std::cout << "Num1 = " << num1 << '\n';

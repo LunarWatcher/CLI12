@@ -6,9 +6,9 @@
 
 cmake_minimum_required(VERSION 3.14...4.2)
 # Note: this is a header only library. If you have an older CMake than 3.14,
-# just add the CLI11/include directory and that's all you need to do.
+# just add the CLI12/include directory and that's all you need to do.
 
-set(VERSION_REGEX "#define CLI11_VERSION[ \t]+\"(.+)\"")
+set(VERSION_REGEX "#define CLI12_VERSION[ \t]+\"(.+)\"")
 
 # Read in the line containing the version
 file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/include/CLI/Version.hpp" VERSION_STRING
@@ -19,11 +19,11 @@ string(REGEX REPLACE ${VERSION_REGEX} "\\1" VERSION_STRING "${VERSION_STRING}")
 
 # Add the project
 project(
-  CLI11
+  CLI12
   LANGUAGES CXX
   VERSION ${VERSION_STRING})
 
-list(APPEND CMAKE_MODULE_PATH "${CLI11_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CLI12_SOURCE_DIR}/cmake")
 
 # Print the version number of CMake if this is the main project
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
@@ -68,48 +68,48 @@ else()
   set(examples_EXIST FALSE)
 endif()
 
-option(CLI11_WARNINGS_AS_ERRORS "Turn all warnings into errors (for CI)")
-option(CLI11_SINGLE_FILE "Generate a single header file")
-option(CLI11_PRECOMPILED "Generate a precompiled static library instead of a header-only" OFF)
-option(CLI11_MODULES "Build CLI11 as a C++ module (requires C++20)" OFF)
+option(CLI12_WARNINGS_AS_ERRORS "Turn all warnings into errors (for CI)")
+option(CLI12_SINGLE_FILE "Generate a single header file")
+option(CLI12_PRECOMPILED "Generate a precompiled static library instead of a header-only" OFF)
+option(CLI12_MODULES "Build CLI12 as a C++ module (requires C++20)" OFF)
 
-cmake_dependent_option(CLI11_SANITIZERS "Download the sanitizers CMake config" OFF
+cmake_dependent_option(CLI12_SANITIZERS "Download the sanitizers CMake config" OFF
                        "NOT CMAKE_VERSION VERSION_LESS 3.15" OFF)
 
-cmake_dependent_option(CLI11_BUILD_DOCS "Build CLI11 documentation" ON "${build-docs}" OFF)
+cmake_dependent_option(CLI12_BUILD_DOCS "Build CLI12 documentation" ON "${build-docs}" OFF)
 
-cmake_dependent_option(CLI11_BUILD_TESTS "Build CLI11 tests" ON
+cmake_dependent_option(CLI12_BUILD_TESTS "Build CLI12 tests" ON
                        "BUILD_TESTING;CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME" OFF)
 
-cmake_dependent_option(CLI11_BUILD_EXAMPLES "Build CLI11 examples" ON
+cmake_dependent_option(CLI12_BUILD_EXAMPLES "Build CLI12 examples" ON
                        "CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME;${examples_EXIST}" OFF)
 
-cmake_dependent_option(CLI11_BUILD_EXAMPLES_JSON "Build CLI11 json example" OFF
-                       "CLI11_BUILD_EXAMPLES;NOT CMAKE_VERSION VERSION_LESS 3.15" OFF)
+cmake_dependent_option(CLI12_BUILD_EXAMPLES_JSON "Build CLI12 json example" OFF
+                       "CLI12_BUILD_EXAMPLES;NOT CMAKE_VERSION VERSION_LESS 3.15" OFF)
 
 cmake_dependent_option(
-  CLI11_FULL_INSTALL "Install all headers regardless of SINGLE_FILE OR PRECOMPILED OPTIONS" OFF
-  "CLI11_SINGLE_FILE " OFF)
+  CLI12_FULL_INSTALL "Install all headers regardless of SINGLE_FILE OR PRECOMPILED OPTIONS" OFF
+  "CLI12_SINGLE_FILE " OFF)
 
-cmake_dependent_option(CLI11_SINGLE_FILE_TESTS "Duplicate all the tests for a single file build"
-                       OFF "BUILD_TESTING;CLI11_SINGLE_FILE" OFF)
+cmake_dependent_option(CLI12_SINGLE_FILE_TESTS "Duplicate all the tests for a single file build"
+                       OFF "BUILD_TESTING;CLI12_SINGLE_FILE" OFF)
 
-cmake_dependent_option(CLI11_INSTALL "Install the CLI11 folder to include during install process"
+cmake_dependent_option(CLI12_INSTALL "Install the CLI12 folder to include during install process"
                        ON "CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME" OFF)
 
 cmake_dependent_option(
-  CLI11_FORCE_LIBCXX "Force clang to use libc++ instead of libstdc++ (Linux only)" OFF
+  CLI12_FORCE_LIBCXX "Force clang to use libc++ instead of libstdc++ (Linux only)" OFF
   "${force-libcxx}" OFF)
 
 cmake_dependent_option(
-  CLI11_CUDA_TESTS "Build the tests with NVCC to check for warnings there - requires CMake 3.9+"
+  CLI12_CUDA_TESTS "Build the tests with NVCC to check for warnings there - requires CMake 3.9+"
   OFF "CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME" OFF)
 
-if(NOT CLI11_FULL_INSTALL
-   AND CLI11_PRECOMPILED
-   AND CLI11_SINGLE_FILE)
+if(NOT CLI12_FULL_INSTALL
+   AND CLI12_PRECOMPILED
+   AND CLI12_SINGLE_FILE)
   # Sanity check
-  message(FATAL_ERROR "CLI11_PRECOMPILE and CLI11_SINGLE_FILE are mutually exclusive")
+  message(FATAL_ERROR "CLI12_PRECOMPILE and CLI12_SINGLE_FILE are mutually exclusive")
 endif()
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND NOT DEFINED CMAKE_CXX_STANDARD)
@@ -124,7 +124,7 @@ if(NOT DEFINED CMAKE_CXX_STANDARD_REQUIRED)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
 
-include(CLI11Warnings)
+include(CLI12Warnings)
 
 # Allow IDE's to group targets into folders
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
@@ -136,39 +136,39 @@ endif()
 
 # Sources
 
-set(CLI11_headerLoc "${PROJECT_SOURCE_DIR}/include/CLI")
+set(CLI12_headerLoc "${PROJECT_SOURCE_DIR}/include/CLI")
 
-set(CLI11_headers
-    ${CLI11_headerLoc}/App.hpp
-    ${CLI11_headerLoc}/Config.hpp
-    ${CLI11_headerLoc}/ConfigFwd.hpp
-    ${CLI11_headerLoc}/Error.hpp
-    ${CLI11_headerLoc}/Formatter.hpp
-    ${CLI11_headerLoc}/FormatterFwd.hpp
-    ${CLI11_headerLoc}/Macros.hpp
-    ${CLI11_headerLoc}/Option.hpp
-    ${CLI11_headerLoc}/Split.hpp
-    ${CLI11_headerLoc}/StringTools.hpp
-    ${CLI11_headerLoc}/TypeTools.hpp
-    ${CLI11_headerLoc}/Validators.hpp
-    ${CLI11_headerLoc}/ExtraValidators.hpp
-    ${CLI11_headerLoc}/Version.hpp
-    ${CLI11_headerLoc}/Encoding.hpp
-    ${CLI11_headerLoc}/Argv.hpp)
+set(CLI12_headers
+    ${CLI12_headerLoc}/App.hpp
+    ${CLI12_headerLoc}/Config.hpp
+    ${CLI12_headerLoc}/ConfigFwd.hpp
+    ${CLI12_headerLoc}/Error.hpp
+    ${CLI12_headerLoc}/Formatter.hpp
+    ${CLI12_headerLoc}/FormatterFwd.hpp
+    ${CLI12_headerLoc}/Macros.hpp
+    ${CLI12_headerLoc}/Option.hpp
+    ${CLI12_headerLoc}/Split.hpp
+    ${CLI12_headerLoc}/StringTools.hpp
+    ${CLI12_headerLoc}/TypeTools.hpp
+    ${CLI12_headerLoc}/Validators.hpp
+    ${CLI12_headerLoc}/ExtraValidators.hpp
+    ${CLI12_headerLoc}/Version.hpp
+    ${CLI12_headerLoc}/Encoding.hpp
+    ${CLI12_headerLoc}/Argv.hpp)
 
-set(CLI11_impl_headers
-    ${CLI11_headerLoc}/impl/App_inl.hpp
-    ${CLI11_headerLoc}/impl/Config_inl.hpp
-    ${CLI11_headerLoc}/impl/Formatter_inl.hpp
-    ${CLI11_headerLoc}/impl/Option_inl.hpp
-    ${CLI11_headerLoc}/impl/Split_inl.hpp
-    ${CLI11_headerLoc}/impl/StringTools_inl.hpp
-    ${CLI11_headerLoc}/impl/Validators_inl.hpp
-    ${CLI11_headerLoc}/impl/ExtraValidators_inl.hpp
-    ${CLI11_headerLoc}/impl/Encoding_inl.hpp
-    ${CLI11_headerLoc}/impl/Argv_inl.hpp)
+set(CLI12_impl_headers
+    ${CLI12_headerLoc}/impl/App_inl.hpp
+    ${CLI12_headerLoc}/impl/Config_inl.hpp
+    ${CLI12_headerLoc}/impl/Formatter_inl.hpp
+    ${CLI12_headerLoc}/impl/Option_inl.hpp
+    ${CLI12_headerLoc}/impl/Split_inl.hpp
+    ${CLI12_headerLoc}/impl/StringTools_inl.hpp
+    ${CLI12_headerLoc}/impl/Validators_inl.hpp
+    ${CLI12_headerLoc}/impl/ExtraValidators_inl.hpp
+    ${CLI12_headerLoc}/impl/Encoding_inl.hpp
+    ${CLI12_headerLoc}/impl/Argv_inl.hpp)
 
-set(CLI11_library_headers ${CLI11_headerLoc}/CLI.hpp ${CLI11_headerLoc}/Timer.hpp)
+set(CLI12_library_headers ${CLI12_headerLoc}/CLI.hpp ${CLI12_headerLoc}/Timer.hpp)
 
 # build the fuzzing example or fuzz entry point
 add_subdirectory(fuzz)
@@ -177,7 +177,7 @@ add_subdirectory(src)
 add_subdirectory(single-include)
 
 # Allow tests to be run on CUDA
-if(CLI11_CUDA_TESTS)
+if(CLI12_CUDA_TESTS)
   enable_language(CUDA)
 
   # Print out warning and error numbers
@@ -185,7 +185,7 @@ if(CLI11_CUDA_TESTS)
 endif()
 
 # This folder should be installed
-if(CLI11_INSTALL OR CLI11_FULL_INSTALL)
+if(CLI12_INSTALL OR CLI12_FULL_INSTALL)
 
   # Use find_package on the installed package
   # Since we have no custom code, we can directly write this
@@ -193,48 +193,48 @@ if(CLI11_INSTALL OR CLI11_FULL_INSTALL)
   # import Targets.cmake
 
   # Add the version in a CMake readable way
-  configure_file("cmake/CLI11ConfigVersion.cmake.in" "CLI11ConfigVersion.cmake" @ONLY)
+  configure_file("cmake/CLI12ConfigVersion.cmake.in" "CLI12ConfigVersion.cmake" @ONLY)
 
   # Make version available in the install
-  install(FILES "${PROJECT_BINARY_DIR}/CLI11ConfigVersion.cmake"
-          DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/CLI11")
+  install(FILES "${PROJECT_BINARY_DIR}/CLI12ConfigVersion.cmake"
+          DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/CLI12")
 
   # Install the export target as a file
   install(
-    EXPORT CLI11Targets
-    FILE CLI11Config.cmake
-    NAMESPACE CLI11::
-    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/CLI11")
+    EXPORT CLI12Targets
+    FILE CLI12Config.cmake
+    NAMESPACE CLI12::
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/CLI12")
 
   # Use find_package on the installed package
-  if(CLI11_MODULES)
+  if(CLI12_MODULES)
     export(
-      TARGETS CLI11 CLI11_Module
-      NAMESPACE CLI11::
-      FILE CLI11Targets.cmake)
+      TARGETS CLI12 CLI12_Module
+      NAMESPACE CLI12::
+      FILE CLI12Targets.cmake)
   else()
     export(
-      TARGETS CLI11
-      NAMESPACE CLI11::
-      FILE CLI11Targets.cmake)
+      TARGETS CLI12
+      NAMESPACE CLI12::
+      FILE CLI12Targets.cmake)
   endif()
 
-  include(cmake/CLI11GeneratePkgConfig.cmake)
+  include(cmake/CLI12GeneratePkgConfig.cmake)
 
   # Register in the user cmake package registry
-  export(PACKAGE CLI11)
+  export(PACKAGE CLI12)
 endif()
 
-if(CLI11_BUILD_TESTS)
+if(CLI12_BUILD_TESTS)
   include(CTest)
   add_subdirectory(tests)
 endif()
 
-if(CLI11_BUILD_EXAMPLES)
+if(CLI12_BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
 
-if(CLI11_BUILD_DOCS)
+if(CLI12_BUILD_DOCS)
   add_subdirectory(docs)
 endif()
 
@@ -253,7 +253,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Command line parser with simple and intuitive interface")
   set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
   set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
-  set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/CLI11.CPack.Description.txt")
+  set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/CLI12.CPack.Description.txt")
   set(CPACK_SOURCE_GENERATOR "TGZ;ZIP")
 
   # CPack collects *everything* except what's listed here.

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#ifdef CLI11_CATCH3
+#ifdef CLI12_CATCH3
 
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_template_test_macros.hpp>

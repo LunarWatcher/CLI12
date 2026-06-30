@@ -2,7 +2,7 @@
 
 ## v3.0.0
 
-This is the first release in an AI slop-free fork of CLI11. Aside removing meson support, Microslop Azure pipelines, and removing a fair few things that purely amount to unnecessary maintenance overhead, this version does not change anything internally.
+This is the first release in an AI slop-free fork of CLI12. Aside removing meson support, Microslop Azure pipelines, and removing a fair few things that purely amount to unnecessary maintenance overhead, this version does not change anything internally.
 
 ## Version 2.6.2
 
@@ -45,7 +45,7 @@ help output and specific combinations of options and conditions.
 - Fixed enumeration stream output generating unconvertible strings if certain a
   user supplied stream conversion method was supplied [#1261][]
 - Fixed code simplification issues by removing use of `static std::string` which
-  was causing some heap allocation issues when using CLI11 as part of DLL on
+  was causing some heap allocation issues when using CLI12 as part of DLL on
   certain operating systems [#1244][]
 - Fixed MISRACPP2023-25_5_2-a-1 rule violation [#1299][]
 
@@ -85,7 +85,7 @@ and a potential segmentation fault from specially crafted config files
 - Fixed fuzz generated failure from crafted files introduced in recent release
   [#1238][]
 - Removed some usage of static const std::string in inline function that had
-  potential memory issues when CLI11 is used with shared libraries, this likely
+  potential memory issues when CLI12 is used with shared libraries, this likely
   isn't a bug but the fix did result in smaller code size so was kept. [#1244][]
 
 [#1238]: https://github.com/CLIUtils/CLI11/pull/1238
@@ -127,9 +127,9 @@ added.
 
 - Moved several of the validators to `ExtraValidators.hpp` and
   `ExtraValidators_inl.hpp` files, The compilation of these nonessential
-  validators can be disabled by setting `CLI11_DISABLE_EXTRA_VALIDATORS` to
+  validators can be disabled by setting `CLI12_DISABLE_EXTRA_VALIDATORS` to
   `OFF`. Future additional validators will be behind a compile flag
-  `CLI11_ENABLE_EXTRA_VALIDATORS`. All non-essential validators will be under
+  `CLI12_ENABLE_EXTRA_VALIDATORS`. All non-essential validators will be under
   this option with version 3.0. [#1192][]
 - Updated processing order: requirements are now checked before callbacks,
   avoiding unexpected side effects. [#1186][]
@@ -397,12 +397,12 @@ fixes as well.
 
 ## Version 2.3: Precompilation Support
 
-This version adds a pre-compiled mode to CLI11, which allows you to precompile
-the library, saving time on incremental rebuilds, making CLI11 more competitive
+This version adds a pre-compiled mode to CLI12, which allows you to precompile
+the library, saving time on incremental rebuilds, making CLI12 more competitive
 on compile time with classic compiled CLI libraries. The header-only mode is
 still default, and is not yet distributed via binaries.
 
-- Add `CLI11_PRECOMPILED` as an option [#762][]
+- Add `CLI12_PRECOMPILED` as an option [#762][]
 - Bugfix: Include `<functional>` in `FormatterFwd` [#727][]
 - Bugfix: Add missing `Macros.hpp` to `Error.hpp` [#755][]
 - Bugfix: Fix subcommand callback trigger [#733][]
@@ -550,7 +550,7 @@ not passed, or every time the option is parsed.
   comment characters are supported [#630][]
 - `force_callback` & `trigger_on_parse` added, allowing a callback to always run
   on parse even if not present or every time the option is parsed [#631][]
-- Bugfix(cmake): Only add `CONFIGURE_DEPENDS` if CLI11 is the main project
+- Bugfix(cmake): Only add `CONFIGURE_DEPENDS` if CLI12 is the main project
   [#633][]
 - Bugfix(cmake): Ensure the cmake/pkg-config files install to a arch independent
   path [#635][]
@@ -620,7 +620,7 @@ and single file generation system.
 - Bugfix: fix description of non-configurable subcommands in config [#604][]
 - Build: support pkg-config [#523][]
 
-> ### Converting from CLI11 1.9
+> ### Converting from CLI12 1.9
 >
 > - Removed deprecated set commands, use validators instead. [#565][]
 > - The final "defaulted" bool has been removed, use `->capture_default_str()`
@@ -690,7 +690,7 @@ is no longer supported.
 - Backend: Warning cleanup, more checks from klocwork [#350][], Effective C++
   [#354][], clang-tidy [#360][], CUDA NVCC [#365][], cross compile [#373][],
   sign conversion [#382][], and cpplint [#400][]
-- Docs: CLI11 Tutorial now hosted in the same repository [#304][], [#318][],
+- Docs: CLI12 Tutorial now hosted in the same repository [#304][], [#318][],
   [#374][]
 - Bugfix: Fixed undefined behavior in `checked_multiply` [#290][]
 - Bugfix: `->check()` was adding the name to the wrong validator [#320][]
@@ -702,7 +702,7 @@ is no longer supported.
   now required. [#160][]
 - Build: Restructured significant portions of CMake build system [#394][]
 
-> ### Converting from CLI11 1.8
+> ### Converting from CLI12 1.8
 >
 > - Some deprecated methods dropped
 >   - `add_set*` should be replaced with `->check`/`->transform` and
@@ -780,7 +780,7 @@ custom functions for filtering, and better help and error messages. You can also
 use a collection of pairs (like `std::map`) to transform the match into an
 output. Also new are inverted flags, which can cancel or reduce the count of
 flags, and can also support general flag types. A new `add_option_fn` lets you
-more easily program CLI11 options with the types you choose. Vector options now
+more easily program CLI12 options with the types you choose. Vector options now
 support a custom separator. Apps can now be composed with unnamed subcommand
 support. The final bool "defaults" flag when creating options has been replaced
 by `->capture_default_str()` (ending an old limitation in construction made this
@@ -816,12 +816,12 @@ versions.
 - Cleanup for shadow warnings [#232][]
 - Better alignment on multiline descriptions [#269][]
 - Better support for aarch64 [#266][]
-- Respect `BUILD_TESTING` only if CLI11 is the main project; otherwise,
-  `CLI11_TESTING` must be used [#277][]
+- Respect `BUILD_TESTING` only if CLI12 is the main project; otherwise,
+  `CLI12_TESTING` must be used [#277][]
 - Drop auto-detection of experimental optional and boost::optional; must be
   enabled explicitly (too fragile) [#277][] [#279][]
 
-> ### Converting from CLI11 1.7
+> ### Converting from CLI12 1.7
 >
 > - `.add_option(..., true)` should be replaced by
 >   `.add_option(...)->capture_default_str()` or
@@ -899,12 +899,12 @@ to change later must now be done with `add_mutable_set`.
 - Dropped the mostly undocumented `short_circuit` property, as help flag parsing
   is a bit more complex, and the default callback behavior of options now works
   properly. [#179][]
-- Use the standard `BUILD_TESTING` over `CLI11_TESTING` if defined [#183][]
+- Use the standard `BUILD_TESTING` over `CLI12_TESTING` if defined [#183][]
 - Cleanup warnings [#191][]
 - Remove deprecated names: `set_footer`, `set_name`, `set_callback`, and
   `set_type_name`. Use without the `set_` instead. [#192][]
 
-> ### Converting from CLI11 1.6
+> ### Converting from CLI12 1.6
 >
 > - `->short_circuit()` is no longer needed, just remove it if you were using
 >   it - raising an exception will happen in the proper place now without it.
@@ -1062,7 +1062,7 @@ smaller fixes.
   - Help-all subcommands get indented with inner blank lines removed (Default
     formatter)
   - `detail::find_and_replace` added to utilities
-- Fixed CMake install as subproject with `CLI11_INSTALL` flag. [#156][]
+- Fixed CMake install as subproject with `CLI12_INSTALL` flag. [#156][]
 - Fixed warning about local variable hiding class member with MSVC [#157][]
 - Fixed compile error with default settings on Clang 7 and libc++ [#158][]
 - Fixed special case of `--help` on subcommands (general fix planned for 1.7)
@@ -1092,7 +1092,7 @@ Note: This is the final release with `requires`, please switch to `needs`.
   times [#64][]
 - Support for `std::optional`, `std::experimental::optional`, and
   `boost::optional` added if `__has_include` is supported [#95][]
-- All macros/CMake variables now start with `CLI11_` instead of just `CLI_`
+- All macros/CMake variables now start with `CLI12_` instead of just `CLI_`
   [#95][]
 - The internal stream was not being cleared before use in some cases. Fixed.
   [#95][]
@@ -1124,7 +1124,7 @@ Other, non-user facing changes:
 
 This patch release adds better access to the App programmatically, to assist
 with writing custom converters to other formats. It also improves the help
-output, and uses a new feature in CLI11 1.5 to fix an old "quirk" in the way
+output, and uses a new feature in CLI12 1.5 to fix an old "quirk" in the way
 unlimited options and positionals interact.
 
 - Make mixing unlimited positionals and options more intuitive [#102][]
@@ -1157,12 +1157,12 @@ be 1.58. CUDA 7.0 NVCC is now supported.
 
 This version fixes the optional search in the single file version; some macros
 were not yet defined when it did the search. You can define the
-`CLI11_*_OPTIONAL` macros to 0 if needed to eliminate the search.
+`CLI12_*_OPTIONAL` macros to 0 if needed to eliminate the search.
 
 ## Version 1.4: More feedback
 
 This version adds lots of smaller fixes and additions after the refactor in
-version 1.3. More ways to download and use CLI11 in CMake have been added. INI
+version 1.3. More ways to download and use CLI12 in CMake have been added. INI
 files have improved support.
 
 - Lexical cast is now more strict than before [#68][] and fails on overflow
@@ -1196,19 +1196,19 @@ files have improved support.
 This version focused on refactoring several key systems to ensure correct
 behavior in the interaction of different settings. Most caveats about features
 only working on the main App have been addressed, and extra arguments have been
-reworked. Inheritance of defaults makes configuring CLI11 much easier without
+reworked. Inheritance of defaults makes configuring CLI12 much easier without
 having to subclass. Policies add new ways to handle multiple arguments to match
 your favorite CLI programs. Error messages and help messages are better and more
 flexible. Several bugs and odd behaviors in the parser have been fixed.
 
-- Added a version macro, `CLI11_VERSION`, along with `*_MAJOR`, `*_MINOR`, and
+- Added a version macro, `CLI12_VERSION`, along with `*_MAJOR`, `*_MINOR`, and
   `*_PATCH`, for programmatic access to the version.
 - Reworked the way defaults are set and inherited; explicit control given to
   user with `->option_defaults()`
   [#48](https://github.com/CLIUtils/CLI11/pull/48)
 - Hidden options now are based on an empty group name, instead of special
   "hidden" keyword [#48](https://github.com/CLIUtils/CLI11/pull/48)
-- `parse` no longer returns (so `CLI11_PARSE` is always usable)
+- `parse` no longer returns (so `CLI12_PARSE` is always usable)
   [#37](https://github.com/CLIUtils/CLI11/pull/37)
 - Added `remaining()` and `remaining_size()`
   [#37](https://github.com/CLIUtils/CLI11/pull/37)
@@ -1258,7 +1258,7 @@ flexible. Several bugs and odd behaviors in the parser have been fixed.
 - Allow options to be disabled from INI file, rename `add_config` to
   `set_config` [#60](https://github.com/CLIUtils/CLI11/pull/60)
 
-> ### Converting from CLI11 1.2
+> ### Converting from CLI12 1.2
 >
 > - `app.parse` no longer returns a vector. Instead, use `app.remaining(true)`.
 > - `"hidden"` is no longer a special group name, instead use `""`
@@ -1271,7 +1271,7 @@ flexible. Several bugs and odd behaviors in the parser have been fixed.
 
 ## Version 1.2: Stability
 
-This release focuses on making CLI11 behave properly in corner cases, and with
+This release focuses on making CLI12 behave properly in corner cases, and with
 config files on the command line. This includes fixes for a variety of reported
 issues. A few features were added to make life easier, as well; such as a new
 flag callback and a macro for the parse command.
@@ -1280,7 +1280,7 @@ flag callback and a macro for the parse command.
   [#33](https://github.com/CLIUtils/CLI11/pull/33), automatic on C++14
 - Fixed Config file search if passed on command line
   [#30](https://github.com/CLIUtils/CLI11/issues/30)
-- Added `CLI11_PARSE(app, argc, argv)` macro for simple parse commands (does not
+- Added `CLI12_PARSE(app, argc, argv)` macro for simple parse commands (does not
   support returning arg)
 - The name string can now contain spaces around commas
   [#29](https://github.com/CLIUtils/CLI11/pull/29)
@@ -1313,7 +1313,7 @@ functionality for tricky parsing situations.
 
 ## Version 1.0: Official release
 
-This is the first stable release for CLI11. Future releases will try to remain
+This is the first stable release for CLI12. Future releases will try to remain
 backward compatible and will follow semantic versioning if possible. There were
 a few small changes since version 0.9:
 
@@ -1327,7 +1327,7 @@ This release focused on cleaning up the most exotic compiler warnings, fixing a
 few oddities of the config parser, and added a more natural method to check
 subcommands.
 
-- Better CMake named target (CLI11)
+- Better CMake named target (CLI12)
 - More warnings added, fixed
 - Ini output now includes `=false` when `default_also` is true
 - Ini no longer lists the help pointer

@@ -23,6 +23,6 @@ int main(int argc, char **argv) {
         }
     });
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
     std::cout << "the value is now " << val << '\n';
 }

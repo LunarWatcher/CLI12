@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
     std::vector<int> vals;
     app.add_option("--vals,-v", vals)->expected(-1);
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     std::vector<std::string> more_comms = app.remaining();
 

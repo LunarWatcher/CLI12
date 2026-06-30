@@ -200,7 +200,7 @@ template <class T> class badlywrapped {
   public:
     badlywrapped() : value() {}
 
-    CLI11_NODISCARD T get() const { return value; }
+    CLI12_NODISCARD T get() const { return value; }
 
     void set(T val) { value = val; }
 
@@ -326,7 +326,7 @@ template <class X> class objWrapper {
     // delete all other assignment operators
     template <typename TT> void operator=(TT &&obj) = delete;
 
-    CLI11_NODISCARD const X &value() const { return val_; }
+    CLI12_NODISCARD const X &value() const { return val_; }
 
   private:
     X val_{};
@@ -347,7 +347,7 @@ template <class X> class objWrapperRestricted {
         val_ = val;
         return *this;
     }
-    CLI11_NODISCARD const X &value() const { return val_; }
+    CLI12_NODISCARD const X &value() const { return val_; }
 
   private:
     X val_{};
@@ -466,8 +466,8 @@ class dobjWrapper {
     explicit dobjWrapper(double obj) : dval_{obj} {};
     explicit dobjWrapper(int obj) : ival_{obj} {};
 
-    CLI11_NODISCARD double dvalue() const { return dval_; }
-    CLI11_NODISCARD int ivalue() const { return ival_; }
+    CLI12_NODISCARD double dvalue() const { return dval_; }
+    CLI12_NODISCARD int ivalue() const { return ival_; }
 
   private:
     double dval_{0.0};
@@ -511,7 +511,7 @@ template <class X> class AobjWrapper {
     // delete all other assignment operators
     template <typename TT> void operator=(TT &&obj) = delete;
 
-    CLI11_NODISCARD const X &value() const { return val_; }
+    CLI12_NODISCARD const X &value() const { return val_; }
 
   private:
     X val_{};

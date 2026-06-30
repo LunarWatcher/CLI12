@@ -1,4 +1,4 @@
-# CLI11 Meson test / example
+# CLI12 Meson test / example
 
 Requirements: meson, ninja
 

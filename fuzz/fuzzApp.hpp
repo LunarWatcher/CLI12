@@ -5,8 +5,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 #pragma once
 
-#ifdef CLI11_SINGLE_FILE
-#include "CLI11.hpp"
+#ifdef CLI12_SINGLE_FILE
+#include "CLI12.hpp"
 #else
 #include "CLI/CLI.hpp"
 #endif
@@ -26,7 +26,7 @@ class intWrapper64 {
   public:
     intWrapper64() = default;
     explicit intWrapper64(int64_t v) : val(v) {};
-    CLI11_NODISCARD int64_t value() const { return val; }
+    CLI12_NODISCARD int64_t value() const { return val; }
 
   private:
     int64_t val{0};
@@ -36,7 +36,7 @@ class doubleWrapper {
   public:
     doubleWrapper() = default;
     explicit doubleWrapper(double v) : val(v) {};
-    CLI11_NODISCARD double value() const { return val; }
+    CLI12_NODISCARD double value() const { return val; }
 
   private:
     double val{0.0};
@@ -46,7 +46,7 @@ class stringWrapper {
   public:
     stringWrapper() = default;
     explicit stringWrapper(std::string_view v) : val(v) {};
-    CLI11_NODISCARD std::string value() const { return val; }
+    CLI12_NODISCARD std::string value() const { return val; }
 
   private:
     std::string val{};
@@ -70,7 +70,7 @@ class FuzzApp {
     /** generate a fuzzing application with a bunch of different interfaces*/
     std::shared_ptr<CLI::App> generateApp();
     /** compare two fuzz apps for equality*/
-    CLI11_NODISCARD bool compare(const FuzzApp &other, bool print_error = false) const;
+    CLI12_NODISCARD bool compare(const FuzzApp &other, bool print_error = false) const;
     /** generate additional options based on a string config*/
     std::size_t add_custom_options(CLI::App *app, const std::string &description_string);
     /** modify an option based on string*/
@@ -78,7 +78,7 @@ class FuzzApp {
     /** modify a subcommand based on characters in a string*/
     static void modify_subcommand(CLI::App *app, const std::string &modifiers);
     /** return true if the app itself support conversiont to config files*/
-    CLI11_NODISCARD bool supports_config_file() const { return !non_config_required; }
+    CLI12_NODISCARD bool supports_config_file() const { return !non_config_required; }
     int32_t val32{0};
     int16_t val16{0};
     int8_t val8{0};

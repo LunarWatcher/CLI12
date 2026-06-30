@@ -11,16 +11,16 @@
 // This include is only needed for IDEs to discover symbols
 #include "../Formatter.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <algorithm>
 #include <string>
 #include <utility>
 #include <vector>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
 namespace CLI {
-// [CLI11:formatter_inl_hpp:verbatim]
-CLI11_INLINE std::string
+// [CLI12:formatter_inl_hpp:verbatim]
+CLI12_INLINE std::string
 Formatter::make_group(std::string group, bool is_positional, std::vector<const Option *> opts) const {
     std::stringstream out;
 
@@ -32,7 +32,7 @@ Formatter::make_group(std::string group, bool is_positional, std::vector<const O
     return out.str();
 }
 
-CLI11_INLINE std::string Formatter::make_positionals(const App *app) const {
+CLI12_INLINE std::string Formatter::make_positionals(const App *app) const {
     std::vector<const Option *> opts =
         app->get_options([](const Option *opt) { return !opt->get_group().empty() && opt->get_positional(); });
 
@@ -42,7 +42,7 @@ CLI11_INLINE std::string Formatter::make_positionals(const App *app) const {
     return make_group(get_label("POSITIONALS"), true, opts);
 }
 
-CLI11_INLINE std::string Formatter::make_groups(const App *app, AppFormatMode mode) const {
+CLI12_INLINE std::string Formatter::make_groups(const App *app, AppFormatMode mode) const {
     std::stringstream out;
     std::vector<std::string> groups = app->get_groups();
 
@@ -67,7 +67,7 @@ CLI11_INLINE std::string Formatter::make_groups(const App *app, AppFormatMode mo
     return out.str();
 }
 
-CLI11_INLINE std::string Formatter::make_description(const App *app) const {
+CLI12_INLINE std::string Formatter::make_description(const App *app) const {
     std::string desc = app->get_description();
     auto min_options = app->get_require_option_min();
     auto max_options = app->get_require_option_max();
@@ -92,7 +92,7 @@ CLI11_INLINE std::string Formatter::make_description(const App *app) const {
     return (!desc.empty()) ? desc + "\n\n" : std::string{};
 }
 
-CLI11_INLINE std::string Formatter::make_usage(const App *app, std::string name) const {
+CLI12_INLINE std::string Formatter::make_usage(const App *app, std::string name) const {
     std::string usage = app->get_usage();
     if(!usage.empty()) {
         return usage + "\n\n";
@@ -142,7 +142,7 @@ CLI11_INLINE std::string Formatter::make_usage(const App *app, std::string name)
     return out.str();
 }
 
-CLI11_INLINE std::string Formatter::make_footer(const App *app) const {
+CLI12_INLINE std::string Formatter::make_footer(const App *app) const {
     std::string footer = app->get_footer();
     if(footer.empty()) {
         return std::string{};
@@ -150,7 +150,7 @@ CLI11_INLINE std::string Formatter::make_footer(const App *app) const {
     return '\n' + footer + '\n';
 }
 
-CLI11_INLINE std::string Formatter::make_help(const App *app, std::string name, AppFormatMode mode) const {
+CLI12_INLINE std::string Formatter::make_help(const App *app, std::string name, AppFormatMode mode) const {
     // This immediately forwards to the make_expanded method. This is done this way so that subcommands can
     // have overridden formatters
     if(mode == AppFormatMode::Sub)
@@ -183,7 +183,7 @@ CLI11_INLINE std::string Formatter::make_help(const App *app, std::string name, 
     return out.str();
 }
 
-CLI11_INLINE std::string Formatter::make_subcommands(const App *app, AppFormatMode mode) const {
+CLI12_INLINE std::string Formatter::make_subcommands(const App *app, AppFormatMode mode) const {
     std::stringstream out;
 
     std::vector<const App *> subcommands = app->get_subcommands({});
@@ -225,7 +225,7 @@ CLI11_INLINE std::string Formatter::make_subcommands(const App *app, AppFormatMo
     return out.str();
 }
 
-CLI11_INLINE std::string Formatter::make_subcommand(const App *sub) const {
+CLI12_INLINE std::string Formatter::make_subcommand(const App *sub) const {
     std::stringstream out;
     std::string name = "  " + sub->get_display_name(true) + (sub->get_required() ? " " + get_label("REQUIRED") : "");
 
@@ -236,7 +236,7 @@ CLI11_INLINE std::string Formatter::make_subcommand(const App *sub) const {
     return out.str();
 }
 
-CLI11_INLINE std::string Formatter::make_expanded(const App *sub, AppFormatMode mode) const {
+CLI12_INLINE std::string Formatter::make_expanded(const App *sub, AppFormatMode mode) const {
     std::stringstream out;
     out << sub->get_display_name(true) << '\n';
 
@@ -273,7 +273,7 @@ CLI11_INLINE std::string Formatter::make_expanded(const App *sub, AppFormatMode 
     return out.str();
 }
 
-CLI11_INLINE std::string Formatter::make_option(const Option *opt, bool is_positional) const {
+CLI12_INLINE std::string Formatter::make_option(const Option *opt, bool is_positional) const {
     std::stringstream out;
     if(is_positional) {
         const std::string left = "  " + make_option_name(opt, true) + make_option_opts(opt);
@@ -364,14 +364,14 @@ CLI11_INLINE std::string Formatter::make_option(const Option *opt, bool is_posit
     return out.str();
 }
 
-CLI11_INLINE std::string Formatter::make_option_name(const Option *opt, bool is_positional) const {
+CLI12_INLINE std::string Formatter::make_option_name(const Option *opt, bool is_positional) const {
     if(is_positional)
         return opt->get_name(true, false);
 
     return opt->get_name(false, true, !enable_default_flag_values_);
 }
 
-CLI11_INLINE std::string Formatter::make_option_opts(const Option *opt) const {
+CLI12_INLINE std::string Formatter::make_option_opts(const Option *opt) const {
     std::stringstream out;
 
     if(!opt->get_option_text().empty()) {
@@ -410,9 +410,9 @@ CLI11_INLINE std::string Formatter::make_option_opts(const Option *opt) const {
     return out.str();
 }
 
-CLI11_INLINE std::string Formatter::make_option_desc(const Option *opt) const { return opt->get_description(); }
+CLI12_INLINE std::string Formatter::make_option_desc(const Option *opt) const { return opt->get_description(); }
 
-CLI11_INLINE std::string Formatter::make_option_usage(const Option *opt) const {
+CLI12_INLINE std::string Formatter::make_option_usage(const Option *opt) const {
     // Note that these are positionals usages
     std::stringstream out;
     out << make_option_name(opt, true);
@@ -423,5 +423,5 @@ CLI11_INLINE std::string Formatter::make_option_usage(const Option *opt) const {
 
     return opt->get_required() ? out.str() : "[" + out.str() + "]";
 }
-// [CLI11:formatter_inl_hpp:end]
+// [CLI12:formatter_inl_hpp:end]
 }  // namespace CLI

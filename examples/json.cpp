@@ -12,7 +12,7 @@
 #include <vector>
 
 // This example is only built on GCC 7 on Travis due to mismatch in stdlib
-// for clang (CLI11 is forgiving about mismatches, json.hpp is not)
+// for clang (CLI12 is forgiving about mismatches, json.hpp is not)
 
 using nlohmann::json;
 
@@ -117,7 +117,7 @@ int main(int argc, char **argv) {
     app.add_option("--item", item);
     app.set_config("--config");
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     std::cout << app.config_to_str(true, true) << std::endl;
 }

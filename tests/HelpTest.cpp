@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
-#ifdef CLI11_SINGLE_FILE
-#include "CLI11.hpp"
+#ifdef CLI12_SINGLE_FILE
+#include "CLI12.hpp"
 #else
 #include "CLI/CLI.hpp"
 #endif
@@ -636,8 +636,8 @@ TEST_CASE("THelp: MasterName", "[help]") {
     CHECK_THAT(app.help(), Contains("MyRealName"));
 }
 
-#if (defined(CLI11_ENABLE_EXTRA_VALIDATORS) && CLI11_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
-    (!defined(CLI11_DISABLE_EXTRA_VALIDATORS) || CLI11_DISABLE_EXTRA_VALIDATORS == 0)
+#if (defined(CLI12_ENABLE_EXTRA_VALIDATORS) && CLI12_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
+    (!defined(CLI12_DISABLE_EXTRA_VALIDATORS) || CLI12_DISABLE_EXTRA_VALIDATORS == 0)
 
 TEST_CASE("THelp: ManualSetterOverFunction", "[help]") {
 
@@ -1407,8 +1407,8 @@ TEST_CASE("THelp: CombinedValidatorsPathyTextAsTransform", "[help]") {
     CHECK_THAT(help, Contains("TEXT:(PATH(existing)) OR (PATH"));
 }
 
-#if (defined(CLI11_ENABLE_EXTRA_VALIDATORS) && CLI11_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
-    (!defined(CLI11_DISABLE_EXTRA_VALIDATORS) || CLI11_DISABLE_EXTRA_VALIDATORS == 0)
+#if (defined(CLI12_ENABLE_EXTRA_VALIDATORS) && CLI12_ENABLE_EXTRA_VALIDATORS == 1) ||                                  \
+    (!defined(CLI12_DISABLE_EXTRA_VALIDATORS) || CLI12_DISABLE_EXTRA_VALIDATORS == 0)
 
 // #113 Part 2
 TEST_CASE("THelp: ChangingSet", "[help]") {
@@ -1556,7 +1556,7 @@ TEST_CASE("TVersion: simple_flag", "[help]") {
 
     CLI::App app;
 
-    app.set_version_flag("-v,--version", "VERSION " CLI11_VERSION);
+    app.set_version_flag("-v,--version", "VERSION " CLI12_VERSION);
 
     auto vers = app.version();
     CHECK_THAT(vers, Contains("VERSION"));
@@ -1569,12 +1569,12 @@ TEST_CASE("TVersion: callback_flag", "[help]") {
 
     CLI::App app;
 
-    app.set_version_flag("-v,--version", []() { return std::string("VERSION " CLI11_VERSION); });
+    app.set_version_flag("-v,--version", []() { return std::string("VERSION " CLI12_VERSION); });
 
     auto vers = app.version();
     CHECK_THAT(vers, Contains("VERSION"));
 
-    app.set_version_flag("-v", []() { return std::string("VERSION2 " CLI11_VERSION); });
+    app.set_version_flag("-v", []() { return std::string("VERSION2 " CLI12_VERSION); });
     vers = app.version();
     CHECK_THAT(vers, Contains("VERSION"));
 }
@@ -1588,7 +1588,7 @@ TEST_CASE("TVersion: help", "[help]") {
     auto hvers = app.help();
     CHECK_THAT(hvers, Contains("help_for_version"));
 
-    app.set_version_flag("-v", []() { return std::string("VERSION2 " CLI11_VERSION); }, "help_for_version2");
+    app.set_version_flag("-v", []() { return std::string("VERSION2 " CLI12_VERSION); }, "help_for_version2");
     hvers = app.help();
     CHECK_THAT(hvers, Contains("help_for_version2"));
 }
@@ -1597,7 +1597,7 @@ TEST_CASE("TVersion: parse_throw", "[help]") {
 
     CLI::App app;
 
-    app.set_version_flag("--version", CLI11_VERSION);
+    app.set_version_flag("--version", CLI12_VERSION);
 
     CHECK_THROWS_AS(app.parse("--version"), CLI::CallForVersion);
     CHECK_THROWS_AS(app.parse("--version --arg2 5"), CLI::CallForVersion);
@@ -1608,7 +1608,7 @@ TEST_CASE("TVersion: parse_throw", "[help]") {
     try {
         app.parse("--Version");
     } catch(const CLI::CallForVersion &v) {
-        CHECK_THAT(CLI11_VERSION, Equals(v.what()));
+        CHECK_THAT(CLI12_VERSION, Equals(v.what()));
         CHECK(0 == v.get_exit_code());
         const auto &appc = app;
         const auto *cptr = appc.get_version_ptr();
@@ -1620,14 +1620,14 @@ TEST_CASE("TVersion: exit", "[help]") {
 
     CLI::App app;
 
-    app.set_version_flag("--version", CLI11_VERSION);
+    app.set_version_flag("--version", CLI12_VERSION);
 
     try {
         app.parse("--version");
     } catch(const CLI::CallForVersion &v) {
         std::ostringstream out;
         auto ret = app.exit(v, out);
-        CHECK_THAT(out.str(), Contains(CLI11_VERSION));
+        CHECK_THAT(out.str(), Contains(CLI12_VERSION));
         CHECK(0 == ret);
     }
 }
@@ -1636,7 +1636,7 @@ TEST_CASE("TVersion: exit_with_required", "[help]") {
     // test that the version flag works even if there are required options
     CLI::App app;
 
-    app.set_version_flag("--version", CLI11_VERSION);
+    app.set_version_flag("--version", CLI12_VERSION);
     app.add_option("--req")->required();
 
     try {
@@ -1644,7 +1644,7 @@ TEST_CASE("TVersion: exit_with_required", "[help]") {
     } catch(const CLI::CallForVersion &v) {
         std::ostringstream out;
         auto ret = app.exit(v, out);
-        CHECK_THAT(out.str(), Contains(CLI11_VERSION));
+        CHECK_THAT(out.str(), Contains(CLI12_VERSION));
         CHECK(0 == ret);
     }
 }

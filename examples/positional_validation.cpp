@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
-#define CLI11_ENABLE_EXTRA_VALIDATORS 1
+#define CLI12_ENABLE_EXTRA_VALIDATORS 1
 
 #include <CLI/CLI.hpp>
 #include <iostream>
@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
     app.add_option("file2", file2, "second file");
     app.validate_positionals();
 
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     if(num1 != -1)
         std::cout << "Num1 = " << num1 << '\n';

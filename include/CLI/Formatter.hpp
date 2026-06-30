@@ -8,20 +8,20 @@
 
 // IWYU pragma: private, include "CLI/CLI.hpp"
 
-// [CLI11:public_includes:set]
+// [CLI12:public_includes:set]
 #include <algorithm>
 #include <string>
 #include <vector>
-// [CLI11:public_includes:end]
+// [CLI12:public_includes:end]
 
 #include "App.hpp"
 #include "FormatterFwd.hpp"
 
 namespace CLI {
-// [CLI11:formatter_hpp:verbatim]
-// [CLI11:formatter_hpp:end]
+// [CLI12:formatter_hpp:verbatim]
+// [CLI12:formatter_hpp:end]
 }  // namespace CLI
 
-#ifndef CLI11_COMPILE
+#ifndef CLI12_COMPILE
 #include "impl/Formatter_inl.hpp"  // IWYU pragma: export
 #endif

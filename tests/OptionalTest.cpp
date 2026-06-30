@@ -16,48 +16,48 @@
 // You can explicitly enable or disable support
 // by defining to 1 or 0. Extra check here to ensure it's in the stdlib too.
 // We nest the check for __has_include and it's usage
-#ifndef CLI11_STD_OPTIONAL
+#ifndef CLI12_STD_OPTIONAL
 #ifdef __has_include
-#if defined(CLI11_CPP17) && __has_include(<optional>)
-#define CLI11_STD_OPTIONAL 1
+#if defined(CLI12_CPP17) && __has_include(<optional>)
+#define CLI12_STD_OPTIONAL 1
 #else
-#define CLI11_STD_OPTIONAL 0
+#define CLI12_STD_OPTIONAL 0
 #endif
 #else
-#define CLI11_STD_OPTIONAL 0
+#define CLI12_STD_OPTIONAL 0
 #endif
 #endif
 
-#ifndef CLI11_EXPERIMENTAL_OPTIONAL
-#define CLI11_EXPERIMENTAL_OPTIONAL 0
+#ifndef CLI12_EXPERIMENTAL_OPTIONAL
+#define CLI12_EXPERIMENTAL_OPTIONAL 0
 #endif
 
-#ifndef CLI11_BOOST_OPTIONAL
-#define CLI11_BOOST_OPTIONAL 0
+#ifndef CLI12_BOOST_OPTIONAL
+#define CLI12_BOOST_OPTIONAL 0
 #endif
 
-#if CLI11_BOOST_OPTIONAL
+#if CLI12_BOOST_OPTIONAL
 #include <boost/version.hpp>
 #if BOOST_VERSION < 106100
 #error "This boost::optional version is not supported, use 1.61 or better"
 #endif
 #endif
 
-#if CLI11_STD_OPTIONAL
+#if CLI12_STD_OPTIONAL
 #include <optional>
 #endif
-#if CLI11_EXPERIMENTAL_OPTIONAL
+#if CLI12_EXPERIMENTAL_OPTIONAL
 #include <experimental/optional>
 #endif
-#if CLI11_BOOST_OPTIONAL
+#if CLI12_BOOST_OPTIONAL
 #include <boost/optional.hpp>
 #include <boost/optional/optional_io.hpp>
 #endif
-// [CLI11:verbatim]
+// [CLI12:verbatim]
 
 TEST_CASE("OptionalNoEmpty") { CHECK(1 == 1); }
 
-#if CLI11_STD_OPTIONAL
+#if CLI12_STD_OPTIONAL
 
 #ifdef _MSC_VER
 // this warning suppresses double to int conversions that are inherent in the test
@@ -159,7 +159,7 @@ TEST_CASE_METHOD(TApp, "StdOptionalbool", "[optional]") {
 #endif
 
 #endif
-#if CLI11_EXPERIMENTAL_OPTIONAL
+#if CLI12_EXPERIMENTAL_OPTIONAL
 
 TEST_CASE_METHOD(TApp, "ExperimentalOptionalTest", "[optional]") {
     std::experimental::optional<int> opt;
@@ -179,7 +179,7 @@ TEST_CASE_METHOD(TApp, "ExperimentalOptionalTest", "[optional]") {
 }
 
 #endif
-#if CLI11_BOOST_OPTIONAL
+#if CLI12_BOOST_OPTIONAL
 
 TEST_CASE_METHOD(TApp, "BoostOptionalTest", "[optional]") {
     boost::optional<int> opt;

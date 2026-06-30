@@ -105,7 +105,7 @@ int main(int argc, const char *argv[]) {
     app.add_subcommand("test", "");
     // enable close matching for subcommands
     addSubcommandCloseMatchDetection(&app, 5);
-    CLI11_PARSE(app, argc, argv);
+    CLI12_PARSE(app, argc, argv);
 
     auto subs = app.get_subcommands();
     for(const auto &sub : subs) {
