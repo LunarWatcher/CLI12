@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.1.0
+
+Renamed from CLI11 to CLI12. Only CMake should need to be updated to be compatible with this release.
+
 ## v3.0.0
 
 This is the first release in an AI slop-free fork of CLI12. Aside removing meson support, Microslop Azure pipelines, and removing a fair few things that purely amount to unnecessary maintenance overhead, this version does not change anything internally.
